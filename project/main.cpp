@@ -1,4 +1,3 @@
-#include "common/common.h"
 #include "engine/engine.h"
 
 class				triangle : public engine::model<>
@@ -18,6 +17,8 @@ public :
 		};
 
 		vbos.vertices.copy(vertices + 0, vertices + 18);
+
+		save();
 	}
 };
 
@@ -31,8 +32,9 @@ public :
 
 	void			render() override
 	{
-
+		program.use(true);
 		draw(triangle);
+		program.use(false);
 	}
 
 	triangle		triangle;

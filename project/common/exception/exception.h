@@ -12,6 +12,8 @@ public :
 		unimplemented_virtual_method,
 		GLFW_error,
 		GLEW_error,
+		VBO_resize_more_than_one,
+		VBO_writing_to_static_object,
 		VAO_bad_type,
 		shader_reading_error,
 		shader_compilation_error,
@@ -25,6 +27,8 @@ public :
 		{id::GLFW_error,					"42run, Engine, Core : GLFW error"},
 		{id::GLEW_error,					"42run, Engine, Core : GLEW error"},
 		{id::VAO_bad_type,					"42run, Engine, VAO : Bad data type"},
+		{id::VBO_resize_more_than_one,		"42run, Engine, VBO : Shouldn't resize VBO more than once"},
+		{id::VBO_writing_to_static_object,	"42run, Engine, VBO : Shouldn't rewrite static buffer"},
 		{id::shader_reading_error,			"42run, Engine, Shader : Can't read source file"},
 		{id::shader_compilation_error,		"42run, Engine, Shader : Can't compile shader"},
 		{id::program_compilation_error,		"42run, Engine, Program : Can't compile program"}

@@ -17,9 +17,10 @@ protected :
 	template		<engine::memory_management management>
 	void			draw(model<management> &model)
 	{
-		model.bind(true);
-		glDrawElements(GL_TRIANGLES, model.eab.size(), GL_UNSIGNED_INT, nullptr);
-		model.bind(false);
+		model.use(true);
+		//glDrawElements(GL_TRIANGLES, model.eab.size(), GL_UNSIGNED_INT, nullptr);
+		glDrawArrays(GL_TRIANGLES, 0, model.vbos.vertices.size());
+		model.use(false);
 	}
 };
 

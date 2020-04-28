@@ -27,10 +27,10 @@ public :
 		return (std::vector<type>::at(index * group));
 	}
 
-
 	void			copy(type *first, type *last)
 	{
-		resize(last - first);
+		if (first - last != std::vector<type>::size())
+			resize((last - first) / group);
 
 		type		*target = std::vector<type>::data();
 
@@ -42,6 +42,11 @@ public :
 
 	void 			resize(int size)
 	{
+		if (not already_resized)
+			already_resized = true;
+		else
+			throw (exception::make_object<exception::id::VBO_resize_more_than_one>());
+
 		std::vector<type>::resize(size * group);
 	}
 
@@ -52,6 +57,10 @@ public :
 
 	virtual void	save()
 	{
+		if constexpr (management == memory_management::static_draw)
+			if (already_saved)
+				throw (exception::make_object<exception::id::VBO_writing_to_static_object>());
+
 		use(true);
 		glBufferData(
 			GL_ARRAY_BUFFER,
@@ -59,5 +68,12 @@ public :
 			std::vector<type>::data(),
 			static_cast<GLuint>(management));
 		use(false);
+
+		already_saved = true;
 	}
+
+private :
+
+	bool			already_resized = false;
+	bool			already_saved = false;
 };

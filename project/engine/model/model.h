@@ -11,17 +11,20 @@ class								engine::model
 	friend class 					renderer;
 
 public :
-									model()
+									model() = default;
+									~model() = default;
+
+	void							use(bool state) const
+	{
+		vao.use(state);
+	}
+
+	void							save()
 	{
 		vao.use(true);
 		vao.connect(vbos.vertices);
+		vbos.vertices.save();
 		vao.use(false);
-	}
-									~model() = default;
-
-	void							bind(bool state) const
-	{
-		vao.use(state);
 	}
 
 protected :
