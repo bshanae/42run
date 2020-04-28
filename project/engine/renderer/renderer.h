@@ -18,8 +18,7 @@ protected :
 	void			draw(model<management> &model)
 	{
 		model.use(true);
-		//glDrawElements(GL_TRIANGLES, model.eab.size(), GL_UNSIGNED_INT, nullptr);
-		glDrawArrays(GL_TRIANGLES, 0, model.vbos.vertices.size());
+		glDrawElements(GL_TRIANGLES, model.indices.size(), GL_UNSIGNED_INT, nullptr);
 		model.use(false);
 	}
 };

@@ -6,33 +6,36 @@
 #include "engine/model/vao.h"
 
 template							<engine::memory_management management>
-class								engine::model
+class							engine::model
 {
-	friend class 					renderer;
+	friend class 				renderer;
 
 public :
-									model() = default;
-									~model() = default;
+								model() = default;
+								~model() = default;
 
-	void							use(bool state) const
+	void						use(bool state) const
 	{
 		vao.use(state);
+		indices.use(state);
 	}
 
-	void							save()
+	void						save()
 	{
 		vao.use(true);
-		vao.connect(vbos.vertices);
-		vbos.vertices.save();
+		vao.connect(vertices);
+		vertices.save();
 		vao.use(false);
+
+		indices.save();
 	}
 
 protected :
 
-	struct
-	{
-		vbo<float, 3, management>	vertices;
-	}								vbos;
-	class eab						eab;
-	class vao						vao;
+	vbo<float, 3, management>	vertices;
+	class eab					indices;
+
+private :
+
+	class vao					vao;
 };

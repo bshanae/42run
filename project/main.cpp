@@ -5,18 +5,22 @@ class				triangle : public engine::model<>
 public :
 					triangle()
 	{
-		GLfloat		vertices[] = {
-			// Первый треугольник
+		GLfloat		vertices[] =
+		{
 			0.5f,  0.5f, 0.0f,  // Верхний правый угол
-			0.5f, -0.5f, 0.0f,  // Нижний правый угол
-			-0.5f,  0.5f, 0.0f,  // Верхний левый угол
-			// Второй треугольник
 			0.5f, -0.5f, 0.0f,  // Нижний правый угол
 			-0.5f, -0.5f, 0.0f,  // Нижний левый угол
 			-0.5f,  0.5f, 0.0f   // Верхний левый угол
 		};
 
-		vbos.vertices.copy(vertices + 0, vertices + 18);
+		GLuint		indices[] =
+		{
+			0, 1, 3,   // Первый треугольник
+			1, 2, 3    // Второй треугольник
+		};
+
+		this->vertices.copy(vertices + 0, vertices + 18);
+		this->indices.copy(indices + 0, indices + 6);
 
 		save();
 	}
