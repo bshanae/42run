@@ -40,6 +40,7 @@ namespace			engine
 
 	class			object_wrap;
 
+	template 		<typename type>
 	class			uniform;
 	class			shader;
 	class			program;

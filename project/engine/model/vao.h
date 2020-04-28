@@ -47,6 +47,6 @@ private :
 		else if constexpr (std::is_same<type, float>::value)
 			return (GL_FLOAT);
 		else
-			throw (exception::make_object<exception::id::VAO_bad_type>());
+			throw (exception::make_object<exception::id::VAO_type>());
 	}
 };

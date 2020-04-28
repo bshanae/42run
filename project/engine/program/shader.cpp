@@ -9,7 +9,7 @@ static string			read_file(const string &source)
 
 	file.open(source);
 	if (not file.is_open())
-		throw (exception::make_object<exception::id::shader_reading_error>());
+		throw (exception::make_object<exception::id::shader_reading>());
 
 	stream << file.rdbuf();
 	file.close();
@@ -33,7 +33,7 @@ static string			read_file(const string &source)
 	{
 		glGetShaderInfoLog(object, 512, nullptr, log);
 		cout << "/--------------------/ LOG /--------------------/" << endl << log << endl;
-		throw (exception::make_object<exception::id::shader_compilation_error>());
+		throw (exception::make_object<exception::id::shader_compilation>());
 	}
 }
 

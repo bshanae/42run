@@ -59,7 +59,7 @@ public :
 	{
 		if constexpr (management == memory_management::static_draw)
 			if (already_saved)
-				throw (exception::make_object<exception::id::VBO_writing_to_static_object>());
+				throw (exception::make_object<exception::id::VBO_static>());
 
 		use(true);
 		glBufferData(

@@ -24,7 +24,7 @@ using namespace		engine;
 	{
 		glGetProgramInfoLog(object, 512, nullptr, log);
 		cout << "/--------------------/ LOG /--------------------/" << endl << log << endl;
-		throw (exception::make_object<exception::id::program_compilation_error>());
+		throw (exception::make_object<exception::id::program_compilation>());
 	}
 }
 

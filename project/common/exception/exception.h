@@ -10,28 +10,33 @@ public :
 	{
 		standard,
 		unimplemented_virtual_method,
-		GLFW_error,
-		GLEW_error,
+		GLFW,
+		GLEW,
 		VBO_resize_more_than_one,
-		VBO_writing_to_static_object,
-		VAO_bad_type,
-		shader_reading_error,
-		shader_compilation_error,
-		program_compilation_error
+		VBO_static,
+		VAO_type,
+		shader_reading,
+		shader_compilation,
+		uniform_creation,
+		uniform_type,
+		program_compilation
 	};
 
-	const std::map<id, const char *>		messages =
+	using									messages_type = const std::unordered_map<id, const char *>;
+	messages_type							messages =
 	{
-		{id::standard,						"42run : Standard exception"},
-		{id::unimplemented_virtual_method,	"42run : An virtual method is not implemented"},
-		{id::GLFW_error,					"42run, Engine, Core : GLFW error"},
-		{id::GLEW_error,					"42run, Engine, Core : GLEW error"},
-		{id::VAO_bad_type,					"42run, Engine, VAO : Bad data type"},
-		{id::VBO_resize_more_than_one,		"42run, Engine, VBO : Shouldn't resize VBO more than once"},
-		{id::VBO_writing_to_static_object,	"42run, Engine, VBO : Shouldn't rewrite static buffer"},
-		{id::shader_reading_error,			"42run, Engine, Shader : Can't read source file"},
-		{id::shader_compilation_error,		"42run, Engine, Shader : Can't compile shader"},
-		{id::program_compilation_error,		"42run, Engine, Program : Can't compile program"}
+		{id::standard,                     "42run : Standard exception"},
+		{id::unimplemented_virtual_method, "42run : An virtual method is not implemented"},
+		{id::GLFW,                         "42run, Engine, Core : GLFW error"},
+		{id::GLEW,                         "42run, Engine, Core : GLEW error"},
+		{id::VAO_type,                     "42run, Engine, VAO : Bad data type"},
+		{id::VBO_resize_more_than_one,     "42run, Engine, VBO : Shouldn't resize VBO more than once"},
+		{id::VBO_static,                   "42run, Engine, VBO : Shouldn't rewrite static buffer"},
+		{id::shader_reading,               "42run, Engine, Shader : Can't read source file"},
+		{id::shader_compilation,           "42run, Engine, Shader : Can't compile shader"},
+		{id::uniform_creation,             "42run, Engine, Uniform : Can't create uniform"},
+		{id::uniform_type,                 "42run, Engine, Uniform : Bad uniform type"},
+		{id::program_compilation,          "42run, Engine, Program : Can't compile program"}
 	};
 
 private :

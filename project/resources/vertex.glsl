@@ -5,12 +5,12 @@ in vec3				in_position;
 
 //out vec4			pass_color;
 
-//uniform mat4		uniform_projection;
-//uniform mat4		uniform_view;
+uniform mat4		uniform_projection;
+uniform mat4		uniform_view;
 
 void				main()
 {
 //	pass_color = in_color;
 
-	gl_Position = vec4(in_position, 1.f);
+	gl_Position = uniform_projection * uniform_view * vec4(in_position, 1.f);
 }
