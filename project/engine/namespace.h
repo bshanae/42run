@@ -1,5 +1,11 @@
 #pragma once
 
+#include <vector>
+#include <list>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -10,10 +16,13 @@
 #include "external/glm/gtx/euler_angles.hpp"
 
 #include "common/common.h"
+#include "debug.h"
 
 namespace			engine
 {
 	using			std::string;
+	using			std::cout;
+	using			std::endl;
 
 	using			glm::ivec2;
 	using			glm::vec3;
@@ -28,4 +37,30 @@ namespace			engine
 	class			callback;
 
 	class 			core;
+
+	class			object_wrap;
+
+	class			uniform;
+	class			shader;
+	class			program;
+
+	enum class		memory_management : GLuint
+	{
+		static_draw = GL_STATIC_DRAW,
+		dynamic_draw = GL_DYNAMIC_DRAW,
+		stream_draw = GL_STREAM_DRAW
+	};
+
+	template		<typename type = float,
+					int group = 3,
+					engine::memory_management management = engine::memory_management::static_draw>
+	class			vbo;
+	class			eab;
+	class			vao;
+	template		<engine::memory_management management = engine::memory_management::static_draw>
+	class			model;
+
+	class 			camera;
+	class 			renderer;
+
 }
