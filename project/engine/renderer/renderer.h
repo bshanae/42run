@@ -2,7 +2,7 @@
 
 #include "engine/namespace.h"
 
-#include "engine/model/model.h"
+#include "engine/old_model/model.h"
 
 class				engine::renderer
 {

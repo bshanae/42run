@@ -18,9 +18,8 @@ using namespace		engine;
 		throw (exception::make_object<exception::id::GLFW>());
 	glfwMakeContextCurrent(window);
 
-	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK)
-		throw (exception::make_object<exception::id::GLEW>());
+	if (not gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		throw (exception::make_object<exception::id::GLAD>());
 
 	glfwGetFramebufferSize(window, &window_size.x, &window_size.y);
 	glViewport(0, 0, window_size.x, window_size.y);

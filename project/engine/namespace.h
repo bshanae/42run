@@ -6,10 +6,8 @@
 #include <sstream>
 #include <iostream>
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <OpenGL/OpenGL.h>
+#include "external/glad/include/glad/glad.h"
+#include "external/glfw/include/GLFW/glfw3.h"
 #include "external/glm/glm.hpp"
 #include "external/glm/gtc/matrix_transform.hpp"
 #include "external/glm/gtc/type_ptr.hpp"
@@ -60,6 +58,8 @@ namespace			engine
 	class			vao;
 	template		<engine::memory_management management = engine::memory_management::static_draw>
 	class			model;
+
+	class			mesh;
 
 	class 			camera;
 	class 			renderer;

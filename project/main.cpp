@@ -7,19 +7,28 @@ public :
 	{
 		GLfloat		vertices[] =
 		{
-			0.5f,  0.5f, 0.0f,  // Верхний правый угол
-			0.5f, -0.5f, 0.0f,  // Нижний правый угол
-			-0.5f, -0.5f, 0.0f,  // Нижний левый угол
-			-0.5f,  0.5f, 0.0f   // Верхний левый угол
+			0.5f,  0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			-0.5f, -0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
+		};
+
+		GLfloat		colors[] =
+		{
+			1.f, 0.f, 0.f, 1.f,
+			1.f, 0.f, 0.f, 1.f,
+			0.f, 1.f, 0.f, 1.f,
+			0.f, 0.f, 1.f, 1.f
 		};
 
 		GLuint		indices[] =
 		{
-			0, 1, 3,   // Первый треугольник
-			1, 2, 3    // Второй треугольник
+			0, 1, 3,
+			1, 2, 3
 		};
 
-		this->vertices.copy(vertices + 0, vertices + 18);
+		this->vertices.copy(vertices + 0, vertices + 12);
+		this->colors.copy(colors + 0, colors + 16);
 		this->indices.copy(indices + 0, indices + 6);
 
 		save();

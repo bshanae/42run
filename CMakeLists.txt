@@ -3,22 +3,21 @@ project(42run)
 
 set(CMAKE_CXX_STANDARD 17)
 
+#Solves ASSIMP bug
+link_directories(/usr/local/lib)
+
+find_package(OpenGL REQUIRED)
+
+add_subdirectory(project/external/glfw)
+add_subdirectory(project/external/assimp)
+
+include_directories(
+	project/external/glad/include
+	project/external/glfw/include
+	project/external/assimp/include)
+
 include_directories(
 	project)
-
-include_directories(
-	/usr/local/include
-	/opt/local/include)
-
-link_directories(
-	/usr/local/lib
-	/opt/local/lib)
-
-link_libraries(
-	"-framework OpenGL"
-	"-framework OpenCL"
-	GLFW
-	GLEW)
 
 set(MAIN
 	project/main.cpp)
@@ -32,8 +31,13 @@ set(ENGINE
 
 	project/engine/camera/camera.cpp
 
+	project/engine/model/mesh.cpp
+
 	project/engine/renderer/renderer.cpp)
 
 add_executable(42run
+	project/external/glad/src/glad.c
 	${MAIN}
 	${ENGINE})
+
+target_link_libraries(42run glfw)
