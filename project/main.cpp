@@ -1,40 +1,5 @@
 #include "engine/engine.h"
 
-class				triangle : public engine::model<>
-{
-public :
-					triangle()
-	{
-		GLfloat		vertices[] =
-		{
-			0.5f,  0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			-0.5f, -0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
-		};
-
-		GLfloat		colors[] =
-		{
-			1.f, 0.f, 0.f, 1.f,
-			1.f, 0.f, 0.f, 1.f,
-			0.f, 1.f, 0.f, 1.f,
-			0.f, 0.f, 1.f, 1.f
-		};
-
-		GLuint		indices[] =
-		{
-			0, 1, 3,
-			1, 2, 3
-		};
-
-		this->vertices.copy(vertices + 0, vertices + 12);
-		this->colors.copy(colors + 0, colors + 16);
-		this->indices.copy(indices + 0, indices + 6);
-
-		save();
-	}
-};
-
 class				program : public engine::program
 {
 public :
@@ -50,10 +15,12 @@ public :
 	uniform_mat4	view;
 };
 
+#include "engine/model/mesh.h"
+
 class				renderer : public engine::renderer
 {
 public :
-					renderer() = default;
+					renderer() : model("/Users/belchenkovova/workspace/42run/IronMan/IronMan.obj") {}
 					~renderer() override = default;
 
 	void			render() override
@@ -63,12 +30,12 @@ public :
 		program.projection.save(camera.projection_matrix());
 		program.view.save(camera.view_matrix());
 
-		draw(triangle);
+		model.Draw(program);
 
 		program.use(false);
 	}
 
-	triangle		triangle;
+	model			model;
 
 	engine::camera	camera;
 	class program	program;
@@ -84,11 +51,11 @@ int					main()
 	engine::core::use_blending = false;
 	engine::core::use_depth_test = true;
 
-	engine::camera::initial_position = engine::vec3(0.f, 0.f, 10.f);
+	engine::camera::initial_position = engine::vec3(0.f, 0.f, 1000.f);
 	engine::camera::movement_speed = 1.f;
 	engine::camera::rotation_speed = .3f;
-	engine::camera::near_plane = .1f;
-	engine::camera::far_plane = 100.f;
+	engine::camera::near_plane = 10.f;
+	engine::camera::far_plane = 10000.f;
 
 	engine::core::initialize();
 

@@ -6,12 +6,15 @@
 #include <sstream>
 #include <iostream>
 
-#include "external/glad/include/glad/glad.h"
-#include "external/glfw/include/GLFW/glfw3.h"
-#include "external/glm/glm.hpp"
-#include "external/glm/gtc/matrix_transform.hpp"
-#include "external/glm/gtc/type_ptr.hpp"
-#include "external/glm/gtx/euler_angles.hpp"
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#include "assimp/scene.h"
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtx/euler_angles.hpp"
 
 #include "common/common.h"
 #include "debug.h"
