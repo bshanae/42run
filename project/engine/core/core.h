@@ -3,6 +3,8 @@
 #include "engine/namespace.h"
 
 #include "engine/renderer/renderer.h"
+#include "engine/interface/event.h"
+#include "engine/interface/callback.h"
 
 class							engine::core
 {
@@ -24,13 +26,18 @@ private :
 
 	static core					&instance()
 	{
-		static core	core;
+		static core				core;
 
 		return (core);
 	}
 
 	GLFWwindow					*window = nullptr;
 	class renderer				*renderer = nullptr;
+
+	class event					event;
+	list<callback>				callbacks;
+
+	static void 				callback(GLFWwindow *window, int key, int code, int action, int mode);
 
 public :
 
@@ -39,19 +46,22 @@ public :
 		auto					&instance = core::instance();
 	}
 
-	static void					start();
-	static void					finish()
-	{
-		auto					&instance = core::instance();
-
-		glfwSetWindowShouldClose(instance.window, GLFW_TRUE);
-	}
+	static void					execute();
 
 	static void					attach_renderer(class renderer &renderer)
 	{
-		auto					&instance = core::instance();
+		core::instance().renderer = &renderer;
+	}
 
-		instance.renderer = &renderer;
+	template					<typename ...args_type>
+	static void					generate_callback(args_type ...args)
+	{
+		core::instance().callbacks.emplace_back(args...);
+	}
+
+	static const class event	&receive_event()
+	{
+		return (core::instance().event);
 	}
 };
 

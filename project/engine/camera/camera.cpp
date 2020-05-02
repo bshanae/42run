@@ -5,29 +5,57 @@ using namespace		engine;
 
 void				camera::move(enum movement movement)
 {
-//	if (axis == axis::x)
-//		position += right * movement_speed * (float)sign;
-//	else if (axis == axis::y)
-//		position += up * movement_speed * (float)sign;
-//	else if (axis == axis::z)
-//		position += front * movement_speed * -1.f * (float)sign;
+	switch (movement)
+	{
+		case movement::left :
+			position -= right * movement_speed;
+			break ;
+
+		case movement::right :
+			position += right * movement_speed;
+			break ;
+
+		case movement::forth :
+			position += front * movement_speed;
+			break ;
+
+		case movement::back :
+			position -= front * movement_speed;
+			break ;
+
+		case movement::up :
+			position += up * movement_speed;
+			break ;
+
+		case movement::down :
+			position -= up * movement_speed;
+			break ;
+	}
 }
 
 void				camera::rotate(enum rotation rotation)
 {
-//	auto			add_if_safe = [](float *target, float value, float range)
-//	{
-//		const float	temp = *target + value;
-//
-//		if (temp > -1 * range and temp < range)
-//			*target = temp;
-//	};
-//
-//	if (axis == axis::x)
-//		add_if_safe(&pitch, (float)sign * rotation_speed, 90.f);
-//	else if (axis == axis::y)
-//		yaw += -1.f * (float)sign * rotation_speed;
-//	update();
+	switch (rotation)
+	{
+		case rotation::left :
+			yaw -= rotation_speed;
+			break ;
+
+		case rotation::right :
+			yaw += rotation_speed;
+			break ;
+
+		case rotation::up :
+			pitch += rotation_speed;
+			break ;
+
+		case rotation::down :
+			pitch -= rotation_speed;
+			break ;
+	}
+
+	pitch = std::clamp(pitch, -90.f, 90.f);
+	update();
 }
 
 mat4				camera::projection_matrix() const

@@ -37,6 +37,7 @@ using namespace		engine;
 		glEnable(GL_DEPTH_TEST);
 
 	glfwSetWindowUserPointer(window, this);
+	glfwSetKeyCallback(window, callback);
 }
 
 					core::~core()

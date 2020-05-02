@@ -27,7 +27,6 @@ private:
 		vector<texture>		textures;
 		aiString			file;
 
-#warning "Several purposes"
 		purpose = aiTextureType_DIFFUSE;
 
 		for (int i = 0; i < material->GetTextureCount(purpose); i++)

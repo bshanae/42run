@@ -34,7 +34,8 @@ set(SOURCE_MAIN
 
 set(SOURCE_ENGINE
 	project/engine/core/core.cpp
-	project/engine/core/start.cpp
+	project/engine/core/execute.cpp
+	project/engine/core/callback.cpp
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
 	project/engine/camera/camera.cpp

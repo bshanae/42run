@@ -19,7 +19,8 @@ public :
 		uniform_type,
 		program_compilation,
 		texture_creation,
-		texture_format
+		texture_format,
+		event_bad_type
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
@@ -36,7 +37,8 @@ public :
 		{id::uniform_type,					"42run, Engine, Uniform : Bad uniform type"},
 		{id::program_compilation,			"42run, Engine, Program : Can't compile program"},
 		{id::texture_creation,				"42run, Engine, Texture : Can't create texture"},
-		{id::texture_format,				"42run, Engine, Texture : Bad format"}
+		{id::texture_format,				"42run, Engine, Texture : Bad format"},
+		{id::event_bad_type,				"42run, Engine, Event : Bad type"}
 	};
 
 private :
