@@ -13,33 +13,39 @@ set(ASSIMP_BUILD_STATIC_LIB ON)
 
 add_subdirectory(project/external/glfw)
 add_subdirectory(project/external/assimp)
+add_subdirectory(project/external/stb)
 
 include_directories(
+	project/external
 	project/external/glad/include
 	project/external/glfw/include
 	project/external/assimp/include
 	project/external/assimp/code
-	project/external)
+	project/external/stb)
 
 include_directories(
 	project)
 
-set(MAIN
+set(SOURCE_EXTERNAL
+	project/external/glad/src/glad.c)
+
+set(SOURCE_MAIN
 	project/main.cpp)
 
-set(ENGINE
+set(SOURCE_ENGINE
 	project/engine/core/core.cpp
 	project/engine/core/start.cpp
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
 	project/engine/camera/camera.cpp
+	project/engine/texture/texture.cpp
 	project/engine/model/mesh.cpp
 	project/engine/model/model.cpp
 	project/engine/renderer/renderer.cpp)
 
 add_executable(42run
-	project/external/glad/src/glad.c
-	${MAIN}
-	${ENGINE})
+	${SOURCE_EXTERNAL}
+	${SOURCE_MAIN}
+	${SOURCE_ENGINE})
 
-target_link_libraries(42run glfw assimp)
+target_link_libraries(42run glfw assimp image)

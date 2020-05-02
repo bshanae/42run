@@ -3,6 +3,7 @@
 #include "engine/namespace.h"
 
 #include "engine/model/mesh.h"
+#include "engine/texture/texture.h"
 
 class						engine::model
 {
@@ -21,6 +22,20 @@ private:
 	void					process_node(aiNode *node, const aiScene *scene);
 	mesh					process_mesh(aiMesh *mesh, const aiScene *scene);
 
-	vector<mesh::texture>	loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+	vector<texture>			process_material(aiMaterial *material, aiTextureType purpose)
+	{
+		vector<texture>		textures;
+		aiString			file;
+
+#warning "Several purposes"
+		purpose = aiTextureType_DIFFUSE;
+
+		for (int i = 0; i < material->GetTextureCount(purpose); i++)
+		{
+			material->GetTexture(purpose, i, &file);
+			textures.emplace_back(directory / path(file.C_Str()));
+		}
+		return (textures);
+	}
 };
 

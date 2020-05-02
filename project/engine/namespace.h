@@ -11,6 +11,7 @@
 #include "assimp/scene.h"
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
+#include "stb/stb_image.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -26,6 +27,7 @@ namespace				engine
 	using				std::string;
 	using				std::cout;
 	using				std::endl;
+	using				std::move;
 	using				std::filesystem::path;
 
 	using				glm::ivec2;
@@ -66,7 +68,10 @@ namespace				engine
 	class				shader;
 	class				program;
 
+	class 				texture;
+
 	class				mesh;
+	class				model;
 
 	class 				camera;
 	class 				renderer;

@@ -28,7 +28,7 @@ mesh						model::process_mesh(aiMesh *mesh, const aiScene *scene)
 {
 	vector<mesh::vertex>	vertices;
 	vector<unsigned>		indices;
-	vector<mesh::texture>	textures;
+	vector<texture>			textures;
 
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -51,6 +51,22 @@ mesh						model::process_mesh(aiMesh *mesh, const aiScene *scene)
 
 		for (int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
+	}
+
+	if (mesh->mMaterialIndex >= 0)
+	{
+//		aiMaterial			*material = scene->mMaterials[mesh->mMaterialIndex];
+//
+//		auto				process_and_append = [this, &textures, material](aiTextureType type)
+//		{
+//			vector<texture>	result = process_material(material, type);
+//
+//			for (auto &item : result)
+//				textures.push_back(move(item));
+//		};
+//
+//		process_and_append(aiTextureType_DIFFUSE);
+//		process_and_append(aiTextureType_SPECULAR);
 	}
 
 	return (engine::mesh(vertices, indices, textures));

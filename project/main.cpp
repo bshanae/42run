@@ -1,10 +1,13 @@
 #include "engine/engine.h"
 
+engine::path		triangle = "/Users/belchenkovova/Desktop/triangle.obj";
+engine::path		cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
+
 class				renderer : public engine::renderer
 {
 public :
 					renderer() :
-					model("/Users/belchenkovova/Desktop/cube/cube.obj")
+					model(triangle)
 					{}
 					~renderer() override = default;
 

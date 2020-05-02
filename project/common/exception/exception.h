@@ -13,32 +13,30 @@ public :
 		GLFW,
 		GLAD,
 		ASSIMP,
-		VBO_resize_more_than_one,
-		VBO_static,
-		VAO_type,
 		shader_reading,
 		shader_compilation,
 		uniform_creation,
 		uniform_type,
-		program_compilation
+		program_compilation,
+		texture_creation,
+		texture_format
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
 	messages_type							messages =
 	{
-		{id::standard,                     "42run : Standard exception"},
-		{id::unimplemented_virtual_method, "42run : An virtual method is not implemented"},
-		{id::GLFW,                         "42run, Engine, Core : GLFW error"},
-		{id::GLAD,                         "42run, Engine, Core : GLAD error"},
-		{id::ASSIMP,						"42run, Engine, Core : ASSIMP error"},
-		{id::VAO_type,                     "42run, Engine, VAO : Bad data type"},
-		{id::VBO_resize_more_than_one,     "42run, Engine, VBO : Shouldn't resize VBO more than once"},
-		{id::VBO_static,                   "42run, Engine, VBO : Shouldn't rewrite static buffer"},
-		{id::shader_reading,               "42run, Engine, Shader : Can't read source file"},
-		{id::shader_compilation,           "42run, Engine, Shader : Can't compile shader"},
-		{id::uniform_creation,             "42run, Engine, Uniform : Can't create uniform"},
-		{id::uniform_type,                 "42run, Engine, Uniform : Bad uniform type"},
-		{id::program_compilation,          "42run, Engine, Program : Can't compile program"}
+		{id::standard,						"42run : Standard exception"},
+		{id::unimplemented_virtual_method,	"42run : An virtual method is not implemented"},
+		{id::GLFW,                         	"42run, Engine : GLFW error"},
+		{id::GLAD,							"42run, Engine : GLAD error"},
+		{id::ASSIMP,						"42run, Engine : ASSIMP error"},
+		{id::shader_reading,				"42run, Engine, Shader : Can't read source file"},
+		{id::shader_compilation,			"42run, Engine, Shader : Can't compile shader"},
+		{id::uniform_creation,				"42run, Engine, Uniform : Can't create uniform"},
+		{id::uniform_type,					"42run, Engine, Uniform : Bad uniform type"},
+		{id::program_compilation,			"42run, Engine, Program : Can't compile program"},
+		{id::texture_creation,				"42run, Engine, Texture : Can't create texture"},
+		{id::texture_format,				"42run, Engine, Texture : Bad format"}
 	};
 
 private :

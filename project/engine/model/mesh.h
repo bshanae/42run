@@ -2,6 +2,8 @@
 
 #include "engine/namespace.h"
 
+#include "engine/texture/texture.h"
+
 class					engine::mesh
 {
 	friend class 		renderer;
@@ -16,24 +18,18 @@ public:
 		vec2			UV;
 	};
 
-	struct				texture
-	{
-		unsigned		id;
-		string			type;
-	};
 						mesh(
-						vector<vertex> vertices,
-						vector<unsigned> indices,
-						vector<texture> textures);
+						vector<vertex> &vertices,
+						vector<unsigned> &indices,
+						vector<texture> &textures);
 						~mesh() = default;
+private:
 
 	vector<vertex>		vertices;
 	vector<unsigned>	indices;
 	vector<texture>		textures;
 
-private:
-
 	unsigned int		VAO = -1;
 	unsigned int		VBO = -1;
-	unsigned int		EBO = -1;
+	unsigned int		IBO = -1;
 };
