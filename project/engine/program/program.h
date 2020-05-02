@@ -2,7 +2,6 @@
 
 #include "engine/namespace.h"
 
-#include "engine/object_wrap/object_wrap.h"
 #include "engine/program/uniform.h"
 
 class				engine::program : public object_wrap
@@ -14,6 +13,12 @@ public :
 	void			use(bool state) const override
 	{
 		glUseProgram(state ? object : 0);
+	}
+
+	[[nodiscard]]
+	GLuint			find_uniform_location(const string &name)
+	{
+		return (glGetUniformLocation(object, name.c_str()));
 	}
 };
 

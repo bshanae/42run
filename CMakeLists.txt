@@ -30,14 +30,11 @@ set(MAIN
 set(ENGINE
 	project/engine/core/core.cpp
 	project/engine/core/start.cpp
-
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
-
 	project/engine/camera/camera.cpp
-
 	project/engine/model/mesh.cpp
-
+	project/engine/model/model.cpp
 	project/engine/renderer/renderer.cpp)
 
 add_executable(42run

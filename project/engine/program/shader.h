@@ -2,8 +2,6 @@
 
 #include "engine/namespace.h"
 
-#include "engine/object_wrap/object_wrap.h"
-
 class				engine::shader : public object_wrap
 {
 	friend class	engine::program;

@@ -2,21 +2,19 @@
 
 #include "engine/namespace.h"
 
-#include "engine/object_wrap/object_wrap.h"
-
 template 			<typename type>
 class 				engine::uniform : public engine::object_wrap
 {
 	friend class	program;
 
 public :
-					uniform(GLuint program, const string &name)
+					uniform(GLuint value)
 	{
-		object = glGetUniformLocation(program, name.c_str());
+		object = value;
 		if (object == -1)
 			throw (exception::make_object<exception::id::uniform_creation>());
 	}
-					~uniform() = default;
+					~uniform() override = default;
 
 	void			save(const type &data)
 	{
