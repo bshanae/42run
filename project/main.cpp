@@ -7,7 +7,7 @@ class				renderer : public engine::renderer
 {
 public :
 					renderer() :
-					model(triangle)
+					model(cube)
 					{}
 					~renderer() override = default;
 

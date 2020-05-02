@@ -28,17 +28,17 @@ protected :
 	{
 		for (auto &mesh : model.meshes)
 		{
-//			unsigned int	diffuse_index = 1;
-//			unsigned int	specular_index = 1;
+			unsigned int	diffuse_index = 1;
+			unsigned int	specular_index = 1;
 
-//			for(unsigned int i = 0; i < mesh.textures.size(); i++)
-//			{
-//				glActiveTexture(GL_TEXTURE0 + i);
-//
-//				uniforms.texture->save(i);
-//				glBindTexture(GL_TEXTURE_2D, mesh.textures[i].object);
-//			}
-//			glActiveTexture(GL_TEXTURE0);
+			for(unsigned int i = 0; i < mesh.textures.size(); i++)
+			{
+				glActiveTexture(GL_TEXTURE0 + i);
+
+				uniforms.texture->save(i);
+				glBindTexture(GL_TEXTURE_2D, mesh.textures[i].object);
+			}
+			glActiveTexture(GL_TEXTURE0);
 
 			glBindVertexArray(mesh.VAO);
 			glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
