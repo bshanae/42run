@@ -3,7 +3,8 @@
 class				renderer : public engine::renderer
 {
 public :
-					renderer() : model("/Users/belchenkovova/Desktop/cube/cube.obj")
+					renderer() :
+					model("/Users/belchenkovova/Desktop/cube/cube.obj")
 					{}
 					~renderer() override = default;
 
@@ -32,7 +33,7 @@ int					main()
 	engine::core::use_blending = false;
 	engine::core::use_depth_test = true;
 
-	engine::camera::initial_position = engine::vec3(0.f, 0.f, 2.f);
+	engine::camera::initial_position = engine::vec3(0.f, 0.f, 5.f);
 	engine::camera::movement_speed = 1.f;
 	engine::camera::rotation_speed = .3f;
 	engine::camera::near_plane = 0.1f;
