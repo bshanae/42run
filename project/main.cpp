@@ -13,16 +13,7 @@ public :
 
 	void			render() override
 	{
-		program.use(true);
-
-		uniforms.projection->save(camera.projection_matrix());
-		uniforms.view->save(camera.view_matrix());
-
-		engine::renderer::render(model);
-
-		program.use(false);
-
-		request = false;
+		engine::renderer::render({model});
 	}
 
 	engine::model	model;

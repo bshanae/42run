@@ -5,7 +5,7 @@ using namespace		engine;
 					mesh::mesh(
 					vector<vertex> &vertices,
 					vector<unsigned> &indices,
-					unique_ptr<struct material> &material) :
+					unique_ptr<class material> &material) :
 					vertices(vertices),
 					indices(indices),
 					material(move(material))

@@ -4,6 +4,8 @@
 
 class						engine::camera
 {
+	friend class			renderer;
+
 public :
 
 	static inline float		movement_speed = 0.f;

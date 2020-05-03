@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <initializer_list>
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -33,6 +34,8 @@ namespace				engine
 	using				std::filesystem::path;
 	using				std::unique_ptr;
 	using				std::make_unique;
+	using				std::initializer_list;
+	using				std::reference_wrapper;
 
 	using				glm::ivec2;
 	using				glm::vec2;
@@ -122,11 +125,14 @@ namespace				engine
 	class				program;
 
 	class 				texture;
-	class 				material;
+	class				material;
 	class				mesh;
 	class				model;
 
 	class 				camera;
+	class				light;
+	class				scene;
+
 	class 				renderer;
 
 }

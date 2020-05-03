@@ -83,6 +83,7 @@ unique_ptr<material>	model::process_material(aiMaterial *source)
 	};
 
 	emplace_texture(target->textures.diffuse, aiTextureType_DIFFUSE);
+	emplace_texture(target->textures.specular, aiTextureType_SPECULAR);
 
 	return (target);
 }

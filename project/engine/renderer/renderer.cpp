@@ -9,14 +9,45 @@ using namespace		engine;
 {
 	uniforms.projection.emplace(program.find_uniform_location("uniform_projection"));
 	uniforms.view.emplace(program.find_uniform_location("uniform_view"));
+
 	uniforms.material.colors.ambient.emplace(program.find_uniform_location("uniform_material.colors.ambient"));
 	uniforms.material.colors.diffuse.emplace(program.find_uniform_location("uniform_material.colors.diffuse"));
 	uniforms.material.colors.specular.emplace(program.find_uniform_location("uniform_material.colors.specular"));
+
 	uniforms.material.textures.diffuse.is_valid.emplace(program.find_uniform_location("uniform_material.textures.diffuse.is_valid"));
 	uniforms.material.textures.diffuse.value.emplace(program.find_uniform_location("uniform_material.textures.diffuse.value"));
+
+	uniforms.material.textures.specular.is_valid.emplace(program.find_uniform_location("uniform_material.textures.specular.is_valid"));
+	uniforms.material.textures.specular.value.emplace(program.find_uniform_location("uniform_material.textures.specular.value"));
+
+	uniforms.light.camera.emplace(program.find_uniform_location("uniform_light.camera"));
+	uniforms.light.position.emplace(program.find_uniform_location("uniform_light.position"));
+
+	program.use(true);
+
+	uniforms.light.position->save(vec3(0, 5, 5));
+
+	program.use(false);
 }
 
-void				renderer::render(const model &model)
+void				renderer::render(initializer_list<const reference_wrapper<model>> models)
+{
+	program.use(true);
+
+	uniforms.projection->save(scene.camera.projection_matrix());
+	uniforms.view->save(scene.camera.view_matrix());
+
+	uniforms.light.camera->save(scene.camera.position);
+
+	for (auto model : models)
+		render_model(model);
+
+	program.use(false);
+
+	request = false;
+}
+
+void				renderer::render_model(const model &model)
 {
 	for (auto &mesh : model.meshes)
 	{
@@ -34,6 +65,16 @@ void				renderer::render(const model &model)
 			glBindTexture(GL_TEXTURE_2D, value);
 		}
 
+		uniforms.material.textures.specular.is_valid->save(mesh->material->textures.specular.has_value());
+		if (mesh->material->textures.specular)
+		{
+			auto	value = mesh->material->textures.specular->object;
+
+			glActiveTexture(GL_TEXTURE1);
+			uniforms.material.textures.specular.value->save(1);
+			glBindTexture(GL_TEXTURE_2D, value);
+		}
+
 		glBindVertexArray(mesh->VAO);
 		glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
@@ -46,6 +87,7 @@ void				renderer::callback()
 {
 	const auto		&event = core::receive_event();
 	auto			key = event.read_key();
+	auto			&camera = scene.camera;
 
 	switch (key)
 	{

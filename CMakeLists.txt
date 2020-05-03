@@ -38,7 +38,7 @@ set(SOURCE_ENGINE
 	project/engine/core/callback.cpp
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
-	project/engine/camera/camera.cpp
+	project/engine/scene/camera.cpp
 	project/engine/model/mesh.cpp
 	project/engine/model/model.cpp
 	project/engine/model/texture.cpp
