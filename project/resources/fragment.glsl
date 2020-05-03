@@ -51,10 +51,9 @@ vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 {
 	vec3				material_color;
 
+	material_color = uniform_material.colors.diffuse;
 	if (uniform_material.textures.diffuse.is_valid)
-		material_color = texture(uniform_material.textures.diffuse.value, pass_UV).rgb;
-	else
-		material_color = uniform_material.colors.diffuse;
+		material_color *= texture(uniform_material.textures.diffuse.value, pass_UV).rgb;
 
 	float				intensity = max(dot(normal, light_direction), 0.0);
 
@@ -65,10 +64,10 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 {
 	vec3				material_color;
 
+	material_color = uniform_material.colors.specular;
 	if (uniform_material.textures.specular.is_valid)
-		material_color = texture(uniform_material.textures.specular.value, pass_UV).rgb;
-	else
-		material_color = uniform_material.colors.specular;
+		material_color *= texture(uniform_material.textures.specular.value, pass_UV).r;
+
 
 	vec3				view_direction = normalize(uniform_light.camera - pass_position);
 	vec3				reflect_direction = reflect(-light_direction, normal);
@@ -82,12 +81,6 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 
 void					main()
 {
-	vec3				lol_0 = uniform_material.colors.ambient;
-	vec3				lol_1 = uniform_material.colors.diffuse;
-	vec3				lol_2 = uniform_material.colors.specular;
-	vec4				lol_4 = texture(uniform_material.textures.diffuse.value, pass_UV);
-	bool				lol_5 = uniform_material.textures.diffuse.is_valid;
-
 	vec3				normal = normalize(pass_normal);
 	vec3				light_direction = normalize(uniform_light.position - pass_position);
 
