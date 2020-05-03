@@ -7,7 +7,7 @@
 class				engine::program : public object_wrap
 {
 public :
-					program(const string &vertex_source, const string &fragment_source);
+					program(const path &vertex_source, const path &fragment_source);
 					~program() override;
 
 	void			use(bool state) const override

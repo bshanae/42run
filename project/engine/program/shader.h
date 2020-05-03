@@ -14,7 +14,7 @@ private :
 		fragment = GL_FRAGMENT_SHADER
 	};
 
-					shader(type type, const string &source);
+					shader(type type, const path &source);
 					~shader() override;
 };
 

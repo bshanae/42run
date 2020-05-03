@@ -2,7 +2,7 @@
 
 using namespace			engine;
 
-static string			read_file(const string &source)
+static string			read_file(const path &source)
 {
 	std::ifstream		file;
 	std::stringstream	stream;
@@ -16,7 +16,7 @@ static string			read_file(const string &source)
 	return (stream.str());
 }
 
-						shader::shader(type type, const string &source)
+						shader::shader(type type, const path &source)
 {
 	string				file = read_file(source);
 	const char			*file_raw = file.c_str();
