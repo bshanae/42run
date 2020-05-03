@@ -11,7 +11,7 @@ using namespace		engine;
 	int				height;
 	int				number_of_components;
 
-	auto		*data = stbi_load(source.c_str(), &width, &height, &number_of_components, 0);
+	auto			*data = stbi_load(source.c_str(), &width, &height, &number_of_components, 0);
 
 	if (not data)
 		throw (exception::make_object<exception::id::texture_creation>());
@@ -42,5 +42,12 @@ using namespace		engine;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	stbi_image_free(data);
+}
+
+					texture::~texture()
+{
+	glDeleteTextures(1, &object);
 }

@@ -5,12 +5,11 @@ using namespace		engine;
 					mesh::mesh(
 					vector<vertex> &vertices,
 					vector<unsigned> &indices,
-					vector<texture> &textures)
+					unique_ptr<struct material> &material) :
+					vertices(vertices),
+					indices(indices),
+					material(move(material))
 {
-	this->vertices = move(vertices);
-	this->indices = move(indices);
-	this->textures = move(textures);
-
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &IBO);

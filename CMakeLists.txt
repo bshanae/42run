@@ -39,9 +39,9 @@ set(SOURCE_ENGINE
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
 	project/engine/camera/camera.cpp
-	project/engine/texture/texture.cpp
 	project/engine/model/mesh.cpp
 	project/engine/model/model.cpp
+	project/engine/model/texture.cpp
 	project/engine/renderer/renderer.cpp)
 
 add_executable(42run

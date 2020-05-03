@@ -9,29 +9,36 @@ using namespace		engine;
 {
 	uniforms.projection.emplace(program.find_uniform_location("uniform_projection"));
 	uniforms.view.emplace(program.find_uniform_location("uniform_view"));
-	uniforms.texture.emplace(program.find_uniform_location("uniform_texture"));
+	uniforms.material.colors.ambient.emplace(program.find_uniform_location("uniform_material.colors.ambient"));
+	uniforms.material.colors.diffuse.emplace(program.find_uniform_location("uniform_material.colors.diffuse"));
+	uniforms.material.colors.specular.emplace(program.find_uniform_location("uniform_material.colors.specular"));
+	uniforms.material.textures.diffuse.is_valid.emplace(program.find_uniform_location("uniform_material.textures.diffuse.is_valid"));
+	uniforms.material.textures.diffuse.value.emplace(program.find_uniform_location("uniform_material.textures.diffuse.value"));
 }
 
 void				renderer::render(const model &model)
 {
-	cout << "render" << endl;
 	for (auto &mesh : model.meshes)
 	{
-		unsigned int diffuse_index = 1;
-		unsigned int specular_index = 1;
+		uniforms.material.colors.ambient->save(mesh->material->colors.ambient);
+		uniforms.material.colors.diffuse->save(mesh->material->colors.diffuse);
+		uniforms.material.colors.specular->save(mesh->material->colors.specular);
 
-		for (unsigned int i = 0; i < mesh.textures.size(); i++)
+		uniforms.material.textures.diffuse.is_valid->save(mesh->material->textures.diffuse.has_value());
+		if (mesh->material->textures.diffuse)
 		{
-			glActiveTexture(GL_TEXTURE0 + i);
+			auto	value = mesh->material->textures.diffuse->object;
 
-			uniforms.texture->save(i);
-			glBindTexture(GL_TEXTURE_2D, mesh.textures[i].object);
+			glActiveTexture(GL_TEXTURE0);
+			uniforms.material.textures.diffuse.value->save(0);
+			glBindTexture(GL_TEXTURE_2D, value);
 		}
-		glActiveTexture(GL_TEXTURE0);
 
-		glBindVertexArray(mesh.VAO);
-		glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(mesh->VAO);
+		glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
 
@@ -85,6 +92,5 @@ void				renderer::callback()
 		default :
 			return ;
 	}
-	cout << "render request" << endl;
 	request = true;
 }

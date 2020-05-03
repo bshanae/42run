@@ -1,11 +1,13 @@
 #include "model.h"
 
+#include "engine/converter/converter.h"
+
 using namespace				engine;
 
 							model::model(const path &source)
 {
 	Assimp::Importer		importer;
-	const auto				*scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_MaxQuality);
+	const auto				*scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_Fast);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
 		throw (exception::make_object<exception::id::ASSIMP>());
@@ -18,56 +20,69 @@ using namespace				engine;
 void						model::process_node(aiNode *node, const aiScene *scene)
 {
 	for (int i = 0; i < node->mNumMeshes; i++)
-		meshes.push_back(process_mesh(scene->mMeshes[node->mMeshes[i]], scene));
+		meshes.push_back(move(process_mesh(scene->mMeshes[node->mMeshes[i]], scene)));
 
 	for (int i = 0; i < node->mNumChildren; i++)
 		process_node(node->mChildren[i], scene);
 }
 
-mesh						model::process_mesh(aiMesh *mesh, const aiScene *scene)
+unique_ptr<mesh>			model::process_mesh(aiMesh *mesh, const aiScene *scene)
 {
 	vector<mesh::vertex>	vertices;
 	vector<unsigned>		indices;
-	vector<texture>			textures;
+	unique_ptr<material>	material;
 
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
 		mesh::vertex		vertex;
 
-		vertex.position = vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-		vertex.normal = vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
-
-		if(mesh->mTextureCoords[0])
-			vertex.UV = vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
-		else
-			vertex.UV = vec2(0.0f, 0.0f);
+		vertex.position = converter::to_glm(mesh->mVertices[i]);
+		vertex.normal = converter::to_glm(mesh->mNormals[i]);
+		vertex.UV = mesh->mTextureCoords[0] ? converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
 
 		vertices.push_back(vertex);
 	}
 
 	for (int i = 0; i < mesh->mNumFaces; i++)
-	{
-		aiFace				&face = mesh->mFaces[i];
-
-		for (int j = 0; j < face.mNumIndices; j++)
-			indices.push_back(face.mIndices[j]);
-	}
+		for (int j = 0; j < mesh->mFaces[i].mNumIndices; j++)
+			indices.push_back(mesh->mFaces[i].mIndices[j]);
 
 	if (mesh->mMaterialIndex >= 0)
+		material = move(process_material(scene->mMaterials[mesh->mMaterialIndex]));
+	else
+		material = make_unique<engine::material>();
+
+	return (make_unique<engine::mesh>(vertices, indices, material));
+}
+
+unique_ptr<material>	model::process_material(aiMaterial *source)
+{
+	auto				target = make_unique<material>();
+
+	aiColor3D			ambient;
+	aiColor3D			diffuse;
+	aiColor3D			specular;
+
+	source->Get(AI_MATKEY_COLOR_AMBIENT, ambient);
+	source->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+	source->Get(AI_MATKEY_COLOR_SPECULAR, specular);
+
+	target->colors.ambient = converter::to_glm(ambient);
+	target->colors.diffuse = converter::to_glm(diffuse);
+	target->colors.specular = converter::to_glm(specular);
+
+	auto				emplace_texture = [this, source](optional<texture> &target, aiTextureType type)
 	{
-		aiMaterial			*material = scene->mMaterials[mesh->mMaterialIndex];
+		aiString		file;
 
-		auto				process_and_append = [this, &textures, material](aiTextureType type)
-		{
-			vector<texture>	result = process_material(material, type);
+		if (source->GetTextureCount(type) == 0)
+			return ;
 
-			for (auto &item : result)
-				textures.push_back(move(item));
-		};
+		source->GetTexture(type, 0, &file);
+		target.emplace(directory / converter::to_path(file));
+	};
 
-		process_and_append(aiTextureType_DIFFUSE);
-		process_and_append(aiTextureType_SPECULAR);
-	}
+	emplace_texture(target->textures.diffuse, aiTextureType_DIFFUSE);
 
-	return (engine::mesh(vertices, indices, textures));
+	return (target);
 }

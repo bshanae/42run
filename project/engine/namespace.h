@@ -11,6 +11,7 @@
 #include "assimp/scene.h"
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
+#include "assimp/types.h"
 #include "stb/stb_image.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -30,6 +31,8 @@ namespace				engine
 	using				std::endl;
 	using				std::move;
 	using				std::filesystem::path;
+	using				std::unique_ptr;
+	using				std::make_unique;
 
 	using				glm::ivec2;
 	using				glm::vec2;
@@ -38,6 +41,9 @@ namespace				engine
 	using				glm::mat4;
 
 	using				common::exception;
+
+	namespace			converter
+	{}
 
 	class				function;
 	class				timer;
@@ -116,7 +122,7 @@ namespace				engine
 	class				program;
 
 	class 				texture;
-
+	class 				material;
 	class				mesh;
 	class				model;
 

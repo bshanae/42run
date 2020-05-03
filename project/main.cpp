@@ -1,14 +1,14 @@
 #include "engine/engine.h"
 
+engine::path		giant = "/Users/belchenkovova/Desktop/giant/Stone.obj";
+engine::path		cobra = "/Users/belchenkovova/Desktop/AC Cobra/Shelby.obj";
 engine::path		triangle = "/Users/belchenkovova/Desktop/triangle.obj";
 engine::path		cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
 
 class				renderer : public engine::renderer
 {
 public :
-					renderer() :
-					model(cube)
-					{}
+					renderer() : model(giant) {}
 					~renderer() override = default;
 
 	void			render() override

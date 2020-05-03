@@ -7,8 +7,9 @@ class				engine::texture : public engine::object_wrap
 	friend class	renderer;
 
 public :
-					texture(const path &source);
-					~texture() override = default;
+
+	explicit 		texture(const path &source);
+					~texture() override;
 
 	const path		source;
 };

@@ -6,39 +6,59 @@
 #include "engine/program/program.h"
 #include "engine/model/model.h"
 
-class					engine::renderer
+class							engine::renderer
 {
-	friend class		core;
+	friend class				core;
 
 public :
-						renderer();
-	virtual				~renderer() = default;
+								renderer();
+	virtual						~renderer() = default;
 
-	void				callback();
+	void						callback();
 
-	bool				request = true;
+	bool						request = true;
 
 protected :
 
-	virtual void		render() = 0;
+	virtual void				render() = 0;
+	void						render(const model &model);
 
-	void				render(const model &model);
-
-	engine::program		program;
+	engine::program				program;
 
 private :
 
-	using 				uniform_mat4 = optional<uniform<mat4>>;
-	using 				uniform_int = optional<uniform<int>>;
+	using 						uniform_mat4 = optional<uniform<mat4>>;
+	using 						uniform_vec3 = optional<uniform<vec3>>;
+	using 						uniform_int = optional<uniform<int>>;
 
 protected :
 
+	struct						texture_wrap
+	{
+		uniform_int 			is_valid;
+		uniform_int 			value;
+	};
+
 	struct
 	{
-		uniform_mat4	projection;
-		uniform_mat4	view;
-		uniform_int		texture;
-	}					uniforms;
+		uniform_mat4			projection;
+		uniform_mat4			view;
 
-	engine::camera		camera;
+		struct
+		{
+			struct
+			{
+				uniform_vec3	ambient;
+				uniform_vec3	diffuse;
+				uniform_vec3	specular;
+			}					colors;
+
+			struct
+			{
+				texture_wrap	diffuse;
+			}					textures;
+		}						material;
+	}							uniforms;
+
+	engine::camera				camera;
 };
