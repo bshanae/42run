@@ -2,14 +2,14 @@
 
 #include "engine/namespace.h"
 
-#include "engine/animation/animation.h"
+#include "engine/model/animation.h"
 
-class						engine::skeleton
+class						engine::model::skeleton
 {
 private :
 
 	friend class 			model;
-	friend class 			renderer;
+	friend class 			engine::renderer;
 
 	static constexpr int	limit_for_bones = 100;
 

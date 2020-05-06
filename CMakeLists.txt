@@ -36,6 +36,7 @@ set(SOURCE_ENGINE
 	project/engine/core/core.cpp
 	project/engine/core/execute.cpp
 	project/engine/core/callback.cpp
+	project/engine/core/attach_renderer.cpp
 	project/engine/converter/converter.cpp
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
@@ -43,7 +44,7 @@ set(SOURCE_ENGINE
 #	project/engine/model/mesh.cpp
 #	project/engine/model/model.cpp
 #	project/engine/model/texture.cpp
-#	project/engine/renderer/renderer.cpp
+	project/engine/renderer/renderer.cpp
 	)
 
 add_executable(42run

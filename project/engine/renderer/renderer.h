@@ -3,39 +3,54 @@
 #include "engine/namespace.h"
 
 #include "engine/program/program.h"
-//#include "engine/model/model.h"
-#include "engine/animation/skeleton.h"
 #include "engine/scene/scene.h"
+#include "engine/model/skeleton.h"
+#include "engine/model/model.h"
 
 class							engine::renderer
 {
 	friend class				core;
 
 public :
-								renderer();
-	virtual						~renderer() = default;
 
-	void						callback();
+	static void 				initialize()
+	{
+		instance();
+	}
+
+	static void					add_target(const shared_ptr<model::model> &model)
+	{
+		instance().models.push_back(model);
+	}
 
 	bool						request = true;
 
-	virtual void				render() = 0;
-
-protected :
-
-	void						render(initializer_list<const reference_wrapper<model>> models);
-
 private :
 
-	void						render_model(const model &model);
+								renderer();
+	virtual						~renderer() = default;
 
-	engine::program				program;
+	static renderer				&instance()
+	{
+		static renderer			renderer;
 
-private :
+		return (renderer);
+	}
 
-	using 						uniform_mat4 = optional<uniform<mat4>>;
-	using 						uniform_vec3 = optional<uniform<vec3>>;
-	using 						uniform_int = optional<uniform<int>>;
+	using						models_type = vector<shared_ptr<model::model>>;
+	models_type 				models;
+
+	void						render();
+	void						render(const shared_ptr<model::model> &model);
+
+	void						callback();
+
+	engine::program::program	program;
+	engine::scene::scene		scene;
+
+	using 						uniform_int = engine::program::uniform<int>;
+	using 						uniform_vec3 = engine::program::uniform<vec3>;
+	using 						uniform_mat4 = engine::program::uniform<mat4>;
 
 	struct						texture_wrap
 	{
@@ -71,8 +86,6 @@ private :
 		}						light;
 
 		uniform_int 			does_mesh_have_bones;
-		uniform_mat4 			bones[skeleton::limit_for_bones];
+		uniform_mat4 			bones[model::skeleton::limit_for_bones];
 	}							uniforms;
-
-	engine::scene				scene;
 };

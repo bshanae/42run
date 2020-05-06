@@ -37,8 +37,9 @@ namespace				engine
 	using				std::filesystem::path;
 	using				std::unique_ptr;
 	using				std::make_unique;
+	using				std::shared_ptr;
+	using				std::make_shared;
 	using				std::initializer_list;
-	using				std::reference_wrapper;
 
 	using				glm::ivec2;
 	using				glm::vec2;
@@ -61,7 +62,6 @@ namespace				engine
 		class			timer;
 		class			event;
 		class			callback;
-
 		enum class		key;
 	}
 
@@ -79,16 +79,11 @@ namespace				engine
 	{
 		class			bone;
 		class			skeleton;
-
 		class			animation;
-
 		class			texture;
 		class			material;
-
 		class			mesh;
-
 		class			loader;
-
 		class			model;
 	}
 
@@ -96,7 +91,6 @@ namespace				engine
 	{
 		class			camera;
 		class			light;
-
 		class			scene;
 	}
 

@@ -1,24 +1,10 @@
 #include "engine/engine.h"
 
-engine::path		giant = "/Users/belchenkovova/Desktop/giant/Stone.obj";
-engine::path		cobra = "/Users/belchenkovova/Desktop/AC Cobra/Shelby.obj";
-engine::path		cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
+engine::path			giant = "/Users/belchenkovova/Desktop/giant/Stone.obj";
+engine::path			cobra = "/Users/belchenkovova/Desktop/AC Cobra/Shelby.obj";
+engine::path			cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
 
-//class				renderer : public engine::renderer
-//{
-//public :
-//					renderer() : model(giant) {}
-//					~renderer() override = default;
-//
-//	void			render() override
-//	{
-//		engine::renderer::render({model});
-//	}
-//
-//	engine::model	model;
-//};
-
-int					main()
+int						main()
 {
 	engine::core::window_size = engine::ivec2(1280, 720);
 	engine::core::window_name = "42run";
@@ -28,19 +14,17 @@ int					main()
 	engine::core::use_blending = false;
 	engine::core::use_depth_test = true;
 
-//	engine::camera::initial_position = engine::vec3(0.f, 5.f, 15.f);
-//	engine::camera::movement_speed = .7f;
-//	engine::camera::rotation_speed = 2.f;
-//	engine::camera::near_plane = 0.1f;
-//	engine::camera::far_plane = 100.f;
+	engine::scene::camera::initial_position = engine::vec3(0.f, 5.f, 15.f);
+	engine::scene::camera::movement_speed = .7f;
+	engine::scene::camera::rotation_speed = 2.f;
+	engine::scene::camera::near_plane = 0.1f;
+	engine::scene::camera::far_plane = 100.f;
 
+#warning "Delete maybe?"
 	engine::core::initialize();
+	engine::renderer::initialize();
 
-//	renderer		renderer;
-//
-//	engine::core::generate_callback(engine::event::type::key_press, &renderer::callback, &renderer);
-//	engine::core::generate_callback(engine::event::type::key_hold, &renderer::callback, &renderer);
-//	engine::core::attach_renderer(renderer);
+	engine::core::connect_renderer();
 
 	engine::core::execute();
 

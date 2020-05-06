@@ -11,7 +11,7 @@ using namespace				engine::program;
 
 		file.open(source);
 		if (not file.is_open())
-			throw (exception::make_object<exception::id::shader_reading>());
+			throw (exception::make<exception::id::shader_reading>());
 
 		stream << file.rdbuf();
 		file.close();
@@ -33,7 +33,7 @@ using namespace				engine::program;
 	{
 		glGetShaderInfoLog(object, 512, nullptr, log);
 		cout << "/--------------------/ LOG /--------------------/" << endl << log << endl;
-		throw (exception::make_object<exception::id::shader_compilation>());
+		throw (exception::make<exception::id::shader_compilation>());
 	}
 }
 							shader::~shader()

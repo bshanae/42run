@@ -1,113 +1,234 @@
-#pragma once
+#include "loader.h"
 
-#include "engine/namespace.h"
+using namespace				engine;
 
-#include "engine/model/mesh.h"
-#include "engine/converter/converter.h"
-#include "engine/animation/bone.h"
-#include "engine/animation/animation.h"
-#include "engine/animation/skeleton.h"
-
-class							engine::loader
+model::model				model::loader::make(const path &source)
 {
-	friend class 				renderer;
+	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_Fast);
 
-public:
+	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
+		throw (exception::make<exception::id::ASSIMP>());
 
-	explicit					loader(const path &source);
-	~loader() = default;
-private:
+	nodes.clear();
+	meshes.clear();
 
-	Assimp::Importer			importer;
-	const aiScene				*scene;
+	directory = source.parent_path();
 
-	vector<aiNode *>			nodes;
-	vector<aiNodeAnim *>		animations;
+	load_nodes();
+	load_bones();
+	load_animations();
+}
 
-	vector<unique_ptr<mesh>>	meshes;
-	vector<bone *>				bones;
 
-	path						directory;
+// /////////////////////////////////////////////////////////////////////////////
+//							LOAD_X
+// /////////////////////////////////////////////////////////////////////////////
 
-	void						process_node(aiNode *node);
-	unique_ptr<mesh>			process_mesh(aiMesh *mesh);
-	unique_ptr<material>		process_material(aiMaterial *material);
 
-	void						process_bones()
-	{
+void						model::loader::load_nodes()
+{
+	process_node(scene->mRootNode);
+}
+
+void						model::loader::load_meshes()
+{
+	for (int i = 0; i < scene->mNumMeshes; i++)
+		meshes.push_back(process_mesh(scene->mNumMeshes[i]));
+}
+
+void						model::loader::load_bones()
+{
 
 #warning "Range based loop"
-		for (int i = 0; i < scene->mNumMeshes; i++)
-			for (int j = 0; j < scene->mMeshes[i]->mNumBones; j++)
-			{
-				string			name = scene->mMeshes[i]->mBones[j]->mName.data;
-				mat4			offset = converter::to_glm(scene->mMeshes[i]->mBones[j]->mOffsetMatrix);
+	for (int i = 0; i < scene->mNumMeshes; i++)
+		for (int j = 0; j < scene->mMeshes[i]->mNumBones; j++)
+		{
+			string			name = scene->mMeshes[i]->mBones[j]->mName.data;
+			mat4			offset = converter::to_glm(scene->mMeshes[i]->mBones[j]->mOffsetMatrix);
 
 #warning "Unique ptr"
-				bone*			bone = new class bone(bones.size(), name, offset);
+			bone*			bone = new class bone(bones.size(), name, offset);
 
-				bone->node = find_node(name);
-				bone->animation = find_animation(name);
+			bone->node = find_node(name);
+			bone->animation = find_animation(name);
 
 #warning "Do I need this?"
-				if (not bone->animation)
-				{
-					cout << "ERROR::NO ANIMATIONS FOUND FOR " << name << endl;
-				}
-
-				bones.push_back(bone);
-			}
-
-#warning "Range based loop"
-		for (int i = 0; i < bones.size(); i++)
-		{
-			string				parent_name = converter::to_string(bones[i]->node->mParent->mName);
-			bone*				parent_bone = find_bone(parent_name).first;
-
-			bones[i]->parent = parent_bone; //set the parent bone for the bone
-
-			if (not parent_bone) //if there is no parent bone
+			if (not bone->animation)
 			{
-				cout << "NO PARENT BONE FOR " << bones[i]->name << endl;
+				cout << "ERROR::NO ANIMATIONS FOUND FOR " << name << endl;
 			}
+
+			bones.push_back(bone);
 		}
 
+#warning "Range based loop"
+	for (int i = 0; i < bones.size(); i++)
+	{
+		string				parent_name = converter::to_string(bones[i]->node->mParent->mName);
+		bone*				parent_bone = find_bone(parent_name).first;
+
+		bones[i]->parent = parent_bone; //set the parent bone for the bone
+
+		if (not parent_bone) //if there is no parent bone
+		{
+			cout << "NO PARENT BONE FOR " << bones[i]->name << endl;
+		}
 	}
 
-	void						process_animations()
-	{
-		if (scene->mNumAnimations == 0)
-			return;
+}
+
+void						model::loader::load_animations()
+{
+	if (scene->mNumAnimations == 0)
+		return;
 
 #warning "Range based loop?"
-		for (int i = 0; i < scene->mAnimations[0]->mNumChannels; i++)
-			animations.push_back(scene->mAnimations[0]->mChannels[i]);
-	}
+	for (int i = 0; i < scene->mAnimations[0]->mNumChannels; i++)
+		animations.push_back(scene->mAnimations[0]->mChannels[i]);
+}
 
-	aiNode						*find_node(const string &name)
+
+// /////////////////////////////////////////////////////////////////////////////
+//							PROCESS_X
+// /////////////////////////////////////////////////////////////////////////////
+
+
+void						model::loader::process_node(aiNode *node)
+{
+	nodes.push_back(node);
+
+	for (int i = 0; i < node->mNumChildren; i++)
+		process_node(node->mChildren[i]);
+}
+
+unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
+{
+	vector<mesh::vertex>	vertices;
+	vector<unsigned>		indices;
+	unique_ptr<material>	material;
+
+//							VERTICES
+
+	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
-		for (int i = 0; i < nodes.size(); i++)
-			if (nodes[i]->mName.data == name)
-				return (nodes[i]);
+		mesh::vertex		vertex;
 
-		return (nullptr);
+		vertex.position = converter::to_glm(mesh->mVertices[i]);
+		vertex.normal = converter::to_glm(mesh->mNormals[i]);
+		vertex.UV = mesh->mTextureCoords[0] ? converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
+
+		vertices.push_back(vertex);
 	}
 
-	pair<bone *, int>			find_bone(const string &name)
+//							FACES
+
+	for (int i = 0; i < mesh->mNumFaces; i++)
+		for (int j = 0; j < mesh->mFaces[i].mNumIndices; j++)
+			indices.push_back(mesh->mFaces[i].mIndices[j]);
+
+//							MATERIAL
+
+	if (mesh->mMaterialIndex >= 0)
+		material = move(process_material(scene->mMaterials[mesh->mMaterialIndex]));
+	else
+		material = make_unique<engine::material>();
+
+//							BONES
+
+#warning "Range based loop"
+	for (int i = 0; i < mesh->mNumBones; i++)
 	{
-		for (int i = 0; i < bones.size(); i++)
-			if (bones[i]->name == name)
-				return {bones[i], bones[i]->id};
+		aiBone*				bone = mesh->mBones[i];
 
-		return {nullptr, -1};
+		for (int j = 0; j < bone->mNumWeights; j++)
+		{
+			aiVertexWeight	vertexWeight = bone->mWeights[j];
+			int				startVertexID = vertexWeight.mVertexId;
+
+			for (int k = 0; k < model::mesh::number_of_bones; k++)
+			{
+				if (vertices[startVertexID].bones[k].weight == 0.0)
+				{
+					vertices[startVertexID].bones[k].id = find_bone(converter::to_string(bone->mName)).second;
+					vertices[startVertexID].bones[k].weight = vertexWeight.mWeight;
+
+					break ;
+				}
+
+				if (k == mesh::number_of_bones - 1)
+				{
+					cout << "ERROR::LOADING MORE THAN " << mesh::number_of_bones << " BONES\n"; //this could take a lot of time
+					break;
+				}
+			}
+		}
 	}
 
-	aiNodeAnim					*find_animation(const string &name)
+	return (make_unique<engine::model::mesh>(vertices, indices, material));
+}
+
+unique_ptr<model::material>	model::loader::process_material(aiMaterial *source)
+{
+	auto					target = make_unique<model::material>();
+
+	aiColor3D				ambient;
+	aiColor3D				diffuse;
+	aiColor3D				specular;
+
+	source->Get(AI_MATKEY_COLOR_AMBIENT, ambient);
+	source->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+	source->Get(AI_MATKEY_COLOR_SPECULAR, specular);
+
+	target->colors.ambient = converter::to_glm(ambient);
+	target->colors.diffuse = converter::to_glm(diffuse);
+	target->colors.specular = converter::to_glm(specular);
+
+	auto					emplace_texture = [this, source](optional<texture> &target, aiTextureType type)
 	{
-		for (int i = 0; i < animations.size(); i++)
-			if (animations[i]->mNodeName.data == name)
-				return (animations[i]);
+		aiString			file;
 
-		return (0);
-	}
-};
+		if (source->GetTextureCount(type) == 0)
+			return ;
+
+		source->GetTexture(type, 0, &file);
+		target.emplace(directory / converter::to_path(file));
+	};
+
+	emplace_texture(target->textures.diffuse, aiTextureType_DIFFUSE);
+	emplace_texture(target->textures.specular, aiTextureType_SPECULAR);
+
+	return (target);
+}
+
+
+// /////////////////////////////////////////////////////////////////////////////
+//							FIND_X
+// /////////////////////////////////////////////////////////////////////////////
+
+
+aiNode						*model::loader::find_node(const string &name)
+{
+	for (int i = 0; i < nodes.size(); i++)
+		if (nodes[i]->mName.data == name)
+			return (nodes[i]);
+
+	return (nullptr);
+}
+
+pair<model::bone *, int>	model::loader::find_bone(const string &name)
+{
+	for (int i = 0; i < bones.size(); i++)
+		if (bones[i]->name == name)
+			return {bones[i], bones[i]->id};
+
+	return {nullptr, -1};
+}
+
+aiNodeAnim					*model::loader::find_animation(const string &name)
+{
+	for (int i = 0; i < animations.size(); i++)
+		if (animations[i]->mNodeName.data == name)
+			return (animations[i]);
+
+	return (0);
+}

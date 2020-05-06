@@ -2,7 +2,7 @@
 
 #include "engine/namespace.h"
 
-class				engine::animation
+class				engine::model::animation
 {
 public :
 

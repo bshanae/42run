@@ -12,7 +12,7 @@ public :
 
 	virtual void	use(bool state) const
 	{
-		throw (exception::make_object<exception::id::unimplemented_virtual_method>());
+		throw (exception::make<exception::id::unimplemented_virtual_method>());
 	}
 
 protected :

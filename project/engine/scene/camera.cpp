@@ -1,9 +1,9 @@
 #include "camera.h"
 #include "engine/core/core.h"
 
-using namespace		engine::scene;
+using namespace		engine;
 
-void				camera::move(enum movement movement)
+void				scene::camera::move(enum movement movement)
 {
 	switch (movement)
 	{
@@ -33,7 +33,7 @@ void				camera::move(enum movement movement)
 	}
 }
 
-void				camera::rotate(enum rotation rotation)
+void				scene::camera::rotate(enum rotation rotation)
 {
 	switch (rotation)
 	{
@@ -58,7 +58,7 @@ void				camera::rotate(enum rotation rotation)
 	update();
 }
 
-engine::mat4		camera::projection_matrix() const
+mat4				scene::camera::projection_matrix() const
 {
 	return (glm::perspective(
 		glm::radians(30.f),
@@ -66,12 +66,12 @@ engine::mat4		camera::projection_matrix() const
 		near_plane, far_plane));
 }
 
-engine::mat4		camera::view_matrix() const
+mat4				scene::camera::view_matrix() const
 {
 	return (lookAt(position, position + front, up));
 }
 
-void				camera::update()
+void				scene::camera::update()
 {
 	vec3			local_front;
 

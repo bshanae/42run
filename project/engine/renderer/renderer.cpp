@@ -1,81 +1,82 @@
 #include "renderer.h"
 
 #include "engine/core/core.h"
+#include "engine/model/mesh.h"
 
 using namespace		engine;
 
 					renderer::renderer() :
 					program("project/resources/vertex.glsl", "project/resources/fragment.glsl")
 {
-	uniforms.projection.emplace(program.find_uniform_location("uniform_projection"));
-	uniforms.view.emplace(program.find_uniform_location("uniform_view"));
+	uniforms.projection = program.make_uniform<mat4>("uniform_projection");
+	uniforms.view = program.make_uniform<mat4>("uniform_view");
 
-	uniforms.material.colors.ambient.emplace(program.find_uniform_location("uniform_material.colors.ambient"));
-	uniforms.material.colors.diffuse.emplace(program.find_uniform_location("uniform_material.colors.diffuse"));
-	uniforms.material.colors.specular.emplace(program.find_uniform_location("uniform_material.colors.specular"));
+	uniforms.material.colors.ambient = program.make_uniform<vec3>("uniform_material.colors.ambient");
+	uniforms.material.colors.diffuse = program.make_uniform<vec3>("uniform_material.colors.diffuse");
+	uniforms.material.colors.specular = program.make_uniform<vec3>("uniform_material.colors.specular");
 
-	uniforms.material.textures.diffuse.is_valid.emplace(program.find_uniform_location("uniform_material.textures.diffuse.is_valid"));
-	uniforms.material.textures.diffuse.value.emplace(program.find_uniform_location("uniform_material.textures.diffuse.value"));
+	uniforms.material.textures.diffuse.is_valid = program.make_uniform<int>("uniform_material.textures.diffuse.is_valid");
+	uniforms.material.textures.diffuse.value = program.make_uniform<int>("uniform_material.textures.diffuse.value");
 
-	uniforms.material.textures.specular.is_valid.emplace(program.find_uniform_location("uniform_material.textures.specular.is_valid"));
-	uniforms.material.textures.specular.value.emplace(program.find_uniform_location("uniform_material.textures.specular.value"));
+	uniforms.material.textures.specular.is_valid = program.make_uniform<int>("uniform_material.textures.specular.is_valid");
+	uniforms.material.textures.specular.value = program.make_uniform<int>("uniform_material.textures.specular.value");
 
-	uniforms.light.camera.emplace(program.find_uniform_location("uniform_light.camera"));
-	uniforms.light.position.emplace(program.find_uniform_location("uniform_light.position"));
+	uniforms.light.camera = program.make_uniform<vec3>("uniform_light.camera");
+	uniforms.light.position = program.make_uniform<vec3>("uniform_light.position");
 
-	uniforms.does_mesh_have_bones.emplace(program.find_uniform_location("uniform_does_mesh_have_bones"));
-	for (int i = 0; i < skeleton::limit_for_bones; i++)
-		uniforms.bones[i].emplace(program.find_uniform_location("bones[" + std::to_string(i) + "]"));
+	uniforms.does_mesh_have_bones = program.make_uniform<int>("uniform_does_mesh_have_bones");
+	for (int i = 0; i < model::skeleton::limit_for_bones; i++)
+		uniforms.bones[i] = program.make_uniform<mat4>("bones[" + std::to_string(i) + "]");
 
 	program.use(true);
 
-	uniforms.light.position->save(vec3(0, 5, 5));
+	uniforms.light.position.save(vec3(0, 5, 5));
 
 	program.use(false);
 }
 
-void				renderer::render(initializer_list<const reference_wrapper<model>> models)
+void				renderer::render()
 {
 	program.use(true);
 
-	uniforms.projection->save(scene.camera.projection_matrix());
-	uniforms.view->save(scene.camera.view_matrix());
+	uniforms.projection.save(scene.camera.projection_matrix());
+	uniforms.view.save(scene.camera.view_matrix());
 
-	uniforms.light.camera->save(scene.camera.position);
+	uniforms.light.camera.save(scene.camera.position);
 
-	for (auto model : models)
-		render_model(model);
+	for (const auto &model : models)
+		render(model);
 
 	program.use(false);
 
 	request = false;
 }
 
-void				renderer::render_model(const model &model)
+void				renderer::render(const shared_ptr<model::model> &model)
 {
-	for (auto &mesh : model.meshes)
+	for (auto &mesh : model->meshes)
 	{
-		uniforms.material.colors.ambient->save(mesh->material->colors.ambient);
-		uniforms.material.colors.diffuse->save(mesh->material->colors.diffuse);
-		uniforms.material.colors.specular->save(mesh->material->colors.specular);
+		uniforms.material.colors.ambient.save(mesh->material->colors.ambient);
+		uniforms.material.colors.diffuse.save(mesh->material->colors.diffuse);
+		uniforms.material.colors.specular.save(mesh->material->colors.specular);
 
-		uniforms.material.textures.diffuse.is_valid->save(mesh->material->textures.diffuse.has_value());
+		uniforms.material.textures.diffuse.is_valid.save(mesh->material->textures.diffuse.has_value());
 		if (mesh->material->textures.diffuse)
 		{
 			auto	value = mesh->material->textures.diffuse->object;
 
 			glActiveTexture(GL_TEXTURE0);
-			uniforms.material.textures.diffuse.value->save(0);
+			uniforms.material.textures.diffuse.value.save(0);
 			glBindTexture(GL_TEXTURE_2D, value);
 		}
 
-		uniforms.material.textures.specular.is_valid->save(mesh->material->textures.specular.has_value());
+		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular.has_value());
 		if (mesh->material->textures.specular)
 		{
 			auto	value = mesh->material->textures.specular->object;
 
 			glActiveTexture(GL_TEXTURE1);
-			uniforms.material.textures.specular.value->save(1);
+			uniforms.material.textures.specular.value.save(1);
 			glBindTexture(GL_TEXTURE_2D, value);
 		}
 
@@ -95,44 +96,44 @@ void				renderer::callback()
 
 	switch (key)
 	{
-		case engine::key::letter_a :
-			camera.move(camera::movement::left);
+		case engine::interface::key::letter_a :
+			camera.move(scene::camera::movement::left);
 			break ;
 
-		case engine::key::letter_d :
-			camera.move(camera::movement::right);
+		case engine::interface::key::letter_d :
+			camera.move(scene::camera::movement::right);
 			break ;
 
-		case engine::key::letter_w :
-			camera.move(camera::movement::forth);
+		case engine::interface::key::letter_w :
+			camera.move(scene::camera::movement::forth);
 			break ;
 
-		case engine::key::letter_s :
-			camera.move(camera::movement::back);
+		case engine::interface::key::letter_s :
+			camera.move(scene::camera::movement::back);
 			break ;
 
-		case engine::key::letter_q :
-			camera.move(camera::movement::up);
+		case engine::interface::key::letter_q :
+			camera.move(scene::camera::movement::up);
 			break ;
 
-		case engine::key::letter_e :
-			camera.move(camera::movement::down);
+		case engine::interface::key::letter_e :
+			camera.move(scene::camera::movement::down);
 			break ;
 
-		case engine::key::left :
-			camera.rotate(camera::rotation::left);
+		case engine::interface::key::left :
+			camera.rotate(scene::camera::rotation::left);
 			break ;
 
-		case engine::key::right :
-			camera.rotate(camera::rotation::right);
+		case engine::interface::key::right :
+			camera.rotate(scene::camera::rotation::right);
 			break ;
 
-		case engine::key::up :
-			camera.rotate(camera::rotation::up);
+		case engine::interface::key::up :
+			camera.rotate(scene::camera::rotation::up);
 			break ;
 
-		case engine::key::down :
-			camera.rotate(camera::rotation::down);
+		case engine::interface::key::down :
+			camera.rotate(scene::camera::rotation::down);
 			break ;
 
 		default :

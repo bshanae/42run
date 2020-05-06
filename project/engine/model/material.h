@@ -4,7 +4,7 @@
 
 #include "engine/model/texture.h"
 
-class						engine::material
+class						engine::model::material
 {
 public :
 							material() = default;

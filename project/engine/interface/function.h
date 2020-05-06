@@ -9,7 +9,7 @@ public :
 	template				<typename function_type, typename ...args_type>
 	explicit				function(function_type function, args_type ...args)
 	{
-		object = std::bind(function, args...);
+		object = static_cast<const std::function<void()>>(std::bind(function, args...));
 	}
 	virtual					~function() = default;
 

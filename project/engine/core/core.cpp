@@ -15,11 +15,11 @@ using namespace		engine;
 
 	window = glfwCreateWindow(window_size.x, window_size.y, window_name.c_str(), nullptr, nullptr);
 	if (window == nullptr)
-		throw (exception::make_object<exception::id::GLFW>());
+		throw (exception::make<exception::id::GLFW>());
 	glfwMakeContextCurrent(window);
 
 	if (not gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		throw (exception::make_object<exception::id::GLAD>());
+		throw (exception::make<exception::id::GLAD>());
 
 	glfwGetFramebufferSize(window, &window_size.x, &window_size.y);
 	glViewport(0, 0, window_size.x, window_size.y);

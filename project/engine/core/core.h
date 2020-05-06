@@ -2,7 +2,6 @@
 
 #include "engine/namespace.h"
 
-//#include "engine/renderer/renderer.h"
 #include "engine/interface/event.h"
 #include "engine/interface/callback.h"
 
@@ -43,15 +42,12 @@ public :
 
 	static void 					initialize()
 	{
-		auto						&instance = core::instance();
+		instance();
 	}
 
 	static void						execute();
 
-	static void						attach_renderer(class renderer &renderer)
-	{
-		core::instance().renderer = &renderer;
-	}
+	static void						connect_renderer();
 
 	template					<typename ...args_type>
 	static void						generate_callback(args_type ...args)

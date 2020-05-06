@@ -76,7 +76,7 @@ private :
 public :
 
 	template							<enum id id>
-	static auto 							make_object()
+	static auto 							make()
 	{
 		auto 								&instance = exception::instance();
 		auto								message = instance.messages.find(id);
