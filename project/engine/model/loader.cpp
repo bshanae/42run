@@ -1,13 +1,20 @@
 #include "loader.h"
 
+#include "engine/converter/converter.h"
+#include "engine/model/bone.h"
+#include "engine/model/material.h"
+#include "engine/model/mesh.h"
+
 using namespace				engine;
+
+#warning "Alignment"
 
 model::model				model::loader::make(const path &source)
 {
 	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_Fast);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
-		throw (exception::make<exception::id::ASSIMP>());
+		throw (exception::exception<exception::id::ASSIMP>());
 
 	nodes.clear();
 	meshes.clear();
@@ -33,7 +40,7 @@ void						model::loader::load_nodes()
 void						model::loader::load_meshes()
 {
 	for (int i = 0; i < scene->mNumMeshes; i++)
-		meshes.push_back(process_mesh(scene->mNumMeshes[i]));
+		meshes.push_back(process_mesh(scene->mMeshes[i]));
 }
 
 void						model::loader::load_bones()
@@ -47,7 +54,7 @@ void						model::loader::load_bones()
 			mat4			offset = converter::to_glm(scene->mMeshes[i]->mBones[j]->mOffsetMatrix);
 
 #warning "Unique ptr"
-			bone*			bone = new class bone(bones.size(), name, offset);
+			bone*			bone = new engine::model::bone(bones.size(), name, offset);
 
 			bone->node = find_node(name);
 			bone->animation = find_animation(name);
@@ -131,7 +138,7 @@ unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
 	if (mesh->mMaterialIndex >= 0)
 		material = move(process_material(scene->mMaterials[mesh->mMaterialIndex]));
 	else
-		material = make_unique<engine::material>();
+		material = make_unique<engine::model::material>();
 
 //							BONES
 
@@ -145,7 +152,7 @@ unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
 			aiVertexWeight	vertexWeight = bone->mWeights[j];
 			int				startVertexID = vertexWeight.mVertexId;
 
-			for (int k = 0; k < model::mesh::number_of_bones; k++)
+			for (int k = 0; k < mesh::number_of_bones; k++)
 			{
 				if (vertices[startVertexID].bones[k].weight == 0.0)
 				{
@@ -169,7 +176,7 @@ unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
 
 unique_ptr<model::material>	model::loader::process_material(aiMaterial *source)
 {
-	auto					target = make_unique<model::material>();
+	auto					target = make_unique<engine::model::material>();
 
 	aiColor3D				ambient;
 	aiColor3D				diffuse;

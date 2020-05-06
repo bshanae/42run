@@ -17,7 +17,7 @@ public :
 	void			save(const type &data)
 	{
 		if (object == -1)
-			throw (exception::make<exception::id::uniform_value>());
+			throw (exception::exception<exception::id::uniform_value>());
 		if constexpr (std::is_same<type, int>::value)
 			glUniform1i(object, data);
 		else if constexpr (std::is_same<type, float>::value)
@@ -29,7 +29,7 @@ public :
 		else if constexpr (std::is_same<type, glm::mat4>::value)
 			glUniformMatrix4fv(object, 1, GL_FALSE, value_ptr(data));
 		else
-			throw (exception::make<exception::id::uniform_type>());
+			throw (exception::exception<exception::id::uniform_type>());
 	}
 
 private :

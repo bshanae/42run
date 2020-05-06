@@ -4,6 +4,7 @@
 
 #include "engine/model/material.h"
 #include "engine/model/mesh.h"
+#include "engine/model/skeleton.h"
 
 class							engine::model::model
 {

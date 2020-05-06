@@ -1,11 +1,10 @@
 #pragma once
 
-#include "common/namespace.h"
+#include <unordered_map>
+#include <exception>
 
-class										common::exception
+namespace									exception
 {
-public :
-
 	enum class								id
 	{
 		standard,
@@ -41,47 +40,19 @@ public :
 		{id::event_bad_type,				"42run, Engine, Event : Bad type"}
 	};
 
-private :
-											exception() = default;
-											~exception() = default;
-
-	static exception						&instance()
+	template								<id id>
+	class 									exception : public std::exception
 	{
-		static exception					exception;
-
-		return (exception);
-	}
-
-	template							<enum id id>
-	class 									object : public std::exception
-	{
-		friend class 						common::exception;
-
-	private :
-		explicit 							object(const char *message) :
-											message(message) {}
 	public :
-											~object() override = default;
+											exception() = default;
+											~exception() override = default;
 
 		[[nodiscard]] const char			*what() const noexcept override
 		{
-			return (message);
+			auto							message = messages.find(id);
+
+			assert(message != messages.end());
+			return (message->second);
 		}
-
-	private :
-
-		const char 							*message;
 	};
-
-public :
-
-	template							<enum id id>
-	static auto 							make()
-	{
-		auto 								&instance = exception::instance();
-		auto								message = instance.messages.find(id);
-
-		assert(message != instance.messages.end());
-		return (object<id>(message->second));
-	}
-};
+}

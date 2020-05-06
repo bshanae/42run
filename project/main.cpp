@@ -1,10 +1,10 @@
 #include "engine/engine.h"
 
-engine::path			giant = "/Users/belchenkovova/Desktop/giant/Stone.obj";
-engine::path			cobra = "/Users/belchenkovova/Desktop/AC Cobra/Shelby.obj";
-engine::path			cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
+engine::path				giant = "/Users/belchenkovova/Desktop/giant/Stone.obj";
+engine::path				cobra = "/Users/belchenkovova/Desktop/AC Cobra/Shelby.obj";
+engine::path				cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
 
-int						main()
+int							main()
 {
 	engine::core::window_size = engine::ivec2(1280, 720);
 	engine::core::window_name = "42run";
@@ -19,6 +19,8 @@ int						main()
 	engine::scene::camera::rotation_speed = 2.f;
 	engine::scene::camera::near_plane = 0.1f;
 	engine::scene::camera::far_plane = 100.f;
+
+	engine::model::loader	loader;
 
 #warning "Delete maybe?"
 	engine::core::initialize();

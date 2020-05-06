@@ -21,7 +21,7 @@
 #include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/transform.hpp"
 
-#include "common/common.h"
+#include "exception/exception.h"
 #include "debug.h"
 
 namespace				engine
@@ -48,8 +48,6 @@ namespace				engine
 	using				glm::mat3;
 	using				glm::mat4;
 	using				glm::quat;
-
-	using				common::exception;
 
 	namespace			converter
 	{}

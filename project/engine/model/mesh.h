@@ -2,12 +2,12 @@
 
 #include "engine/namespace.h"
 
-
 class						engine::model::mesh
 {
 private :
 
 	friend class 			model;
+	friend class 			loader;
 	friend class 			engine::renderer;
 
 	static constexpr int	number_of_bones = 6;
