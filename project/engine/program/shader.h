@@ -2,11 +2,11 @@
 
 #include "engine/namespace.h"
 
-class				engine::shader : public object_wrap
-{
-	friend class	engine::program;
+#include "engine/object_wrap/object_wrap.h"
 
-private :
+class				engine::program::shader : public engine::object_wrap
+{
+	friend class	engine::program::program;
 
 	enum class		type : GLuint
 	{
@@ -17,5 +17,3 @@ private :
 					shader(type type, const path &source);
 					~shader() override;
 };
-
-

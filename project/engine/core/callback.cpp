@@ -11,19 +11,19 @@ void 				core::callback(GLFWwindow *window, int key, int code, int action, int m
 	switch (action)
 	{
 		case GLFW_PRESS :
-			core->event.type_value = event::type::key_press;
+			core->event.type_value = interface::event::type::key_press;
 			break ;
 
 		case GLFW_RELEASE :
-			core->event.type_value = event::type::key_release;
+			core->event.type_value = interface::event::type::key_release;
 			break ;
 
 		case GLFW_REPEAT :
-			core->event.type_value = event::type::key_hold;
+			core->event.type_value = interface::event::type::key_hold;
 			break ;
 
 		default :
 			return;
 	}
-	core->event.key_value = static_cast<enum key>(key);
+	core->event.key_value = static_cast<interface::key>(key);
 }

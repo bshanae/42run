@@ -2,64 +2,64 @@
 
 #include "engine/namespace.h"
 
-#include "engine/renderer/renderer.h"
+//#include "engine/renderer/renderer.h"
 #include "engine/interface/event.h"
 #include "engine/interface/callback.h"
 
-class							engine::core
+class								engine::core
 {
 public :
 
-	inline static ivec2			window_size;
-	inline static string		window_name;
-	inline static vec3			background = vec3(0.f, 0.f, 0.f);
-	inline static bool			use_blending = false;
-	inline static bool			use_multisampling = false;
-	inline static int			number_of_samples = 0;
-	inline static bool			use_depth_test = false;
+	inline static ivec2				window_size;
+	inline static string			window_name;
+	inline static vec3				background = vec3(0.f, 0.f, 0.f);
+	inline static bool				use_blending = false;
+	inline static bool				use_multisampling = false;
+	inline static int				number_of_samples = 0;
+	inline static bool				use_depth_test = false;
 
 private :
-								core();
+									core();
 public :
-								~core();
+									~core();
 private :
 
-	static core					&instance()
+	static core						&instance()
 	{
-		static core				core;
+		static core					core;
 
 		return (core);
 	}
 
-	GLFWwindow					*window = nullptr;
-	class renderer				*renderer = nullptr;
+	GLFWwindow						*window = nullptr;
+	class renderer					*renderer = nullptr;
 
-	class event					event;
-	list<callback>				callbacks;
+	interface::event				event;
+	list<interface::callback>		callbacks;
 
-	static void 				callback(GLFWwindow *window, int key, int code, int action, int mode);
+	static void 					callback(GLFWwindow *window, int key, int code, int action, int mode);
 
 public :
 
-	static void 				initialize()
+	static void 					initialize()
 	{
-		auto					&instance = core::instance();
+		auto						&instance = core::instance();
 	}
 
-	static void					execute();
+	static void						execute();
 
-	static void					attach_renderer(class renderer &renderer)
+	static void						attach_renderer(class renderer &renderer)
 	{
 		core::instance().renderer = &renderer;
 	}
 
 	template					<typename ...args_type>
-	static void					generate_callback(args_type ...args)
+	static void						generate_callback(args_type ...args)
 	{
 		core::instance().callbacks.emplace_back(args...);
 	}
 
-	static const class event	&receive_event()
+	static const interface::event	&receive_event()
 	{
 		return (core::instance().event);
 	}

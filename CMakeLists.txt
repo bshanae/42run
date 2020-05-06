@@ -36,13 +36,15 @@ set(SOURCE_ENGINE
 	project/engine/core/core.cpp
 	project/engine/core/execute.cpp
 	project/engine/core/callback.cpp
+	project/engine/converter/converter.cpp
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
 	project/engine/scene/camera.cpp
-	project/engine/model/mesh.cpp
-	project/engine/model/model.cpp
-	project/engine/model/texture.cpp
-	project/engine/renderer/renderer.cpp)
+#	project/engine/model/mesh.cpp
+#	project/engine/model/model.cpp
+#	project/engine/model/texture.cpp
+#	project/engine/renderer/renderer.cpp
+	)
 
 add_executable(42run
 	${SOURCE_EXTERNAL}

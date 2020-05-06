@@ -2,7 +2,7 @@
 
 #include "engine/namespace.h"
 
-class						engine::function
+class						engine::interface::function
 {
 public :
 

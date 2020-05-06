@@ -2,9 +2,9 @@
 
 #include "engine/namespace.h"
 
-class						engine::camera
+class						engine::scene::camera
 {
-	friend class			renderer;
+	friend class			engine::renderer;
 
 public :
 

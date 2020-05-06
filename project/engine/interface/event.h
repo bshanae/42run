@@ -2,9 +2,11 @@
 
 #include "engine/namespace.h"
 
-class 				engine::event
+#include "engine/interface/key.h"
+
+class 				engine::interface::event
 {
-	friend class 	core;
+	friend class 	engine::core;
 
 public :
 

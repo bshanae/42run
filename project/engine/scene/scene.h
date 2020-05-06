@@ -5,7 +5,7 @@
 #include "engine/scene/camera.h"
 #include "engine/scene/light.h"
 
-class				engine::scene
+class				engine::scene::scene
 {
 public :
 	camera			camera;

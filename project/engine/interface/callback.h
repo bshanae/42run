@@ -4,13 +4,14 @@
 #include "engine/interface/function.h"
 #include "engine/interface/event.h"
 
-class					engine::callback final : public engine::function
+class					engine::interface::callback final : public engine::interface::function
 {
-	friend class 		core;
+	friend class 		engine::core;
+
 public :
 
 	template			<typename... args_type>
-						callback(event::type type, args_type ...args) :
+	explicit			callback(event::type type, args_type ...args) :
 						function(args...),
 						type(type)
 						{}

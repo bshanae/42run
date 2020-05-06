@@ -1,25 +1,22 @@
 #pragma once
 
 #include "engine/namespace.h"
-
 #include "engine/program/uniform.h"
 
-class				engine::program : public object_wrap
+class					engine::program::program : public object_wrap
 {
 public :
-					program(const path &vertex_source, const path &fragment_source);
-					~program() override;
+						program(const path &vertex_source, const path &fragment_source);
+						~program() override;
 
-	void			use(bool state) const override
+	void				use(bool state) const override
 	{
 		glUseProgram(state ? object : 0);
 	}
 
-	[[nodiscard]]
-	GLuint			find_uniform_location(const string &name)
+	template			<typename type>
+	[[nodiscard]] auto	make_uniform(const string &name)
 	{
-		return (glGetUniformLocation(object, name.c_str()));
+		return (uniform<type>(glGetUniformLocation(object, name.c_str())));
 	}
 };
-
-

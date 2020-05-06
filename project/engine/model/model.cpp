@@ -1,4 +1,4 @@
-#include "model.h"
+//#include "model.h"
 
 #include "engine/converter/converter.h"
 
@@ -6,31 +6,37 @@ using namespace				engine;
 
 							model::model(const path &source)
 {
-	Assimp::Importer		importer;
-	const auto				*scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_Fast);
+	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_Fast);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
 		throw (exception::make_object<exception::id::ASSIMP>());
 
 	directory = source.parent_path();
 
-	process_node(scene->mRootNode, scene);
+	process_node(scene->mRootNode);
+	process_bones();
+	process_animations();
 }
 
-void						model::process_node(aiNode *node, const aiScene *scene)
+#warning "Divide into process_nodes and process_meshes"
+void						model::process_node(aiNode *node)
 {
+	nodes.push_back(node);
+
 	for (int i = 0; i < node->mNumMeshes; i++)
-		meshes.push_back(move(process_mesh(scene->mMeshes[node->mMeshes[i]], scene)));
+		meshes.push_back(move(process_mesh(scene->mMeshes[node->mMeshes[i]])));
 
 	for (int i = 0; i < node->mNumChildren; i++)
-		process_node(node->mChildren[i], scene);
+		process_node(node->mChildren[i]);
 }
 
-unique_ptr<mesh>			model::process_mesh(aiMesh *mesh, const aiScene *scene)
+unique_ptr<mesh>			model::process_mesh(aiMesh *mesh)
 {
 	vector<mesh::vertex>	vertices;
 	vector<unsigned>		indices;
 	unique_ptr<material>	material;
+
+//							VERTICES
 
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -43,14 +49,49 @@ unique_ptr<mesh>			model::process_mesh(aiMesh *mesh, const aiScene *scene)
 		vertices.push_back(vertex);
 	}
 
+//							FACES
+
 	for (int i = 0; i < mesh->mNumFaces; i++)
 		for (int j = 0; j < mesh->mFaces[i].mNumIndices; j++)
 			indices.push_back(mesh->mFaces[i].mIndices[j]);
+
+//							MATERIAL
 
 	if (mesh->mMaterialIndex >= 0)
 		material = move(process_material(scene->mMaterials[mesh->mMaterialIndex]));
 	else
 		material = make_unique<engine::material>();
+
+//							BONES
+
+#warning "Range based loop"
+	for (int i = 0; i < mesh->mNumBones; i++)
+	{
+		aiBone*				bone = mesh->mBones[i];
+
+		for (int j = 0; j < bone->mNumWeights; j++)
+		{
+			aiVertexWeight	vertexWeight = bone->mWeights[j];
+			int				startVertexID = vertexWeight.mVertexId;
+
+			for (int k = 0; k < mesh::number_of_bones; k++)
+			{
+				if (vertices[startVertexID].bones[k].weight == 0.0)
+				{
+					vertices[startVertexID].bones[k].id = find_bone(converter::to_string(bone->mName)).second;
+					vertices[startVertexID].bones[k].weight = vertexWeight.mWeight;
+
+					break ;
+				}
+
+				if (k == mesh::number_of_bones - 1)
+				{
+					cout << "ERROR::LOADING MORE THAN " << mesh::number_of_bones << " BONES\n"; //this could take a lot of time
+					break;
+				}
+			}
+		}
+	}
 
 	return (make_unique<engine::mesh>(vertices, indices, material));
 }

@@ -2,25 +2,16 @@
 
 #include "engine/namespace.h"
 
-namespace				engine::converter
+namespace						engine::converter
 {
-	[[nodiscard]] auto	to_path(const aiString &source)
-	{
-		return (path(source.C_Str()));
-	}
+	[[nodiscard]] string		to_string(const aiString &source);
+	[[nodiscard]] path			to_path(const aiString &source);
 
-	[[nodiscard]] auto	to_glm(const aiColor3D &source)
-	{
-		return (vec3(source.r, source.g, source.b));
-	}
+	[[nodiscard]] vec3			to_glm(const aiColor3D &source);
+	[[nodiscard]] vec2			to_glm(const aiVector2D &source);
+	[[nodiscard]] vec3			to_glm(const aiVector3D &source);
+	[[nodiscard]] quat			to_glm(const  aiQuaternion &source);
+	[[nodiscard]] mat4			to_glm(const aiMatrix4x4 &source);
 
-	[[nodiscard]] auto	to_glm(const aiVector3D &source)
-	{
-		return (vec3(source.x, source.y, source.z));
-	}
-
-	[[nodiscard]] auto	to_glm(const aiVector2D &source)
-	{
-		return (vec2(source.x, source.y));
-	}
-};
+	[[nodiscard]] aiMatrix4x4	to_assimp(const mat4 &source);
+}

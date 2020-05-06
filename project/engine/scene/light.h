@@ -2,7 +2,7 @@
 
 #include "engine/namespace.h"
 
-class				engine::light
+class				engine::scene::light
 {
 	vec3			position;
 	float			intensity = 1.f;

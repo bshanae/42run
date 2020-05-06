@@ -2,7 +2,7 @@
 
 #include "engine/program/shader.h"
 
-using namespace		engine;
+using namespace		engine::program;
 
 					program::program(const path &vertex_source, const path &fragment_source)
 {

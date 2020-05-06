@@ -8,14 +8,14 @@
 #include "engine/animation/animation.h"
 #include "engine/animation/skeleton.h"
 
-class							engine::model
+class							engine::loader
 {
 	friend class 				renderer;
 
 public:
 
-	explicit					model(const path &source);
-								~model() = default;
+	explicit					loader(const path &source);
+	~loader() = default;
 private:
 
 	Assimp::Importer			importer;
@@ -111,4 +111,3 @@ private:
 		return (0);
 	}
 };
-

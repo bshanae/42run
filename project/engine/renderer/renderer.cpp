@@ -23,6 +23,10 @@ using namespace		engine;
 	uniforms.light.camera.emplace(program.find_uniform_location("uniform_light.camera"));
 	uniforms.light.position.emplace(program.find_uniform_location("uniform_light.position"));
 
+	uniforms.does_mesh_have_bones.emplace(program.find_uniform_location("uniform_does_mesh_have_bones"));
+	for (int i = 0; i < skeleton::limit_for_bones; i++)
+		uniforms.bones[i].emplace(program.find_uniform_location("bones[" + std::to_string(i) + "]"));
+
 	program.use(true);
 
 	uniforms.light.position->save(vec3(0, 5, 5));

@@ -3,7 +3,8 @@
 #include "engine/namespace.h"
 
 #include "engine/program/program.h"
-#include "engine/model/model.h"
+//#include "engine/model/model.h"
+#include "engine/animation/skeleton.h"
 #include "engine/scene/scene.h"
 
 class							engine::renderer
@@ -68,6 +69,9 @@ private :
 			uniform_vec3		camera;
 			uniform_vec3		position;
 		}						light;
+
+		uniform_int 			does_mesh_have_bones;
+		uniform_mat4 			bones[skeleton::limit_for_bones];
 	}							uniforms;
 
 	engine::scene				scene;
