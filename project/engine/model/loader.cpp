@@ -7,15 +7,15 @@
 
 using namespace				engine;
 
-shared_ptr<model::model>	model::loader::make(const path &source)
+shared_ptr<model::model>	model::loader::load(const path &source)
 {
 	auto					&instance = loader::instance();
 
-	return (instance->make_non_static(source));
+	return (instance->load_non_static(source));
 }
 
 
-shared_ptr<model::model>	model::loader::make_non_static(const path &source)
+shared_ptr<model::model>	model::loader::load_non_static(const path &source)
 {
 	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_Fast);
 

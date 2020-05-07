@@ -3,6 +3,7 @@
 #include "engine/namespace.h"
 
 #include "engine/abstract/global.h"
+#include "engine/core/core.h"
 #include "engine/program/program.h"
 #include "engine/scene/scene.h"
 #include "engine/model/skeleton.h"
@@ -18,7 +19,9 @@ public :
 	virtual						~renderer() = default;
 public :
 
-IMPLEMENT_GLOBAL_INITIALIZER(renderer)
+START_GLOBAL_CUSTOM_INITIALIZER(renderer)
+	engine::core::connect_renderer();
+FINISH_GLOBAL_CUSTOM_INITIALIZER
 
 	static void					add_target(const shared_ptr<model::model> &model)
 	{

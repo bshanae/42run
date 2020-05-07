@@ -1,8 +1,8 @@
 #include "engine/engine.h"
 
-engine::path				giant = "/Users/belchenkovova/Desktop/giant/Stone.obj";
-engine::path				cobra = "/Users/belchenkovova/Desktop/AC Cobra/Shelby.obj";
-engine::path				cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
+engine::path				giant_path = "/Users/belchenkovova/Desktop/giant/Stone.obj";
+engine::path				cobra_path = "/Users/belchenkovova/Desktop/AC Cobra/Shelby.obj";
+engine::path				cube_path = "/Users/belchenkovova/Desktop/cube/cube.obj";
 
 int							main()
 {
@@ -24,9 +24,7 @@ int							main()
 	engine::renderer::initialize();
 	engine::model::loader::initialize();
 
-	engine::core::connect_renderer();
-
-	engine::model::loader::make(giant);
+	auto					giant = engine::model::loader::load(giant_path);
 
 	engine::core::execute();
 

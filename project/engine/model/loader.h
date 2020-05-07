@@ -16,7 +16,7 @@ public :
 
 IMPLEMENT_GLOBAL_INITIALIZER(loader)
 
-	static shared_ptr<model>	make(const path &source);
+	static shared_ptr<model>	load(const path &source);
 
 private :
 
@@ -35,7 +35,7 @@ IMPLEMENT_GLOBAL_INSTANCER(loader)
 
 	path						directory;
 
-	shared_ptr<model>			make_non_static(const path &source);
+	shared_ptr<model>			load_non_static(const path &source);
 
 	void						load_nodes();
 	void						load_meshes();

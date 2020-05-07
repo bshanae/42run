@@ -36,7 +36,7 @@ set(SOURCE_ENGINE
 	project/engine/core/core.cpp
 	project/engine/core/execute.cpp
 	project/engine/core/callback.cpp
-	project/engine/core/attach_renderer.cpp
+	project/engine/core/connect_renderer.cpp
 
 	project/engine/converter/converter.cpp
 
