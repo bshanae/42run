@@ -2,9 +2,9 @@
 
 #include "engine/namespace.h"
 
-#include "engine/object_wrap/object_wrap.h"
+#include "engine/abstract/holder.h"
 
-class				engine::program::shader : public engine::object_wrap
+class				engine::program::shader : public engine::abstract::holder
 {
 	friend class	engine::program::program;
 

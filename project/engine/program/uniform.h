@@ -2,10 +2,10 @@
 
 #include "engine/namespace.h"
 
-#include "engine/object_wrap/object_wrap.h"
+#include "engine/abstract/holder.h"
 
 template 			<typename type>
-class 				engine::program::uniform : public engine::object_wrap
+class 				engine::program::uniform : public engine::abstract::holder
 {
 	friend class	engine::program::program;
 
@@ -17,7 +17,7 @@ public :
 	void			save(const type &data)
 	{
 		if (object == -1)
-			throw (exception::exception<exception::id::uniform_value>());
+			throw (exception::exception<exception::id::uniform_bad_value>());
 		if constexpr (std::is_same<type, int>::value)
 			glUniform1i(object, data);
 		else if constexpr (std::is_same<type, float>::value)
@@ -29,7 +29,7 @@ public :
 		else if constexpr (std::is_same<type, glm::mat4>::value)
 			glUniformMatrix4fv(object, 1, GL_FALSE, value_ptr(data));
 		else
-			throw (exception::exception<exception::id::uniform_type>());
+			throw (exception::exception<exception::id::uniform_bad_type>());
 	}
 
 private :

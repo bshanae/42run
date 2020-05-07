@@ -63,7 +63,10 @@ namespace				engine
 		enum class		key;
 	}
 
-	class 				object_wrap;
+	namespace			abstract
+	{
+		class			holder;
+	}
 
 	namespace			program
 	{

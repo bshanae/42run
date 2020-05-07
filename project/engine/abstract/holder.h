@@ -2,13 +2,13 @@
 
 #include "engine/namespace.h"
 
-class 				engine::object_wrap
+class 				engine::abstract::holder
 {
 protected :
-					object_wrap() = default;
+					holder() = default;
 public :
 
-	virtual			~object_wrap() = default;
+	virtual			~holder() = default;
 
 	virtual void	use(bool state) const
 	{

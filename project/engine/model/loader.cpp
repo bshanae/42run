@@ -7,14 +7,20 @@
 
 using namespace				engine;
 
-#warning "Alignment"
+shared_ptr<model::model>	model::loader::make(const path &source)
+{
+	auto					&instance = loader::instance();
 
-model::model				model::loader::make(const path &source)
+	return (instance->make_non_static(source));
+}
+
+
+shared_ptr<model::model>	model::loader::make_non_static(const path &source)
 {
 	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_Fast);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
-		throw (exception::exception<exception::id::ASSIMP>());
+		throw (exception::exception<exception::id::ASSIMP_error>());
 
 	nodes.clear();
 	meshes.clear();
@@ -22,8 +28,13 @@ model::model				model::loader::make(const path &source)
 	directory = source.parent_path();
 
 	load_nodes();
+	load_meshes();
 	load_bones();
 	load_animations();
+
+	skeleton = make_unique<engine::model::skeleton>(bones);
+
+	return (shared_ptr<model>(new model(meshes, skeleton)));
 }
 
 

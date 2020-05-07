@@ -2,19 +2,25 @@
 
 #include "engine/namespace.h"
 
+#include "engine/abstract/global.h"
 #include "engine/model/model.h"
 
 class							engine::model::loader
 {
 	friend class 				renderer;
 
-public:
+private :
 								loader() = default;
+public :
 								~loader() = default;
 
-	model						make(const path &source);
+IMPLEMENT_GLOBAL_INITIALIZER(loader)
 
-private:
+	static shared_ptr<model>	make(const path &source);
+
+private :
+
+IMPLEMENT_GLOBAL_INSTANCER(loader)
 
 	Assimp::Importer			importer;
 	const aiScene				*scene = nullptr;
@@ -25,7 +31,11 @@ private:
 	vector<unique_ptr<mesh>>	meshes;
 	vector<bone *>				bones;
 
+	unique_ptr<skeleton>		skeleton;
+
 	path						directory;
+
+	shared_ptr<model>			make_non_static(const path &source);
 
 	void						load_nodes();
 	void						load_meshes();

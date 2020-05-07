@@ -2,6 +2,7 @@
 
 #include "engine/namespace.h"
 
+#include "engine/abstract/global.h"
 #include "engine/program/program.h"
 #include "engine/scene/scene.h"
 #include "engine/model/skeleton.h"
@@ -11,31 +12,24 @@ class							engine::renderer
 {
 	friend class				core;
 
+private :
+								renderer();
+public :
+	virtual						~renderer() = default;
 public :
 
-	static void 				initialize()
-	{
-		instance();
-	}
+IMPLEMENT_GLOBAL_INITIALIZER(renderer)
 
 	static void					add_target(const shared_ptr<model::model> &model)
 	{
-		instance().models.push_back(model);
+		instance()->models.push_back(model);
 	}
 
 	bool						request = true;
 
 private :
 
-								renderer();
-	virtual						~renderer() = default;
-
-	static renderer				&instance()
-	{
-		static renderer			renderer;
-
-		return (renderer);
-	}
+IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
 	using						models_type = vector<shared_ptr<model::model>>;
 	models_type 				models;

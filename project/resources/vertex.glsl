@@ -9,7 +9,7 @@
 layout(location = 0) in vec3	in_position;
 layout(location = 1) in vec3	in_normal;
 layout(location = 2) in vec2	in_UV;
-layout(location = 3) in float	in_bone_ids[BONES_IN_MESH];
+layout(location = 3) in int		in_bone_ids[BONES_IN_MESH];
 
 //								Weights location is set according to BONES_IN_MESH macro
 layout(location = 9) in float	in_bone_weights[BONES_IN_MESH];
@@ -35,19 +35,19 @@ uniform mat4					uniform_bones[BONES_IN_SKELETON];
 
 void							main()
 {
-	mat4						bones_ransformation = mat(1.0);
+	mat4						bones_transformation = mat4(1.0);
 
 	if (uniform_does_mesh_have_bones)
 	{
-		bones_ransformation = mat4(0.0);
+		bones_transformation = mat4(0.0);
 
-		for (int i = 0; i < BONES_AMOUNT; i++)
-			bones_ransformation += uniform_bones[int(boneIDs[i])] * boneWeights[i];
+		for (int i = 0; i < BONES_IN_SKELETON; i++)
+			bones_transformation += uniform_bones[in_bone_ids[i]] * in_bone_weights[i];
 	}
 
 	pass_position = in_position;
 	pass_normal = in_normal;
 	pass_UV = in_UV;
 
-	gl_Position = uniform_projection * uniform_view * bones_ransformation * vec4(in_position, 1.f);
+	gl_Position = uniform_projection * uniform_view * bones_transformation * vec4(in_position, 1.f);
 }

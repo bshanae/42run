@@ -20,13 +20,13 @@ int							main()
 	engine::scene::camera::near_plane = 0.1f;
 	engine::scene::camera::far_plane = 100.f;
 
-	engine::model::loader	loader;
-
-#warning "Delete maybe?"
 	engine::core::initialize();
 	engine::renderer::initialize();
+	engine::model::loader::initialize();
 
 	engine::core::connect_renderer();
+
+	engine::model::loader::make(giant);
 
 	engine::core::execute();
 

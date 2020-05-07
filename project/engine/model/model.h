@@ -20,8 +20,6 @@ private :
 								{}
 public:
 								~model() = default;
-
-#warning "Maybe delete assignment operator"
 private:
 
 	vector<unique_ptr<mesh>>	meshes;

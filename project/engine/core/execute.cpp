@@ -6,14 +6,14 @@ void 				core::execute()
 {
 	auto			&instance = core::instance();
 
-	while (not glfwWindowShouldClose(instance.window))
+	while (not glfwWindowShouldClose(instance->window))
 	{
 		glfwPollEvents();
 
-		for (auto &callback : instance.callbacks)
-			if (instance.event.type_value == callback.type)
+		for (auto &callback : instance->callbacks)
+			if (instance->event.type_value == callback.type)
 				callback();
-		instance.event.type_value = interface::event::type::none;
+		instance->event.type_value = interface::event::type::none;
 
 //		if (instance.renderer->request)
 //		{

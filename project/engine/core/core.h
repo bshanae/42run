@@ -2,6 +2,7 @@
 
 #include "engine/namespace.h"
 
+#include "engine/abstract/global.h"
 #include "engine/interface/event.h"
 #include "engine/interface/callback.h"
 
@@ -23,27 +24,19 @@ public :
 									~core();
 private :
 
-	static core						&instance()
-	{
-		static core					core;
-
-		return (core);
-	}
-
 	GLFWwindow						*window = nullptr;
-	class renderer					*renderer = nullptr;
+	shared_ptr<renderer>			renderer;
 
 	interface::event				event;
 	list<interface::callback>		callbacks;
 
 	static void 					callback(GLFWwindow *window, int key, int code, int action, int mode);
 
+IMPLEMENT_GLOBAL_INSTANCER(core)
+
 public :
 
-	static void 					initialize()
-	{
-		instance();
-	}
+IMPLEMENT_GLOBAL_INITIALIZER(core)
 
 	static void						execute();
 
@@ -52,12 +45,12 @@ public :
 	template					<typename ...args_type>
 	static void						generate_callback(args_type ...args)
 	{
-		core::instance().callbacks.emplace_back(args...);
+		instance()->callbacks.emplace_back(args...);
 	}
 
 	static const interface::event	&receive_event()
 	{
-		return (core::instance().event);
+		return (core::instance()->event);
 	}
 };
 

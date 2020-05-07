@@ -14,7 +14,7 @@ using namespace		engine;
 	auto			*data = stbi_load(source.c_str(), &width, &height, &number_of_components, 0);
 
 	if (not data)
-		throw (exception::exception<exception::id::texture_creation>());
+		throw (exception::exception<exception::id::texture_creation_error>());
 
 	GLenum			format;
 
@@ -30,7 +30,7 @@ using namespace		engine;
 			format = GL_RGBA;
 			break ;
 		default :
-			throw (exception::exception<exception::id::texture_format>());
+			throw (exception::exception<exception::id::texture_bad_format>());
 	}
 
 	glBindTexture(GL_TEXTURE_2D, object);
