@@ -26,6 +26,8 @@ int							main()
 
 	auto					giant = engine::model::loader::load(giant_path);
 
+	engine::renderer::add_target(giant);
+
 	engine::core::execute();
 
 	return (0);

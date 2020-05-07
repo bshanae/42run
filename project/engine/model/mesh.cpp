@@ -7,7 +7,10 @@ using namespace		engine;
 					model::mesh::mesh(
 					vector<vertex> &vertices,
 					vector<unsigned> &indices,
-					unique_ptr<engine::model::material> &material)
+					unique_ptr<engine::model::material> &material) :
+					vertices(move(vertices)),
+					indices(move(indices)),
+					material(move(material))
 {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
