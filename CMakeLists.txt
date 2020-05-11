@@ -46,13 +46,10 @@ set(SOURCE_ENGINE
 	project/engine/scene/camera.cpp
 
 	project/engine/model/bone.cpp
-#	project/engine/model/skeleton.cpp
-#	project/engine/model/animation.cpp
+	project/engine/model/skeleton.cpp
 	project/engine/model/texture.cpp
-#	project/engine/model/material.cpp
 	project/engine/model/mesh.cpp
 	project/engine/model/loader.cpp
-#	project/engine/model/model.cpp
 
 	project/engine/renderer/renderer.cpp
 	)

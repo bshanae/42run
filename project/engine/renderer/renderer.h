@@ -83,6 +83,6 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 		}						light;
 
 		uniform_int 			does_mesh_have_bones;
-		uniform_mat4 			bones[model::skeleton::limit_for_bones];
+		uniform_mat4 			bones_transformations[model::skeleton::bones_limit];
 	}							uniforms;
 };

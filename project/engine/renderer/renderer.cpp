@@ -2,6 +2,7 @@
 
 #include "engine/core/core.h"
 #include "engine/model/mesh.h"
+#include "engine/model/bone.h"
 
 using namespace		engine;
 
@@ -25,18 +26,20 @@ using namespace		engine;
 	uniforms.light.position = program.make_uniform<vec3>("uniform_light.position");
 
 	uniforms.does_mesh_have_bones = program.make_uniform<int>("uniform_does_mesh_have_bones");
-	for (int i = 0; i < model::skeleton::limit_for_bones; i++)
-		uniforms.bones[i] = program.make_uniform<mat4>("bones[" + std::to_string(i) + "]");
+	for (int i = 0; i < model::skeleton::bones_limit; i++)
+		uniforms.bones_transformations[i] = program.make_uniform<mat4>("uniform_bones_transformations[" + std::to_string(i) + "]");
 
 	program.use(true);
 
-	uniforms.light.position.save(vec3(0, 5, 5));
+	uniforms.light.position.save(vec3(1000, 5000, 1000));
 
 	program.use(false);
 }
 
 void				renderer::render()
 {
+	request = false;
+
 	program.use(true);
 
 	uniforms.projection.save(scene.camera.projection_matrix());
@@ -48,12 +51,35 @@ void				renderer::render()
 		render(model);
 
 	program.use(false);
-
-	request = false;
 }
 
 void				renderer::render(const shared_ptr<model::model> &model)
 {
+	auto			&skeleton = model->skeleton;
+
+	if (skeleton->bones.empty())
+		uniforms.does_mesh_have_bones.save(0);
+	else
+	{
+		uniforms.does_mesh_have_bones.save(1);
+
+		for (int i = 0; i < model::skeleton::bones_limit; i++)
+		{
+			if (i >= skeleton->bones.size())
+#warning "Break here?"
+				uniforms.bones_transformations[i].save(mat4(1.0));
+			else
+			{
+#warning "Get rid of variable"
+				mat4	result;
+
+				result = skeleton->bones[i]->get_parents_transformation() * converter::to_glm(skeleton->bones[i]->node->mTransformation);
+				result = skeleton->bones[i]->offset;
+				uniforms.bones_transformations[i].save(result);
+			}
+		}
+	}
+
 	for (auto &mesh : model->meshes)
 	{
 		uniforms.material.colors.ambient.save(mesh->material->colors.ambient);
@@ -134,6 +160,12 @@ void				renderer::callback()
 
 		case engine::interface::key::down :
 			camera.rotate(scene::camera::rotation::down);
+			break ;
+
+		case engine::interface::key::enter :
+			for (auto &model : models)
+				if (model->skeleton->animation)
+					model->skeleton->update();
 			break ;
 
 		default :

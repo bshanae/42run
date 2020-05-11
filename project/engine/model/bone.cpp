@@ -2,8 +2,15 @@
 
 using namespace		engine;
 
+int 				global_i = 0;
+
 void				model::bone::update_keyframe_transformation(float time)
 {
+	static int 		i;
+
+	if (i == 0)
+		i = ++global_i;
+
 	if (not animation)
 		return ;
 
@@ -20,7 +27,6 @@ void				model::bone::update_keyframe_transformation(float time)
 	node->mTransformation = converter::to_assimp(result);
 }
 
-
 mat4				model::bone::get_parents_transformation() const
 {
 	bone*			iterator = parent;
@@ -33,13 +39,13 @@ mat4				model::bone::get_parents_transformation() const
 		iterator = iterator->parent;
 	}
 
-	for (auto i = matrices.size() - 1; i >= 0; i--)
+	for (int i = matrices.size() - 1; i >= 0; i--)
 		result *= matrices[i];
 
 	return (result);
 }
 
-[[nodiscard]] vec3	model::bone::interpolate_position(float time) const
+vec3				model::bone::interpolate_position(float time) const
 {
 	if (animation->mNumPositionKeys == 1)
 		return (converter::to_glm(animation->mPositionKeys[0].mValue));
@@ -48,7 +54,7 @@ mat4				model::bone::get_parents_transformation() const
 	const int		end_index = begin_index + 1;
 
 	const auto		time_delta = (float)(animation->mPositionKeys[end_index].mTime - animation->mPositionKeys[begin_index].mTime);
-	const auto		factor = (float)(time - (float)animation->mPositionKeys[begin_index].mTime) / time_delta;
+	const auto		factor = (time - (float)animation->mPositionKeys[begin_index].mTime) / time_delta;
 
 	const auto		begin_position = converter::to_glm(animation->mPositionKeys[begin_index].mValue);
 	const auto		end_position = converter::to_glm(animation->mPositionKeys[end_index].mValue);

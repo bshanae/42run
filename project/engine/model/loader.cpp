@@ -16,10 +16,14 @@ shared_ptr<model::model>	model::loader::load(const path &source)
 
 shared_ptr<model::model>	model::loader::load_non_static(const path &source)
 {
-	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_Fast);
+	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
+	{
+		std::cout << "ASSIMP ERROR" << std::endl;
+		std::cout << importer.GetErrorString() << std::endl;
 		throw (exception::exception<exception::id::ASSIMP_error>());
+	}
 
 	nodes.clear();
 	meshes.clear();
@@ -27,9 +31,9 @@ shared_ptr<model::model>	model::loader::load_non_static(const path &source)
 	directory = source.parent_path();
 
 	load_nodes();
-	load_meshes();
-	load_bones();
 	load_animations();
+	load_bones();
+	load_meshes();
 
 	skeleton = make_unique<engine::model::skeleton>(bones);
 
@@ -72,7 +76,7 @@ void						model::loader::load_bones()
 #warning "Do I need this?"
 			if (not bone->animation)
 			{
-				cout << "ERROR::NO ANIMATIONS FOUND FOR " << name << endl;
+				std::cout << "ERROR::NO ANIMATIONS FOUND FOR " << name << std::endl;
 			}
 
 			bones.push_back(bone);
@@ -88,10 +92,11 @@ void						model::loader::load_bones()
 
 		if (not parent_bone) //if there is no parent bone
 		{
-			cout << "NO PARENT BONE FOR " << bones[i]->name << endl;
+			std::cout << "NO PARENT BONE FOR " << bones[i]->name << std::endl;
 		}
 	}
 
+	std::cerr << "Number of bones = " << bones.size() << std::endl;
 }
 
 void						model::loader::load_animations()
@@ -162,19 +167,19 @@ unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
 			aiVertexWeight	vertexWeight = bone->mWeights[j];
 			int				startVertexID = vertexWeight.mVertexId;
 
-			for (int k = 0; k < mesh::number_of_bones; k++)
+			for (int k = 0; k < mesh::vertex::bones_limit; k++)
 			{
-				if (vertices[startVertexID].bones[k].weight == 0.0)
+				if (vertices[startVertexID].weights[k] == 0.0)
 				{
-					vertices[startVertexID].bones[k].id = find_bone(converter::to_string(bone->mName)).second;
-					vertices[startVertexID].bones[k].weight = vertexWeight.mWeight;
+					vertices[startVertexID].boneIDs[k] = find_bone(converter::to_string(bone->mName)).second;
+					vertices[startVertexID].weights[k] = vertexWeight.mWeight;
 
 					break ;
 				}
 
-				if (k == mesh::number_of_bones - 1)
+				if (k == mesh::vertex::bones_limit - 1)
 				{
-					cout << "ERROR::LOADING MORE THAN " << mesh::number_of_bones << " BONES\n"; //this could take a lot of time
+					std::cout << "ERROR : LOADING MORE THAN " << mesh::vertex::bones_limit << " BONES\n"; //this could take a lot of time
 					break;
 				}
 			}
@@ -238,6 +243,7 @@ pair<model::bone *, int>	model::loader::find_bone(const string &name)
 		if (bones[i]->name == name)
 			return {bones[i], bones[i]->id};
 
+	std::cerr << "42run Warning : Bone not found, name = {" << name << "}" << std::endl;
 	return {nullptr, -1};
 }
 
@@ -247,5 +253,6 @@ aiNodeAnim					*model::loader::find_animation(const string &name)
 		if (animations[i]->mNodeName.data == name)
 			return (animations[i]);
 
-	return (0);
+	std::cerr << "42run Warning : Animation not found, name = {" << name << "}" << std::endl;
+	return (nullptr);
 }

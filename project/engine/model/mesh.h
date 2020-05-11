@@ -10,10 +10,8 @@ private :
 	friend class 			loader;
 	friend class 			engine::renderer;
 
-	static constexpr int	number_of_bones = 6;
 
-public:
-
+public :
 
 	struct					bone
 	{
@@ -23,10 +21,16 @@ public:
 
 	struct					vertex
 	{
+		static constexpr int	bones_limit = 6;
+
 		vec3				position;
 		vec3				normal;
 		vec2				UV;
-		bone				bones[number_of_bones];
+#warning "Use struct bone"
+//		bone				bones[number_of_bones];
+
+		float				boneIDs[bones_limit] = {0.0f};
+		float				weights[bones_limit] = {0.0f};
 	};
 
 							mesh(

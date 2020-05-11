@@ -29,10 +29,9 @@ public :
 						~bone() = default;
 
 	void				update_keyframe_transformation(float time);
+	[[nodiscard]] mat4	get_parents_transformation() const;
 
 private :
-
-	[[nodiscard]] mat4	get_parents_transformation() const;
 
 	[[nodiscard]] vec3	interpolate_position(float time) const;
 	[[nodiscard]] quat	interpolate_rotation(float time) const;

@@ -6,15 +6,27 @@ class				engine::model::animation
 {
 public :
 
-	string 			name = "unknown";
+	struct
+	{
+		float		begin;
+		float		end;
+	}				timestamps;
 
-	float			begin_time = 0.f;
-	float			end_time = 0.f;
-	float 			speed = 0.25f;
+	float 			speed;
 
-	int				priority = 10;
-	bool 			loop = false;
+	int				priority;
+	bool 			loop;
 
-					animation() = default;
+	explicit		animation(
+					float begin_timestamp = 0,
+					float end_timestamp = 250,
+					float speed = 0.25,
+					int priority = 10,
+					bool loop = true) :
+					timestamps{begin_timestamp, end_timestamp},
+					speed(speed),
+					priority(priority),
+					loop(loop)
+					{}
 					~animation() = default;
 };

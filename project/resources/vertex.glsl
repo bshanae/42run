@@ -4,15 +4,16 @@
 //								IN-OUT
 ///////////////////////////////////////////////////////////////////////////////
 
-#define BONES_IN_MESH			6
+#define BONES_IN_VERTEX			6
+#define BONES_IN_SKELETON		100
 
 layout(location = 0) in vec3	in_position;
 layout(location = 1) in vec3	in_normal;
 layout(location = 2) in vec2	in_UV;
-layout(location = 3) in int		in_bone_ids[BONES_IN_MESH];
+layout(location = 3) in float	in_bones_ids[BONES_IN_VERTEX];
 
-//								Weights location is set according to BONES_IN_MESH macro
-layout(location = 9) in float	in_bone_weights[BONES_IN_MESH];
+//								Weights location is set according to BONES_IN_VERTEX macro
+layout(location = 9) in float	in_bones_weights[BONES_IN_VERTEX];
 
 out vec3						pass_position;
 out vec3						pass_normal;
@@ -22,8 +23,6 @@ out vec2						pass_UV;
 //								UNIFORM
 ///////////////////////////////////////////////////////////////////////////////
 
-#define BONES_IN_SKELETON		100
-
 uniform mat4					uniform_projection;
 uniform mat4					uniform_view;
 
@@ -31,7 +30,7 @@ uniform mat4					uniform_local;
 uniform mat4					uniform_model;
 
 uniform bool					uniform_does_mesh_have_bones;
-uniform mat4					uniform_bones[BONES_IN_SKELETON];
+uniform mat4					uniform_bones_transformations[BONES_IN_SKELETON];
 
 void							main()
 {
@@ -41,8 +40,8 @@ void							main()
 	{
 		bones_transformation = mat4(0.0);
 
-		for (int i = 0; i < BONES_IN_SKELETON; i++)
-			bones_transformation += uniform_bones[in_bone_ids[i]] * in_bone_weights[i];
+		for (int i = 0; i < BONES_IN_VERTEX; i++)
+			bones_transformation += uniform_bones_transformations[int(in_bones_ids[i])] * in_bones_weights[i];
 	}
 
 	pass_position = in_position;

@@ -5,6 +5,7 @@
 #include "engine/model/material.h"
 #include "engine/model/mesh.h"
 #include "engine/model/skeleton.h"
+#include "engine/model/animation.h"
 
 class							engine::model::model
 {
@@ -20,6 +21,12 @@ private :
 								{}
 public:
 								~model() = default;
+
+	void						animate(const animation &animation)
+	{
+		skeleton->animate(animation);
+	}
+
 private:
 
 	vector<unique_ptr<mesh>>	meshes;

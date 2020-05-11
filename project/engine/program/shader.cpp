@@ -32,7 +32,8 @@ using namespace				engine::program;
 	if (not success)
 	{
 		glGetShaderInfoLog(object, 512, nullptr, log);
-		cout << "/--------------------/ LOG /--------------------/" << endl << log << endl;
+		std::cout << "OPENGL ERROR" << std::endl;
+		std::cout << log << std::endl;
 		throw (exception::exception<exception::id::shader_compilation_error>());
 	}
 }

@@ -11,36 +11,22 @@ private :
 	friend class 			model;
 	friend class 			engine::renderer;
 
-	static constexpr int	limit_for_bones = 100;
+	static constexpr int	bones_limit = 100;
 
 public:
-							skeleton(const vector<bone *> &bones) : bones(bones) {}
+							skeleton(const vector<bone *> &bones) :
+							bones(bones)
+							{}
 							~skeleton() = default;
 
-	void					play(class animation *animation, bool reset)
-	{
-		if (animation and animation->priority >= this->animation->priority)
-			this->animation = animation;
-		else if (not animation)
-			this->animation = animation;
-
-		if (reset)
-			time = this->animation->begin_time;
-	}
-
-	void					stop()
-	{
-		time = 0.f;
-		animation = nullptr;
-	}
-
-
+	void					animate(const class animation &new_animation);
+	void					reset();
 private :
 
-	vector<bone *>			bones;
-	vector<mat4>			matrices;
+	void 					update();
 
-	animation				*animation = nullptr;
+	vector<bone *>			bones;
+	optional<animation>		animation;
 
 	float					time = 0.f;
 };
