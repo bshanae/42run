@@ -22,7 +22,7 @@
 #include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/transform.hpp"
 
-#include "exception/exception.h"
+#include "common/common.h"
 #include "debug.h"
 
 namespace				engine

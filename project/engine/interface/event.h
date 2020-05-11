@@ -32,7 +32,7 @@ public :
 			case type::key_hold :
 				break ;
 			default :
-				throw (exception::exception<exception::id::event_bad_type>());
+				common::error::raise(common::error::id::event_bad_type);
 		}
 		return (key_value.value());
 	}

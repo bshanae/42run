@@ -25,7 +25,7 @@ using namespace		engine::program;
 		glGetProgramInfoLog(object, 512, nullptr, log);
 		std::cout << "OPENGL ERROR" << std::endl;
 		std::cout << log << std::endl;
-		throw (exception::exception<exception::id::program_compilation_error>());
+		common::error::raise(common::error::id::program_compilation_error);
 	}
 }
 

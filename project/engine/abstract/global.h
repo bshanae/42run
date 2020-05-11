@@ -6,7 +6,7 @@ static shared_ptr<class_name>		&instance(bool safe = true)					\
 	static shared_ptr<class_name>	instance;									\
 																				\
 	if (safe and not instance)													\
-		throw (exception::exception<exception::id::empty_global_object>());		\
+		common::error::raise(common::error::id::empty_global_object);			\
 	return (instance);															\
 }
 

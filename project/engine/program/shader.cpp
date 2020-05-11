@@ -11,7 +11,7 @@ using namespace				engine::program;
 
 		file.open(source);
 		if (not file.is_open())
-			throw (exception::exception<exception::id::shader_reading_error>());
+			common::error::raise(common::error::id::shader_reading_error);
 
 		stream << file.rdbuf();
 		file.close();
@@ -34,7 +34,7 @@ using namespace				engine::program;
 		glGetShaderInfoLog(object, 512, nullptr, log);
 		std::cout << "OPENGL ERROR" << std::endl;
 		std::cout << log << std::endl;
-		throw (exception::exception<exception::id::shader_compilation_error>());
+		common::error::raise(common::error::id::shader_compilation_error);
 	}
 }
 							shader::~shader()

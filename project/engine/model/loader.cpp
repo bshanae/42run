@@ -22,7 +22,7 @@ shared_ptr<model::model>	model::loader::load_non_static(const path &source)
 	{
 		std::cout << "ASSIMP ERROR" << std::endl;
 		std::cout << importer.GetErrorString() << std::endl;
-		throw (exception::exception<exception::id::ASSIMP_error>());
+		common::error::raise(common::error::id::ASSIMP_error);
 	}
 
 	nodes.clear();
@@ -95,8 +95,6 @@ void						model::loader::load_bones()
 			std::cout << "NO PARENT BONE FOR " << bones[i]->name << std::endl;
 		}
 	}
-
-	std::cerr << "Number of bones = " << bones.size() << std::endl;
 }
 
 void						model::loader::load_animations()
@@ -243,7 +241,7 @@ pair<model::bone *, int>	model::loader::find_bone(const string &name)
 		if (bones[i]->name == name)
 			return {bones[i], bones[i]->id};
 
-	std::cerr << "42run Warning : Bone not found, name = {" << name << "}" << std::endl;
+	common::warning::raise(common::warning::id::model_loader_no_bone);
 	return {nullptr, -1};
 }
 
@@ -253,6 +251,6 @@ aiNodeAnim					*model::loader::find_animation(const string &name)
 		if (animations[i]->mNodeName.data == name)
 			return (animations[i]);
 
-	std::cerr << "42run Warning : Animation not found, name = {" << name << "}" << std::endl;
+	common::error::raise(common::error::id::model_loader_no_animation);
 	return (nullptr);
 }

@@ -9,7 +9,8 @@ void 				core::execute()
 	auto			&instance = core::instance();
 
 	if (not instance->renderer)
-		throw (exception::exception<exception::id::core_renderer_not_connected>());
+		common::error::raise(common::error::id::core_renderer_not_connected);
+
 	while (not glfwWindowShouldClose(instance->window))
 	{
 		glfwPollEvents();
