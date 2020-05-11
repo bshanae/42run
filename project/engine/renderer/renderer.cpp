@@ -1,7 +1,6 @@
 #include "renderer.h"
 
 #include "engine/core/core.h"
-#include "engine/model/mesh.h"
 #include "engine/model/bone.h"
 
 using namespace		engine;
@@ -61,27 +60,21 @@ void				renderer::render(const shared_ptr<model::model> &model)
 		uniforms.does_mesh_have_bones.save(0);
 	else
 	{
+		mat4		transformation;
+
 		uniforms.does_mesh_have_bones.save(1);
 
 		for (int i = 0; i < model::skeleton::bones_limit; i++)
 		{
 			if (i >= skeleton->bones.size())
-#warning "Break here?"
-				uniforms.bones_transformations[i].save(mat4(1.0));
+				break ;
 			else
 			{
-#warning "Get rid of variable"
-				mat4	result;
-
-#if 0
-				result = skeleton->bones[i]->get_parents_transformation() * converter::to_glm(skeleton->bones[i]->node->mTransformation);
-				uniforms.bones_transformations[i].save(result * skeleton->bones[i]->offset);
-#else
-				result = skeleton->bones[i]->get_parents_transformation();
-				result *= converter::to_glm(skeleton->bones[i]->node->mTransformation);
-				result *= skeleton->bones[i]->offset;
-				uniforms.bones_transformations[i].save(result);
-#endif
+				transformation = mat4(1.0f);
+				transformation *= skeleton->bones[i]->get_parents_transformation();
+				transformation *= converter::to_glm(skeleton->bones[i]->node->mTransformation);
+				transformation *= skeleton->bones[i]->offset;
+				uniforms.bones_transformations[i].save(transformation);
 			}
 		}
 	}
@@ -92,7 +85,7 @@ void				renderer::render(const shared_ptr<model::model> &model)
 		uniforms.material.colors.diffuse.save(mesh->material->colors.diffuse);
 		uniforms.material.colors.specular.save(mesh->material->colors.specular);
 
-		uniforms.material.textures.diffuse.is_valid.save(mesh->material->textures.diffuse.has_value());
+		uniforms.material.textures.diffuse.is_valid.save(mesh->material->textures.diffuse != nullptr);
 		if (mesh->material->textures.diffuse)
 		{
 			auto	value = mesh->material->textures.diffuse->object;
@@ -102,7 +95,7 @@ void				renderer::render(const shared_ptr<model::model> &model)
 			glBindTexture(GL_TEXTURE_2D, value);
 		}
 
-		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular.has_value());
+		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular != nullptr);
 		if (mesh->material->textures.specular)
 		{
 			auto	value = mesh->material->textures.specular->object;

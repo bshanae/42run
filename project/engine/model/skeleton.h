@@ -2,19 +2,23 @@
 
 #include "engine/namespace.h"
 
+#include "engine/abstract/pointer.h"
 #include "engine/model/animation.h"
+#include "engine/model/bone.h"
 
 class						engine::model::skeleton
 {
-private :
+public  :
 
 	friend class 			model;
 	friend class 			engine::renderer;
 
 	static constexpr int	bones_limit = 100;
 
+IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(skeleton)
+
 public:
-							skeleton(const vector<bone *> &bones) :
+							skeleton(const vector<bone::ptr> &bones) :
 							bones(bones)
 							{}
 							~skeleton() = default;
@@ -25,7 +29,7 @@ private :
 
 	void 					update();
 
-	vector<bone *>			bones;
+	vector<bone::ptr>		bones;
 	optional<animation>		animation;
 
 	float					time = 0.f;

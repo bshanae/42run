@@ -2,6 +2,9 @@
 
 #include "engine/namespace.h"
 
+#include "engine/abstract/pointer.h"
+#include "engine/model/material.h"
+
 class						engine::model::mesh
 {
 private :
@@ -10,14 +13,9 @@ private :
 	friend class 			loader;
 	friend class 			engine::renderer;
 
-
 public :
 
-	struct					bone
-	{
-		float				id = 0.f;
-		float				weight = 0.f;
-	};
+IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(mesh)
 
 	struct					vertex
 	{
@@ -26,24 +24,20 @@ public :
 		vec3				position;
 		vec3				normal;
 		vec2				UV;
-#warning "Use struct bone"
-//		bone				bones[number_of_bones];
-
-		float				boneIDs[bones_limit] = {0.0f};
-		float				weights[bones_limit] = {0.0f};
+		float				bones_ids[bones_limit] = {0.0f};
+		float				bones_weights[bones_limit] = {0.0f};
 	};
 
 							mesh(
 							vector<vertex> &vertices,
 							vector<unsigned> &indices,
-							unique_ptr<material> &material);
-#warning "Create destructor"
-							~mesh() = default;
+							material::ptr &material);
+							~mesh();
 private:
 
 	vector<vertex>			vertices;
 	vector<unsigned>		indices;
-	unique_ptr<material>	material;
+	material::ptr			material;
 
 	unsigned int			VAO = -1;
 	unsigned int			VBO = -1;

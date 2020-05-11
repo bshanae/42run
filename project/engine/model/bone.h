@@ -2,11 +2,14 @@
 
 #include "engine/namespace.h"
 
+#include "engine/abstract/pointer.h"
 #include "engine/converter/converter.h"
 
 class					engine::model::bone
 {
 public :
+
+IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(bone)
 
 	string				name;
 	int 				id;
@@ -14,7 +17,7 @@ public :
 	aiNode				*node = nullptr;
 	aiNodeAnim			*animation = nullptr;
 
-	bone				*parent = nullptr;
+	bone::ptr			parent;
 	mat4 				offset;
 
 	vec3 				position = vec3(0.f);

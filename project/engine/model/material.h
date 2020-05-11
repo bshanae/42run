@@ -2,11 +2,15 @@
 
 #include "engine/namespace.h"
 
+#include "engine/abstract/pointer.h"
 #include "engine/model/texture.h"
 
 class						engine::model::material
 {
 public :
+
+IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(material)
+
 							material() = default;
 							~material() = default;
 	struct
@@ -18,7 +22,7 @@ public :
 
 	struct
 	{
-		optional<texture>	diffuse;
-		optional<texture>	specular;
+		texture::ptr		diffuse;
+		texture::ptr		specular;
 	}						textures;
 };

@@ -1,20 +1,19 @@
 #include "loader.h"
 
 #include "engine/converter/converter.h"
-#include "engine/model/bone.h"
 #include "engine/model/material.h"
 #include "engine/model/mesh.h"
 
 using namespace				engine;
 
-shared_ptr<model::model>	model::loader::load(const path &source)
+model::model::ptr			model::loader::load(const path &source)
 {
 	auto					&instance = loader::instance();
 
 	return (instance->load_non_static(source));
 }
 
-shared_ptr<model::model>	model::loader::load_non_static(const path &source)
+model::model::ptr			model::loader::load_non_static(const path &source)
 {
 	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_MaxQuality);
 
@@ -35,9 +34,9 @@ shared_ptr<model::model>	model::loader::load_non_static(const path &source)
 	load_bones();
 	load_meshes();
 
-	skeleton = make_unique<engine::model::skeleton>(bones);
+	skeleton = engine::model::skeleton::make_ptr(bones);
 
-	return (shared_ptr<model>(new model(meshes, skeleton)));
+	return (model::ptr(new model(meshes, skeleton)));
 }
 
 
@@ -59,40 +58,32 @@ void						model::loader::load_meshes()
 
 void						model::loader::load_bones()
 {
-#warning "Range based loop"
+	bone::ptr				pointer;
+
 	for (int i = 0; i < scene->mNumMeshes; i++)
 		for (int j = 0; j < scene->mMeshes[i]->mNumBones; j++)
 		{
 			string			name = scene->mMeshes[i]->mBones[j]->mName.data;
 			mat4			offset = converter::to_glm(scene->mMeshes[i]->mBones[j]->mOffsetMatrix);
 
-#warning "Unique ptr"
-			bone*			bone = new engine::model::bone(bones.size(), name, offset);
+			pointer = engine::model::bone::make_ptr(bones.size(), name, offset);
 
-			bone->node = find_node(name);
-			bone->animation = find_animation(name);
+			pointer->node = find_node(name);
+			pointer->animation = find_animation(name);
 
-#warning "Do I need this?"
-			if (not bone->animation)
-			{
-				std::cout << "ERROR::NO ANIMATIONS FOUND FOR " << name << std::endl;
-			}
+			if (not pointer->animation)
+				common::warning::raise(common::warning::id::model_animation_not_found);
 
-			bones.push_back(bone);
+			bones.push_back(move(pointer));
+
 		}
 
-#warning "Range based loop"
-	for (int i = 0; i < bones.size(); i++)
+	for (auto &bone : bones)
 	{
-		string				parent_name = converter::to_string(bones[i]->node->mParent->mName);
-		bone*				parent_bone = find_bone(parent_name).first;
+		auto				parent_name = converter::to_string(bone->node->mParent->mName);
+		auto				parent_bone = find_bone(parent_name).first;
 
-		bones[i]->parent = parent_bone; //set the parent bone for the bone
-
-		if (not parent_bone) //if there is no parent bone
-		{
-			std::cout << "NO PARENT BONE FOR " << bones[i]->name << std::endl;
-		}
+		bone->parent = parent_bone;
 	}
 }
 
@@ -101,7 +92,6 @@ void						model::loader::load_animations()
 	if (scene->mNumAnimations == 0)
 		return;
 
-#warning "Range based loop?"
 	for (int i = 0; i < scene->mAnimations[0]->mNumChannels; i++)
 		animations.push_back(scene->mAnimations[0]->mChannels[i]);
 }
@@ -120,11 +110,11 @@ void						model::loader::process_node(aiNode *node)
 		process_node(node->mChildren[i]);
 }
 
-unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
+model::mesh::ptr			model::loader::process_mesh(aiMesh *mesh)
 {
 	vector<mesh::vertex>	vertices;
 	vector<unsigned>		indices;
-	unique_ptr<material>	material;
+	material::ptr			material;
 
 //							VERTICES
 
@@ -134,8 +124,7 @@ unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
 
 		vertex.position = converter::to_glm(mesh->mVertices[i]);
 		vertex.normal = converter::to_glm(mesh->mNormals[i]);
-#warning "Test cast. Maybe it's incorrect"
-		vertex.UV = mesh->mTextureCoords[0] ? converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
+		vertex.UV = mesh->mTextureCoords[0] ? (vec2)converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
 
 		vertices.push_back(vertex);
 	}
@@ -151,45 +140,45 @@ unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
 	if (mesh->mMaterialIndex >= 0)
 		material = move(process_material(scene->mMaterials[mesh->mMaterialIndex]));
 	else
-		material = make_unique<engine::model::material>();
+		material = engine::model::material::make_ptr();
 
 //							BONES
 
-#warning "Range based loop"
+	aiBone*					bone;
+	aiVertexWeight			weight;
+	int						id;
+
 	for (int i = 0; i < mesh->mNumBones; i++)
 	{
-		aiBone*				bone = mesh->mBones[i];
+		bone = mesh->mBones[i];
 
 		for (int j = 0; j < bone->mNumWeights; j++)
 		{
-			aiVertexWeight	vertexWeight = bone->mWeights[j];
-			int				startVertexID = vertexWeight.mVertexId;
+			weight = bone->mWeights[j];
+			id = weight.mVertexId;
 
 			for (int k = 0; k < mesh::vertex::bones_limit; k++)
 			{
-				if (vertices[startVertexID].weights[k] == 0.0)
+				if (vertices[id].bones_weights[k] == 0.0f)
 				{
-					vertices[startVertexID].boneIDs[k] = find_bone(converter::to_string(bone->mName)).second;
-					vertices[startVertexID].weights[k] = vertexWeight.mWeight;
+					vertices[id].bones_ids[k] = find_bone(converter::to_string(bone->mName)).second;
+					vertices[id].bones_weights[k] = weight.mWeight;
 
 					break ;
 				}
 
 				if (k == mesh::vertex::bones_limit - 1)
-				{
-					std::cout << "ERROR : LOADING MORE THAN " << mesh::vertex::bones_limit << " BONES\n"; //this could take a lot of time
-					break;
-				}
+					common::error::raise(common::error::id::model_too_many_bones);
 			}
 		}
 	}
 
-	return (make_unique<engine::model::mesh>(vertices, indices, material));
+	return (engine::model::mesh::make_ptr(vertices, indices, move(material)));
 }
 
-unique_ptr<model::material>	model::loader::process_material(aiMaterial *source)
+model::material::ptr		model::loader::process_material(aiMaterial *source)
 {
-	auto					target = make_unique<engine::model::material>();
+	auto					target = engine::model::material::make_ptr();
 
 	aiColor3D				ambient;
 	aiColor3D				diffuse;
@@ -203,7 +192,7 @@ unique_ptr<model::material>	model::loader::process_material(aiMaterial *source)
 	target->colors.diffuse = converter::to_glm(diffuse);
 	target->colors.specular = converter::to_glm(specular);
 
-	auto					emplace_texture = [this, source](optional<texture> &target, aiTextureType type)
+	auto					emplace_texture = [this, source](texture::ptr &target, aiTextureType type)
 	{
 		aiString			file;
 
@@ -211,7 +200,7 @@ unique_ptr<model::material>	model::loader::process_material(aiMaterial *source)
 			return ;
 
 		source->GetTexture(type, 0, &file);
-		target.emplace(directory / converter::to_path(file));
+		target = engine::model::texture::make_ptr(directory / converter::to_path(file));
 	};
 
 	emplace_texture(target->textures.diffuse, aiTextureType_DIFFUSE);
@@ -235,15 +224,15 @@ aiNode						*model::loader::find_node(const string &name)
 	return (nullptr);
 }
 
-pair<model::bone *, int>	model::loader::find_bone(const string &name)
+pair<model::bone::ptr, int>	model::loader::find_bone(const string &name)
 {
 	for (int i = 0; i < bones.size(); i++)
 		if (bones[i]->name == name)
 			return {bones[i], bones[i]->id};
 
 	if (name != "RootNode")
-		common::warning::raise(common::warning::id::model_loader_no_bone);
-	return {nullptr, -1};
+		common::warning::raise(common::warning::id::model_bone_not_found);
+	return {bone::ptr(), -1};
 }
 
 aiNodeAnim					*model::loader::find_animation(const string &name)
@@ -252,6 +241,6 @@ aiNodeAnim					*model::loader::find_animation(const string &name)
 		if (animations[i]->mNodeName.data == name)
 			return (animations[i]);
 
-	common::warning::raise(common::warning::id::model_loader_no_animation);
+	common::warning::raise(common::warning::id::model_animation_not_found);
 	return (nullptr);
 }

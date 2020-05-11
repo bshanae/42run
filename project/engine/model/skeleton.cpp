@@ -1,7 +1,5 @@
 #include "skeleton.h"
 
-#include "engine/model/bone.h"
-
 using namespace		engine;
 
 void				model::skeleton::animate(const class animation &new_animation)

@@ -1,13 +1,11 @@
 #include "mesh.h"
 
-#include "engine/model/material.h"
-
 using namespace		engine;
 
 					model::mesh::mesh(
 					vector<vertex> &vertices,
 					vector<unsigned> &indices,
-					unique_ptr<engine::model::material> &material) :
+					engine::model::material::ptr &material) :
 					vertices(move(vertices)),
 					indices(move(indices)),
 					material(move(material))
@@ -35,15 +33,22 @@ using namespace		engine;
 
 	for (int i = 0; i < vertex::bones_limit; i++)
 	{
-		glVertexAttribPointer(3 + i, 1, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(offsetof(vertex, boneIDs) + sizeof(float) * i));
+		glVertexAttribPointer(3 + i, 1, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(offsetof(vertex, bones_ids) + sizeof(float) * i));
 		glEnableVertexAttribArray(3 + i);
 	}
 
 	for (int i = 0; i < vertex::bones_limit; i++)
 	{
-		glVertexAttribPointer(9 + i, 1, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(offsetof(vertex, weights) + sizeof(float) * i));
-		glEnableVertexAttribArray(9 + i);
+		glVertexAttribPointer(3 + vertex::bones_limit + i, 1, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(offsetof(vertex, bones_weights) + sizeof(float) * i));
+		glEnableVertexAttribArray(3 + vertex::bones_limit + i);
 	}
 
 	glBindVertexArray(0);
+}
+
+					model::mesh::~mesh()
+{
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &IBO);
 }
