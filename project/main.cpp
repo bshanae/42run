@@ -30,7 +30,7 @@ int							main()
 
 	engine::renderer::add_target(model);
 
-	model->animate(engine::model::animation(0, 245, 1));
+	model->animate(engine::model::animation(0, 80, 1));
 
 	engine::core::execute();
 

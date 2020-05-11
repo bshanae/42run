@@ -59,7 +59,6 @@ void						model::loader::load_meshes()
 
 void						model::loader::load_bones()
 {
-
 #warning "Range based loop"
 	for (int i = 0; i < scene->mNumMeshes; i++)
 		for (int j = 0; j < scene->mMeshes[i]->mNumBones; j++)
@@ -135,6 +134,7 @@ unique_ptr<model::mesh>		model::loader::process_mesh(aiMesh *mesh)
 
 		vertex.position = converter::to_glm(mesh->mVertices[i]);
 		vertex.normal = converter::to_glm(mesh->mNormals[i]);
+#warning "Test cast. Maybe it's incorrect"
 		vertex.UV = mesh->mTextureCoords[0] ? converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
 
 		vertices.push_back(vertex);
@@ -241,7 +241,8 @@ pair<model::bone *, int>	model::loader::find_bone(const string &name)
 		if (bones[i]->name == name)
 			return {bones[i], bones[i]->id};
 
-	common::warning::raise(common::warning::id::model_loader_no_bone);
+	if (name != "RootNode")
+		common::warning::raise(common::warning::id::model_loader_no_bone);
 	return {nullptr, -1};
 }
 
@@ -251,6 +252,6 @@ aiNodeAnim					*model::loader::find_animation(const string &name)
 		if (animations[i]->mNodeName.data == name)
 			return (animations[i]);
 
-	common::error::raise(common::error::id::model_loader_no_animation);
+	common::warning::raise(common::warning::id::model_loader_no_animation);
 	return (nullptr);
 }

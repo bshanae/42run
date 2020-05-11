@@ -2,15 +2,8 @@
 
 using namespace		engine;
 
-int 				global_i = 0;
-
 void				model::bone::update_keyframe_transformation(float time)
 {
-	static int 		i;
-
-	if (i == 0)
-		i = ++global_i;
-
 	if (not animation)
 		return ;
 
@@ -18,7 +11,7 @@ void				model::bone::update_keyframe_transformation(float time)
 	position = interpolate_position(time);
 	rotation = interpolate_rotation(time);
 
-	mat4			result;
+	auto			result = mat4(1.0f);
 
 	result *= glm::scale(scale);
 	result *= glm::translate(position);
@@ -29,9 +22,9 @@ void				model::bone::update_keyframe_transformation(float time)
 
 mat4				model::bone::get_parents_transformation() const
 {
-	bone*			iterator = parent;
+	bone			*iterator = parent;
 	vector<mat4>	matrices;
-	mat4			result;
+	mat4			result(1.0f);
 
 	while (iterator)
 	{

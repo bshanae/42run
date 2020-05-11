@@ -73,9 +73,15 @@ void				renderer::render(const shared_ptr<model::model> &model)
 #warning "Get rid of variable"
 				mat4	result;
 
+#if 0
 				result = skeleton->bones[i]->get_parents_transformation() * converter::to_glm(skeleton->bones[i]->node->mTransformation);
-				result = skeleton->bones[i]->offset;
+				uniforms.bones_transformations[i].save(result * skeleton->bones[i]->offset);
+#else
+				result = skeleton->bones[i]->get_parents_transformation();
+				result *= converter::to_glm(skeleton->bones[i]->node->mTransformation);
+				result *= skeleton->bones[i]->offset;
 				uniforms.bones_transformations[i].save(result);
+#endif
 			}
 		}
 	}
