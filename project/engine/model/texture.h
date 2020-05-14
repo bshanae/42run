@@ -14,9 +14,7 @@ public :
 IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(texture)
 
 	explicit		texture(const path &source);
-					~texture();
-
-	const path		source;
+					~texture() override;
 };
 
 

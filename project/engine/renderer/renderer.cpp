@@ -28,9 +28,16 @@ using namespace		engine;
 	for (int i = 0; i < model::skeleton::bones_limit; i++)
 		uniforms.bones_transformations[i] = program.make_uniform<mat4>("uniform_bones_transformations[" + std::to_string(i) + "]");
 
+	uniforms.instance.scaling = program.make_uniform<mat4>("uniform_instance.scaling");
+	uniforms.instance.translation = program.make_uniform<mat4>("uniform_instance.translation");
+	uniforms.instance.rotation = program.make_uniform<mat4>("uniform_instance.rotation");
+
 	program.use(true);
 
-	uniforms.light.position.save(vec3(1000, 5000, 1000));
+	uniforms.light.position.save(vec3(0, 5000, 0));
+
+	uniforms.material.textures.diffuse.value.save(0);
+	uniforms.material.textures.specular.value.save(1);
 
 	program.use(false);
 }
@@ -52,9 +59,9 @@ void				renderer::render()
 	program.use(false);
 }
 
-void				renderer::render(const shared_ptr<model::model> &model)
+void				renderer::render(const model::instance::ptr &model)
 {
-	auto			&skeleton = model->skeleton;
+	auto			&skeleton = model->model->skeleton;
 
 	if (skeleton->bones.empty())
 		uniforms.does_mesh_have_bones.save(0);
@@ -79,7 +86,11 @@ void				renderer::render(const shared_ptr<model::model> &model)
 		}
 	}
 
-	for (auto &mesh : model->meshes)
+	uniforms.instance.scaling.save(model->scaling);
+	uniforms.instance.translation.save(model->translation);
+	uniforms.instance.rotation.save(model->rotation);
+
+	for (auto &mesh : model->model->meshes)
 	{
 		uniforms.material.colors.ambient.save(mesh->material->colors.ambient);
 		uniforms.material.colors.diffuse.save(mesh->material->colors.diffuse);
@@ -88,25 +99,19 @@ void				renderer::render(const shared_ptr<model::model> &model)
 		uniforms.material.textures.diffuse.is_valid.save(mesh->material->textures.diffuse != nullptr);
 		if (mesh->material->textures.diffuse)
 		{
-			auto	value = mesh->material->textures.diffuse->object;
-
 			glActiveTexture(GL_TEXTURE0);
-			uniforms.material.textures.diffuse.value.save(0);
-			glBindTexture(GL_TEXTURE_2D, value);
+			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.diffuse->object);
 		}
 
 		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular != nullptr);
 		if (mesh->material->textures.specular)
 		{
-			auto	value = mesh->material->textures.specular->object;
-
 			glActiveTexture(GL_TEXTURE1);
-			uniforms.material.textures.specular.value.save(1);
-			glBindTexture(GL_TEXTURE_2D, value);
+			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.specular->object);
 		}
 
 		glBindVertexArray(mesh->VAO);
-		glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -163,8 +168,8 @@ void				renderer::callback()
 
 		case engine::interface::key::enter :
 			for (auto &model : models)
-				if (model->skeleton->animation)
-					model->skeleton->update();
+				if (model->model->skeleton->animation)
+					model->model->skeleton->update();
 			break ;
 
 		default :

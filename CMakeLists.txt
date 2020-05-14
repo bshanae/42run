@@ -49,7 +49,9 @@ set(SOURCE_ENGINE
 	project/engine/model/skeleton.cpp
 	project/engine/model/texture.cpp
 	project/engine/model/mesh.cpp
-	project/engine/model/loader.cpp
+	project/engine/model/model.cpp
+	project/engine/model/instance.cpp
+	project/engine/model/manager.cpp
 
 	project/engine/renderer/renderer.cpp
 	)

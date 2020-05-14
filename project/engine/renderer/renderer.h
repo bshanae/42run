@@ -8,6 +8,7 @@
 #include "engine/scene/scene.h"
 #include "engine/model/skeleton.h"
 #include "engine/model/model.h"
+#include "engine/model/instance.h"
 
 class							engine::renderer
 {
@@ -23,7 +24,7 @@ START_GLOBAL_CUSTOM_INITIALIZER(renderer)
 	engine::core::connect_renderer();
 FINISH_GLOBAL_CUSTOM_INITIALIZER
 
-	static void					add_target(const shared_ptr<model::model> &model)
+	static void					add_target(const model::instance::ptr &model)
 	{
 		instance()->models.push_back(model);
 	}
@@ -34,11 +35,11 @@ private :
 
 IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
-	using						models_type = vector<shared_ptr<model::model>>;
-	models_type 				models;
+	using						models_type = vector<shared_ptr<model::instance>>;
+	models_type					models;
 
 	void						render();
-	void						render(const shared_ptr<model::model> &model);
+	void						render(const model::instance::ptr &model);
 
 	void						callback();
 
@@ -84,5 +85,12 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
 		uniform_int 			does_mesh_have_bones;
 		uniform_mat4 			bones_transformations[model::skeleton::bones_limit];
+
+		struct
+		{
+			uniform_mat4		scaling;
+			uniform_mat4		translation;
+			uniform_mat4		rotation;
+		}						instance;
 	}							uniforms;
 };

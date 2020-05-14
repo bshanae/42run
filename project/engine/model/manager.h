@@ -3,25 +3,30 @@
 #include "engine/namespace.h"
 
 #include "engine/abstract/global.h"
-#include "engine/model/model.h"
 #include "engine/model/bone.h"
+#include "engine/model/model.h"
+#include "engine/model/instance.h"
 
-class							engine::model::loader
+class							engine::model::manager
 {
 	friend class 				renderer;
 
 private :
-								loader() = default;
+								manager() = default;
 public :
-								~loader() = default;
+								~manager() = default;
 
-IMPLEMENT_GLOBAL_INITIALIZER(loader)
+IMPLEMENT_GLOBAL_INITIALIZER(manager)
 
-	static model::ptr			load(const path &source);
+	static model::ptr			make_model(const path &source);
+	static instance::ptr		make_instance(model::ptr model)
+	{
+		return (instance::make_ptr(model));
+	}
 
 private :
 
-IMPLEMENT_GLOBAL_INSTANCER(loader)
+IMPLEMENT_GLOBAL_INSTANCER(manager)
 
 	Assimp::Importer			importer;
 	const aiScene				*scene = nullptr;
@@ -36,7 +41,7 @@ IMPLEMENT_GLOBAL_INSTANCER(loader)
 
 	path						directory;
 
-	model::ptr					load_non_static(const path &source);
+	model::ptr					make_model_non_static(const path &source);
 
 	void						load_nodes();
 	void						load_meshes();

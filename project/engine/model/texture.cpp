@@ -1,9 +1,11 @@
 #include "texture.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
+
 using namespace		engine;
 
-					model::texture::texture(const path &source) :
-					source(source)
+					model::texture::texture(const path &source)
 {
 	glGenTextures(1, &object);
 
@@ -11,12 +13,14 @@ using namespace		engine;
 	int				height;
 	int				number_of_components;
 
+	stbi_set_flip_vertically_on_load(1);
+
 	auto			*data = stbi_load(source.c_str(), &width, &height, &number_of_components, 0);
 
 	if (not data)
 		common::error::raise(common::error::id::texture_creation_error);
 
-	GLenum			format;
+	GLenum			format = 0;
 
 	switch (number_of_components)
 	{

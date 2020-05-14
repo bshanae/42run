@@ -33,14 +33,14 @@ using namespace		engine;
 
 	for (int i = 0; i < vertex::bones_limit; i++)
 	{
-		glVertexAttribPointer(3 + i, 1, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(offsetof(vertex, bones_ids) + sizeof(float) * i));
 		glEnableVertexAttribArray(3 + i);
+		glVertexAttribPointer(3 + i, 1, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(offsetof(vertex, bones_ids) + sizeof(float) * i));
 	}
 
 	for (int i = 0; i < vertex::bones_limit; i++)
 	{
-		glVertexAttribPointer(3 + vertex::bones_limit + i, 1, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(offsetof(vertex, bones_weights) + sizeof(float) * i));
 		glEnableVertexAttribArray(3 + vertex::bones_limit + i);
+		glVertexAttribPointer(3 + vertex::bones_limit + i, 1, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(offsetof(vertex, bones_weights) + sizeof(float) * i));
 	}
 
 	glBindVertexArray(0);

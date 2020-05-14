@@ -47,6 +47,9 @@ uniform struct
 //						FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
+#define DIFFUSE_FLOOR	0.05
+#define SPECULAR_FLOOR	0.0
+
 vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 {
 	vec3				material_color;
@@ -55,7 +58,7 @@ vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 	if (uniform_material.textures.diffuse.is_valid)
 		material_color *= texture(uniform_material.textures.diffuse.value, pass_UV).rgb;
 
-	float				intensity = max(dot(normal, light_direction), 0.0);
+	float				intensity = max(dot(normal, light_direction), DIFFUSE_FLOOR);
 
 	return (material_color * intensity);
 }
@@ -73,7 +76,7 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 	vec3				reflect_direction = reflect(-light_direction, normal);
 	float				intensity = dot(view_direction, reflect_direction);
 
-	intensity = max(intensity, 0.0);
+	intensity = max(intensity, SPECULAR_FLOOR);
 	intensity = pow(intensity, 32);
 
 	return (material_color * intensity);
@@ -85,7 +88,9 @@ void					main()
 	vec3				light_direction = normalize(uniform_light.position - pass_position);
 
 	final_color = vec4(uniform_material.colors.ambient, 0);
+	final_color = vec4(0);
 	final_color += vec4(calculate_diffuse(normal, light_direction), 0);
 	final_color += vec4(calculate_specular(normal, light_direction), 0);
 	final_color.a = 1;
+
 }

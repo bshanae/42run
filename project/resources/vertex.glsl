@@ -32,9 +32,21 @@ uniform mat4					uniform_model;
 uniform bool					uniform_does_mesh_have_bones;
 uniform mat4					uniform_bones_transformations[BONES_IN_SKELETON];
 
+uniform struct
+{
+	mat4						scaling;
+	mat4						translation;
+	mat4						rotation;
+}								uniform_instance;
+
+///////////////////////////////////////////////////////////////////////////////
+//								MAIN
+///////////////////////////////////////////////////////////////////////////////
+
 void							main()
 {
 	mat4						bones_transformation = mat4(1.0);
+	mat4						instance_transformation;
 
 	if (uniform_does_mesh_have_bones)
 	{
@@ -44,9 +56,11 @@ void							main()
 			bones_transformation += uniform_bones_transformations[int(in_bones_ids[i])] * in_bones_weights[i];
 	}
 
+	instance_transformation = uniform_instance.translation * uniform_instance.rotation * uniform_instance.scaling;
+
 	pass_position = in_position;
-	pass_normal = in_normal;
+	pass_normal = vec3(uniform_instance.rotation * vec4(in_normal, 0.f));
 	pass_UV = in_UV;
 
-	gl_Position = uniform_projection * uniform_view * bones_transformation * vec4(in_position, 1.f);
+	gl_Position = uniform_projection * uniform_view * instance_transformation * bones_transformation * vec4(in_position, 1.f);
 }

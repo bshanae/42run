@@ -13,7 +13,6 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/types.h"
-#include "stb/stb_image.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -83,8 +82,9 @@ namespace				engine
 		class			texture;
 		class			material;
 		class			mesh;
-		class			loader;
+		class			manager;
 		class			model;
+		class			instance;
 	}
 
 	namespace			scene

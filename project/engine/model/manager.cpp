@@ -1,4 +1,4 @@
-#include "loader.h"
+#include "manager.h"
 
 #include "engine/converter/converter.h"
 #include "engine/model/material.h"
@@ -6,14 +6,14 @@
 
 using namespace				engine;
 
-model::model::ptr			model::loader::load(const path &source)
+model::model::ptr			model::manager::make_model(const path &source)
 {
-	auto					&instance = loader::instance();
+	auto					&instance = manager::instance();
 
-	return (instance->load_non_static(source));
+	return (instance->make_model_non_static(source));
 }
 
-model::model::ptr			model::loader::load_non_static(const path &source)
+model::model::ptr			model::manager::make_model_non_static(const path &source)
 {
 	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_MaxQuality);
 
@@ -45,18 +45,18 @@ model::model::ptr			model::loader::load_non_static(const path &source)
 // /////////////////////////////////////////////////////////////////////////////
 
 
-void						model::loader::load_nodes()
+void						model::manager::load_nodes()
 {
 	process_node(scene->mRootNode);
 }
 
-void						model::loader::load_meshes()
+void						model::manager::load_meshes()
 {
 	for (int i = 0; i < scene->mNumMeshes; i++)
 		meshes.push_back(process_mesh(scene->mMeshes[i]));
 }
 
-void						model::loader::load_bones()
+void						model::manager::load_bones()
 {
 	bone::ptr				pointer;
 
@@ -87,7 +87,7 @@ void						model::loader::load_bones()
 	}
 }
 
-void						model::loader::load_animations()
+void						model::manager::load_animations()
 {
 	if (scene->mNumAnimations == 0)
 		return;
@@ -102,7 +102,7 @@ void						model::loader::load_animations()
 // /////////////////////////////////////////////////////////////////////////////
 
 
-void						model::loader::process_node(aiNode *node)
+void						model::manager::process_node(aiNode *node)
 {
 	nodes.push_back(node);
 
@@ -110,7 +110,7 @@ void						model::loader::process_node(aiNode *node)
 		process_node(node->mChildren[i]);
 }
 
-model::mesh::ptr			model::loader::process_mesh(aiMesh *mesh)
+model::mesh::ptr			model::manager::process_mesh(aiMesh *mesh)
 {
 	vector<mesh::vertex>	vertices;
 	vector<unsigned>		indices;
@@ -124,7 +124,12 @@ model::mesh::ptr			model::loader::process_mesh(aiMesh *mesh)
 
 		vertex.position = converter::to_glm(mesh->mVertices[i]);
 		vertex.normal = converter::to_glm(mesh->mNormals[i]);
-		vertex.UV = mesh->mTextureCoords[0] ? (vec2)converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
+//		vertex.UV = mesh->mTextureCoords[0] ? (vec2)converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
+		if (mesh->mTextureCoords[0])
+		{
+			vertex.UV.x = mesh->mTextureCoords[0][i].x;
+			vertex.UV.y = mesh->mTextureCoords[0][i].y;
+		}
 
 		vertices.push_back(vertex);
 	}
@@ -176,7 +181,7 @@ model::mesh::ptr			model::loader::process_mesh(aiMesh *mesh)
 	return (engine::model::mesh::make_ptr(vertices, indices, move(material)));
 }
 
-model::material::ptr		model::loader::process_material(aiMaterial *source)
+model::material::ptr		model::manager::process_material(aiMaterial *source)
 {
 	auto					target = engine::model::material::make_ptr();
 
@@ -192,7 +197,7 @@ model::material::ptr		model::loader::process_material(aiMaterial *source)
 	target->colors.diffuse = converter::to_glm(diffuse);
 	target->colors.specular = converter::to_glm(specular);
 
-	auto					emplace_texture = [this, source](texture::ptr &target, aiTextureType type)
+	auto					construct_texture = [this, source](texture::ptr &target, aiTextureType type)
 	{
 		aiString			file;
 
@@ -203,8 +208,8 @@ model::material::ptr		model::loader::process_material(aiMaterial *source)
 		target = engine::model::texture::make_ptr(directory / converter::to_path(file));
 	};
 
-	emplace_texture(target->textures.diffuse, aiTextureType_DIFFUSE);
-	emplace_texture(target->textures.specular, aiTextureType_SPECULAR);
+	construct_texture(target->textures.diffuse, aiTextureType_DIFFUSE);
+	construct_texture(target->textures.specular, aiTextureType_SPECULAR);
 
 	return (target);
 }
@@ -215,7 +220,7 @@ model::material::ptr		model::loader::process_material(aiMaterial *source)
 // /////////////////////////////////////////////////////////////////////////////
 
 
-aiNode						*model::loader::find_node(const string &name)
+aiNode						*model::manager::find_node(const string &name)
 {
 	for (int i = 0; i < nodes.size(); i++)
 		if (nodes[i]->mName.data == name)
@@ -224,7 +229,7 @@ aiNode						*model::loader::find_node(const string &name)
 	return (nullptr);
 }
 
-pair<model::bone::ptr, int>	model::loader::find_bone(const string &name)
+pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 {
 	for (int i = 0; i < bones.size(); i++)
 		if (bones[i]->name == name)
@@ -235,7 +240,7 @@ pair<model::bone::ptr, int>	model::loader::find_bone(const string &name)
 	return {bone::ptr(), -1};
 }
 
-aiNodeAnim					*model::loader::find_animation(const string &name)
+aiNodeAnim					*model::manager::find_animation(const string &name)
 {
 	for (int i = 0; i < animations.size(); i++)
 		if (animations[i]->mNodeName.data == name)

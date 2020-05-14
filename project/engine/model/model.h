@@ -12,7 +12,7 @@ class							engine::model::model
 {
 public :
 
-	friend class				loader;
+	friend class				manager;
 	friend class 				engine::renderer;
 
 IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(model)
@@ -24,6 +24,7 @@ private :
 								meshes(move(meshes)),
 								skeleton(move(skeleton))
 								{}
+
 public:
 								~model() = default;
 
@@ -31,6 +32,8 @@ public:
 	{
 		skeleton->animate(animation);
 	}
+
+	void						center();
 
 private:
 
