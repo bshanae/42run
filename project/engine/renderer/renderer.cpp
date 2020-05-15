@@ -110,6 +110,8 @@ void				renderer::render(const model::instance::ptr &model)
 			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.specular->object);
 		}
 
+//		glActiveTexture(GL_TEXTURE0);
+
 		glBindVertexArray(mesh->VAO);
 		glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);

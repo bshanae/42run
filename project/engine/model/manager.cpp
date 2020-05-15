@@ -124,12 +124,7 @@ model::mesh::ptr			model::manager::process_mesh(aiMesh *mesh)
 
 		vertex.position = converter::to_glm(mesh->mVertices[i]);
 		vertex.normal = converter::to_glm(mesh->mNormals[i]);
-//		vertex.UV = mesh->mTextureCoords[0] ? (vec2)converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
-		if (mesh->mTextureCoords[0])
-		{
-			vertex.UV.x = mesh->mTextureCoords[0][i].x;
-			vertex.UV.y = mesh->mTextureCoords[0][i].y;
-		}
+		vertex.UV = mesh->mTextureCoords[0] ? converter::to_glm(mesh->mTextureCoords[0][i]) : vec2();
 
 		vertices.push_back(vertex);
 	}
@@ -160,7 +155,7 @@ model::mesh::ptr			model::manager::process_mesh(aiMesh *mesh)
 		for (int j = 0; j < bone->mNumWeights; j++)
 		{
 			weight = bone->mWeights[j];
-			id = weight.mVertexId;
+			id = (int)weight.mVertexId;
 
 			for (int k = 0; k < mesh::vertex::bones_limit; k++)
 			{

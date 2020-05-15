@@ -4,7 +4,7 @@
 engine::path				cube_path = "/Users/belchenkovova/Desktop/cube/cube.obj";
 engine::path				table_path = "/Users/belchenkovova/Desktop/table.obj";
 engine::path				imac_path = "/Users/belchenkovova/Desktop/iMac/mpm_f18__Apple_iMac_27.obj";
-engine::path				keyboard_path = "/Users/belchenkovova/Desktop/mpm_f17_Apple_Keyboard/mpm_f17__Apple_Keyboard.obj";
+engine::path				keyboard_path = "/Users/belchenkovova/Desktop/Apple Keyboard/mpm_f17__Apple_Keyboard.obj";
 
 int							main()
 {
@@ -35,8 +35,8 @@ int							main()
 	auto					table_instance = engine::model::manager::make_instance(table_model);
 	auto					keyboard_instance = engine::model::manager::make_instance(keyboard_model);
 
-	imac_model->center();
-	table_model->center();
+//	imac_model->center();
+//	table_model->center();
 
 	imac_instance_a->scale(0.1f);
 	imac_instance_a->translate(engine::vec3(-45.f, 64.f, 0.f));
@@ -45,10 +45,10 @@ int							main()
 	imac_instance_b->translate(engine::vec3(+45.f, 64.f, 0.f));
 	imac_instance_b->rotate(engine::vec3(0.f, 180.f, 0.f));
 
-	keyboard_instance->rotate(engine::vec3(45.f, 0.f, 0.f));
+//	keyboard_instance->rotate(engine::vec3(45.f, 0.f, 0.f));
 
 //	engine::renderer::add_target(table_instance);
-//	engine::renderer::add_target(imac_instance_a);
+	engine::renderer::add_target(imac_instance_a);
 //	engine::renderer::add_target(imac_instance_b);
 	engine::renderer::add_target(keyboard_instance);
 
