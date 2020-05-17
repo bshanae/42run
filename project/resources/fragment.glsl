@@ -92,5 +92,5 @@ void					main()
 	final_color += vec4(calculate_specular(normal, light_direction), 0);
 	final_color.a = 1;
 
-//	final_color = vec4(pass_UV, 0, 1);
+	final_color = vec4(pass_UV, 0, 1);
 }

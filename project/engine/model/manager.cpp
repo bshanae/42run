@@ -9,8 +9,10 @@ using namespace				engine;
 model::model::ptr			model::manager::make_model(const path &source)
 {
 	auto					&instance = manager::instance();
+	auto					model = instance->make_model_non_static(source);
 
-	return (instance->make_model_non_static(source));
+	model->center();
+	return (model);
 }
 
 model::model::ptr			model::manager::make_model_non_static(const path &source)

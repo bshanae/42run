@@ -103,12 +103,12 @@ void				renderer::render(const model::instance::ptr &model)
 			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.diffuse->object);
 		}
 
-		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular != nullptr);
-		if (mesh->material->textures.specular)
-		{
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.specular->object);
-		}
+//		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular != nullptr);
+//		if (mesh->material->textures.specular)
+//		{
+//			glActiveTexture(GL_TEXTURE1);
+//			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.specular->object);
+//		}
 
 //		glActiveTexture(GL_TEXTURE0);
 
