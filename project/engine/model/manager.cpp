@@ -11,13 +11,14 @@ model::model::ptr			model::manager::make_model(const path &source)
 	auto					&instance = manager::instance();
 	auto					model = instance->make_model_non_static(source);
 
-	model->center();
+#warning "Use this?"
+//	model->center();
 	return (model);
 }
 
 model::model::ptr			model::manager::make_model_non_static(const path &source)
 {
-	scene = importer.ReadFile(source, aiProcessPreset_TargetRealtime_MaxQuality);
+	scene = importer.ReadFile(source, 0);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
 	{
@@ -185,14 +186,17 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 	aiColor3D				ambient;
 	aiColor3D				diffuse;
 	aiColor3D				specular;
+	float					transmission;
 
 	source->Get(AI_MATKEY_COLOR_AMBIENT, ambient);
 	source->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
 	source->Get(AI_MATKEY_COLOR_SPECULAR, specular);
+	source->Get(AI_MATKEY_COLOR_TRANSPARENT, transmission);
 
-	target->colors.ambient = converter::to_glm(ambient);
-	target->colors.diffuse = converter::to_glm(diffuse);
-	target->colors.specular = converter::to_glm(specular);
+	target->unite.ambient = converter::to_glm(ambient);
+	target->unite.diffuse = converter::to_glm(diffuse);
+	target->unite.specular = converter::to_glm(specular);
+	target->unite.alpha = transmission;
 
 	auto					construct_texture = [this, source](texture::ptr &target, aiTextureType type)
 	{

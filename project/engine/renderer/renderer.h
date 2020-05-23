@@ -47,6 +47,7 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 	engine::scene::scene		scene;
 
 	using 						uniform_int = engine::program::uniform<int>;
+	using 						uniform_float = engine::program::uniform<float>;
 	using 						uniform_vec3 = engine::program::uniform<vec3>;
 	using 						uniform_mat4 = engine::program::uniform<mat4>;
 
@@ -68,7 +69,8 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 				uniform_vec3	ambient;
 				uniform_vec3	diffuse;
 				uniform_vec3	specular;
-			}					colors;
+				uniform_float	alpha;
+			}					unite;
 
 			struct
 			{

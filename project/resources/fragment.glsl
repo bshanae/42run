@@ -27,7 +27,8 @@ uniform struct
 		vec3			ambient;
 		vec3			diffuse;
 		vec3			specular;
-	}					colors;
+		float			alpha;
+	}					unite;
 
 	struct
 	{
@@ -47,14 +48,13 @@ uniform struct
 //						FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
-#define DIFFUSE_FLOOR	0.05
-#define SPECULAR_FLOOR	0.0
+#define DIFFUSE_FLOOR	0.2
 
 vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 {
 	vec3				material_color;
 
-	material_color = uniform_material.colors.diffuse;
+	material_color = uniform_material.unite.diffuse;
 	if (uniform_material.textures.diffuse.is_valid)
 		material_color *= texture(uniform_material.textures.diffuse.value, pass_UV).rgb;
 
@@ -63,14 +63,15 @@ vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 	return (material_color * intensity);
 }
 
+#define SPECULAR_FLOOR	0.0
+
 vec3					calculate_specular(vec3 normal, vec3 light_direction)
 {
-	vec3				material_color;
+	vec3				material_factor;
 
-	material_color = uniform_material.colors.specular;
+	material_factor = uniform_material.unite.specular;
 	if (uniform_material.textures.specular.is_valid)
-		material_color *= texture(uniform_material.textures.specular.value, pass_UV).r;
-
+		material_factor *= texture(uniform_material.textures.specular.value, pass_UV).r;
 
 	vec3				view_direction = normalize(uniform_light.camera - pass_position);
 	vec3				reflect_direction = reflect(-light_direction, normal);
@@ -79,7 +80,7 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 	intensity = max(intensity, SPECULAR_FLOOR);
 	intensity = pow(intensity, 32);
 
-	return (material_color * intensity);
+	return (material_factor * intensity);
 }
 
 void					main()
@@ -87,10 +88,11 @@ void					main()
 	vec3				normal = normalize(pass_normal);
 	vec3				light_direction = normalize(uniform_light.position - pass_position);
 
-	final_color = vec4(uniform_material.colors.ambient, 0);
-	final_color += vec4(calculate_diffuse(normal, light_direction), 0);
-	final_color += vec4(calculate_specular(normal, light_direction), 0);
-	final_color.a = 1;
+	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
+	final_color.rgb += uniform_material.unite.ambient;
+	final_color.rgb += calculate_diffuse(normal, light_direction);
+	final_color.rgb += calculate_specular(normal, light_direction);
 
-	final_color = vec4(pass_UV, 0, 1);
+//	final_color = vec4(pass_UV, 0, 1);
+//	final_color = vec4(uniform_material.textures.specular.is_valid, 0, 0, 1);
 }

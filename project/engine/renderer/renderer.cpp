@@ -5,15 +5,20 @@
 
 using namespace		engine;
 
+#warning "Debug only"
+#define LIGHT_POSITION vec3(-200, 250, 100)
+//#define LIGHT_POSITION vec3(0, 0, 0)
+
 					renderer::renderer() :
 					program("project/resources/vertex.glsl", "project/resources/fragment.glsl")
 {
 	uniforms.projection = program.make_uniform<mat4>("uniform_projection");
 	uniforms.view = program.make_uniform<mat4>("uniform_view");
 
-	uniforms.material.colors.ambient = program.make_uniform<vec3>("uniform_material.colors.ambient");
-	uniforms.material.colors.diffuse = program.make_uniform<vec3>("uniform_material.colors.diffuse");
-	uniforms.material.colors.specular = program.make_uniform<vec3>("uniform_material.colors.specular");
+	uniforms.material.unite.ambient = program.make_uniform<vec3>("uniform_material.unite.ambient");
+	uniforms.material.unite.diffuse = program.make_uniform<vec3>("uniform_material.unite.diffuse");
+	uniforms.material.unite.specular = program.make_uniform<vec3>("uniform_material.unite.specular");
+	uniforms.material.unite.alpha = program.make_uniform<float>("uniform_material.unite.alpha");
 
 	uniforms.material.textures.diffuse.is_valid = program.make_uniform<int>("uniform_material.textures.diffuse.is_valid");
 	uniforms.material.textures.diffuse.value = program.make_uniform<int>("uniform_material.textures.diffuse.value");
@@ -34,7 +39,8 @@ using namespace		engine;
 
 	program.use(true);
 
-	uniforms.light.position.save(vec3(0, 5000, 0));
+	#warning "Debug only"
+	uniforms.light.position.save(LIGHT_POSITION);
 
 	uniforms.material.textures.diffuse.value.save(0);
 	uniforms.material.textures.specular.value.save(1);
@@ -92,9 +98,10 @@ void				renderer::render(const model::instance::ptr &model)
 
 	for (auto &mesh : model->model->meshes)
 	{
-		uniforms.material.colors.ambient.save(mesh->material->colors.ambient);
-		uniforms.material.colors.diffuse.save(mesh->material->colors.diffuse);
-		uniforms.material.colors.specular.save(mesh->material->colors.specular);
+		uniforms.material.unite.ambient.save(mesh->material->unite.ambient);
+		uniforms.material.unite.diffuse.save(mesh->material->unite.diffuse);
+		uniforms.material.unite.specular.save(mesh->material->unite.specular);
+		uniforms.material.unite.alpha.save(mesh->material->unite.alpha);
 
 		uniforms.material.textures.diffuse.is_valid.save(mesh->material->textures.diffuse != nullptr);
 		if (mesh->material->textures.diffuse)
@@ -103,14 +110,14 @@ void				renderer::render(const model::instance::ptr &model)
 			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.diffuse->object);
 		}
 
-//		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular != nullptr);
-//		if (mesh->material->textures.specular)
-//		{
-//			glActiveTexture(GL_TEXTURE1);
-//			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.specular->object);
-//		}
+		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular != nullptr);
+		if (mesh->material->textures.specular)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.specular->object);
+		}
 
-//		glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0);
 
 		glBindVertexArray(mesh->VAO);
 		glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, nullptr);
@@ -125,6 +132,11 @@ void				renderer::callback()
 	const auto		&event = core::receive_event();
 	auto			key = event.read_key();
 	auto			&camera = scene.camera;
+
+	static vec3 	light_position = LIGHT_POSITION;
+	bool			light_changed = false;
+
+	program.use(true);
 
 	switch (key)
 	{
@@ -174,8 +186,53 @@ void				renderer::callback()
 					model->model->skeleton->update();
 			break ;
 
+#warning "Debug only"
+#define SHIFT 10
+
+		case engine::interface::key::letter_j :
+			light_position.x -= SHIFT;
+			uniforms.light.position.save(light_position);
+			light_changed = true;
+			break ;
+
+		case engine::interface::key::letter_l :
+			light_position.x += SHIFT;
+			uniforms.light.position.save(light_position);
+			light_changed = true;
+			break ;
+
+		case engine::interface::key::letter_i :
+			light_position.z -= SHIFT;
+			uniforms.light.position.save(light_position);
+			light_changed = true;
+			break ;
+
+		case engine::interface::key::letter_k :
+			light_position.z += SHIFT;
+			uniforms.light.position.save(light_position);
+			light_changed = true;
+			break ;
+
+		case engine::interface::key::letter_u :
+			light_position.y += SHIFT;
+			uniforms.light.position.save(light_position);
+			light_changed = true;
+			break ;
+
+		case engine::interface::key::letter_o :
+			light_position.y -= SHIFT;
+			uniforms.light.position.save(light_position);
+			light_changed = true;
+			break ;
+
 		default :
+			program.use(false);
 			return ;
 	}
+
+	if (light_changed)
+		std::cerr << "Light position : " << glm::to_string(light_position) << std::endl;
+
+	program.use(false);
 	request = true;
 }

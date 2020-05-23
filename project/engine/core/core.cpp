@@ -10,8 +10,7 @@ using namespace		engine;
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	if (use_multisampling)
-		glfwWindowHint(GLFW_SAMPLES, number_of_samples);
+	glfwWindowHint(GLFW_SAMPLES, number_of_samples);
 
 	window = glfwCreateWindow(window_size.x, window_size.y, window_name.c_str(), nullptr, nullptr);
 	if (window == nullptr)
@@ -21,21 +20,15 @@ using namespace		engine;
 	if (not gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		common::error::raise(common::error::id::GLAD_error);
 
-
 	glfwGetFramebufferSize(window, &window_size.x, &window_size.y);
 	glViewport(0, 0, window_size.x, window_size.y);
 
-	if (use_blending)
-	{
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	if (use_multisampling)
-		glEnable(GL_MULTISAMPLE);
+	glEnable(GL_MULTISAMPLE);
 
-	if (use_depth_test)
-		glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 
 	glfwSetWindowUserPointer(window, this);
 	glfwSetKeyCallback(window, callback);
