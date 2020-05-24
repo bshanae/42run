@@ -11,8 +11,6 @@ model::model::ptr			model::manager::make_model(const path &source)
 	auto					&instance = manager::instance();
 	auto					model = instance->make_model_non_static(source);
 
-#warning "Use this?"
-//	model->center();
 	return (model);
 }
 
@@ -228,20 +226,18 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 
 aiNode						*model::manager::find_node(const string &name)
 {
-#warning "range based for"
-	for (int i = 0; i < nodes.size(); i++)
-		if (nodes[i]->mName.data == name)
-			return (nodes[i]);
+	for (const auto &node : nodes)
+		if (node->mName.data == name)
+			return (node);
 
 	return (nullptr);
 }
 
 pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 {
-#warning "range based for"
-	for (int i = 0; i < bones.size(); i++)
-		if (bones[i]->name == name)
-			return {bones[i], bones[i]->id};
+	for (const auto &bone : bones)
+		if (bone->name == name)
+			return {bone, bone->id};
 
 	if (name != "RootNode")
 		common::warning::raise(common::warning::id::model_bone_not_found);
@@ -250,10 +246,9 @@ pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 
 aiNodeAnim					*model::manager::find_animation(const string &name)
 {
-#warning "range based for"
-	for (int i = 0; i < animations.size(); i++)
-		if (animations[i]->mNodeName.data == name)
-			return (animations[i]);
+	for (const auto &animation : animations)
+		if (animation->mNodeName.data == name)
+			return (animation);
 
 	common::warning::raise(common::warning::id::model_animation_not_found);
 	return (nullptr);

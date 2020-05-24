@@ -26,9 +26,6 @@ out vec2						pass_UV;
 uniform mat4					uniform_projection;
 uniform mat4					uniform_view;
 
-uniform mat4					uniform_local;
-uniform mat4					uniform_model;
-
 uniform bool					uniform_does_mesh_have_bones;
 uniform mat4					uniform_bones_transformations[BONES_IN_SKELETON];
 
