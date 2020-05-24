@@ -6,8 +6,8 @@
 using namespace		engine;
 
 #warning "Debug only"
-#define LIGHT_POSITION vec3(-200, 250, 100)
-//#define LIGHT_POSITION vec3(0, 0, 0)
+//#define LIGHT_POSITION vec3(-200, 250, 100)
+#define LIGHT_POSITION vec3(0, 30, 0)
 
 					renderer::renderer() :
 					program("project/resources/vertex.glsl", "project/resources/fragment.glsl")
@@ -19,6 +19,9 @@ using namespace		engine;
 	uniforms.material.unite.diffuse = program.make_uniform<vec3>("uniform_material.unite.diffuse");
 	uniforms.material.unite.specular = program.make_uniform<vec3>("uniform_material.unite.specular");
 	uniforms.material.unite.alpha = program.make_uniform<float>("uniform_material.unite.alpha");
+
+	uniforms.material.textures.ambient.is_valid = program.make_uniform<int>("uniform_material.textures.ambient.is_valid");
+	uniforms.material.textures.ambient.value = program.make_uniform<int>("uniform_material.textures.ambient.value");
 
 	uniforms.material.textures.diffuse.is_valid = program.make_uniform<int>("uniform_material.textures.diffuse.is_valid");
 	uniforms.material.textures.diffuse.value = program.make_uniform<int>("uniform_material.textures.diffuse.value");
@@ -42,8 +45,9 @@ using namespace		engine;
 	#warning "Debug only"
 	uniforms.light.position.save(LIGHT_POSITION);
 
-	uniforms.material.textures.diffuse.value.save(0);
-	uniforms.material.textures.specular.value.save(1);
+	uniforms.material.textures.ambient.value.save(0);
+	uniforms.material.textures.diffuse.value.save(1);
+	uniforms.material.textures.specular.value.save(2);
 
 	program.use(false);
 }
@@ -103,17 +107,24 @@ void				renderer::render(const model::instance::ptr &model)
 		uniforms.material.unite.specular.save(mesh->material->unite.specular);
 		uniforms.material.unite.alpha.save(mesh->material->unite.alpha);
 
+		uniforms.material.textures.ambient.is_valid.save(mesh->material->textures.ambient != nullptr);
+		if (mesh->material->textures.ambient)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.ambient->object);
+		}
+
 		uniforms.material.textures.diffuse.is_valid.save(mesh->material->textures.diffuse != nullptr);
 		if (mesh->material->textures.diffuse)
 		{
-			glActiveTexture(GL_TEXTURE0);
+			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.diffuse->object);
 		}
 
 		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular != nullptr);
 		if (mesh->material->textures.specular)
 		{
-			glActiveTexture(GL_TEXTURE1);
+			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.specular->object);
 		}
 
@@ -187,7 +198,7 @@ void				renderer::callback()
 			break ;
 
 #warning "Debug only"
-#define SHIFT 10
+#define SHIFT 2
 
 		case engine::interface::key::letter_j :
 			light_position.x -= SHIFT;

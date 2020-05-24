@@ -32,6 +32,7 @@ uniform struct
 
 	struct
 	{
+		texture_wrap	ambient;
 		texture_wrap	diffuse;
 		texture_wrap	specular;
 	}					textures;
@@ -48,7 +49,17 @@ uniform struct
 //						FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
-#define DIFFUSE_FLOOR	0.2
+vec3					calculate_ambient()
+{
+	vec3				material_color;
+
+	if (uniform_material.textures.ambient.is_valid)
+		return (texture(uniform_material.textures.ambient.value, pass_UV).rgb);
+	else
+		return (uniform_material.unite.ambient);
+}
+
+#define DIFFUSE_FLOOR	0.3
 
 vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 {
@@ -78,7 +89,7 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 	float				intensity = dot(view_direction, reflect_direction);
 
 	intensity = max(intensity, SPECULAR_FLOOR);
-	intensity = pow(intensity, 32);
+	intensity = pow(intensity, 512);
 
 	return (material_factor * intensity);
 }
@@ -89,7 +100,7 @@ void					main()
 	vec3				light_direction = normalize(uniform_light.position - pass_position);
 
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
-	//final_color.rgb += uniform_material.unite.ambient;
+//	final_color.rgb += calculate_ambient();
 	final_color.rgb += calculate_diffuse(normal, light_direction);
 	final_color.rgb += calculate_specular(normal, light_direction);
 

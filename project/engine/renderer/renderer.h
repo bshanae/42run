@@ -74,6 +74,7 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
 			struct
 			{
+				texture_wrap	ambient;
 				texture_wrap	diffuse;
 				texture_wrap	specular;
 			}					textures;

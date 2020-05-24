@@ -23,6 +23,7 @@ IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(material)
 
 	struct
 	{
+		texture::ptr		ambient;
 		texture::ptr		diffuse;
 		texture::ptr		specular;
 	}						textures;

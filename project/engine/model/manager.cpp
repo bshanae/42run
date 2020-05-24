@@ -186,17 +186,21 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 	aiColor3D				ambient;
 	aiColor3D				diffuse;
 	aiColor3D				specular;
-	float					transmission;
+	float					opacity;
 
-	source->Get(AI_MATKEY_COLOR_AMBIENT, ambient);
-	source->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
-	source->Get(AI_MATKEY_COLOR_SPECULAR, specular);
-	source->Get(AI_MATKEY_COLOR_TRANSPARENT, transmission);
+#define GET_MATERIAL_PROPERTY(key, target)										\
+	if (source->Get(key, target) != AI_SUCCESS)									\
+		common::warning::raise(common::warning::id::model_animation_not_found);
+
+	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_AMBIENT, ambient);
+	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_SPECULAR, specular);
+	GET_MATERIAL_PROPERTY(AI_MATKEY_OPACITY, opacity);
 
 	target->unite.ambient = converter::to_glm(ambient);
 	target->unite.diffuse = converter::to_glm(diffuse);
 	target->unite.specular = converter::to_glm(specular);
-	target->unite.alpha = transmission;
+	target->unite.alpha = opacity;
 
 	auto					construct_texture = [this, source](texture::ptr &target, aiTextureType type)
 	{
@@ -209,6 +213,7 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 		target = engine::model::texture::make_ptr(directory / converter::to_path(file));
 	};
 
+	construct_texture(target->textures.ambient, aiTextureType_AMBIENT);
 	construct_texture(target->textures.diffuse, aiTextureType_DIFFUSE);
 	construct_texture(target->textures.specular, aiTextureType_SPECULAR);
 
@@ -223,6 +228,7 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 
 aiNode						*model::manager::find_node(const string &name)
 {
+#warning "range based for"
 	for (int i = 0; i < nodes.size(); i++)
 		if (nodes[i]->mName.data == name)
 			return (nodes[i]);
@@ -232,6 +238,7 @@ aiNode						*model::manager::find_node(const string &name)
 
 pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 {
+#warning "range based for"
 	for (int i = 0; i < bones.size(); i++)
 		if (bones[i]->name == name)
 			return {bones[i], bones[i]->id};
@@ -243,6 +250,7 @@ pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 
 aiNodeAnim					*model::manager::find_animation(const string &name)
 {
+#warning "range based for"
 	for (int i = 0; i < animations.size(); i++)
 		if (animations[i]->mNodeName.data == name)
 			return (animations[i]);

@@ -13,6 +13,7 @@ namespace									common::warning
 {
 	enum class								id
 	{
+		model_material_property_error,
 		model_bone_not_found,
 		model_animation_not_found,
 		model_bone_without_animation
@@ -21,6 +22,7 @@ namespace									common::warning
 	using									messages_type = const std::unordered_map<id, const char *>;
 	messages_type							messages =
 	{
+		{id::model_material_property_error,	"Engine, Model, Loader : Material property error"},
 		{id::model_bone_not_found,			"Engine, Model, Loader : Bone not found"},
 		{id::model_animation_not_found,		"Engine, Model, Loader : Animation not found"},
 		{id::model_bone_without_animation,	"Engine, Model, Loader : Bone does't have animation"}

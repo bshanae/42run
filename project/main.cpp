@@ -3,7 +3,7 @@
 struct
 {
 	engine::path					cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
-	engine::path					scene = "/Users/belchenkovova/Desktop/Scene.obj";
+	engine::path					scene = "/Users/belchenkovova/Desktop/Complete/Scene.obj";
 }									paths;
 
 struct
@@ -22,11 +22,11 @@ int									main()
 {
 	engine::core::window_size = engine::ivec2(1280, 720);
 	engine::core::window_name = "42run";
-	engine::core::background = engine::vec3(0.1f, 0.1f, 0.1f);
+	engine::core::background = engine::vec3(0.7f, 0.7f, 0.7f);
 	engine::core::number_of_samples = 4;
 
-	engine::scene::camera::initial_position = engine::vec3(0.f, 0.f, 500.f);
-	engine::scene::camera::movement_speed = 10.f;
+	engine::scene::camera::initial_position = engine::vec3(0.f, 10.f, 100.f);
+	engine::scene::camera::movement_speed = 2.f;
 	engine::scene::camera::rotation_speed = 2.f;
 	engine::scene::camera::near_plane = 10.f;
 	engine::scene::camera::far_plane = 1000.f;
