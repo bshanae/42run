@@ -3,19 +3,19 @@
 struct
 {
 	engine::path					cube = "/Users/belchenkovova/Desktop/cube/cube.obj";
-	engine::path					window = "/Users/belchenkovova/Desktop/Window.obj";
+	engine::path					scene = "/Users/belchenkovova/Desktop/Scene.obj";
 }									paths;
 
 struct
 {
 	engine::model::model::ptr		cube;
-	engine::model::model::ptr		window;
+	engine::model::model::ptr		scene;
 }									models;
 
 struct
 {
 	engine::model::instance::ptr	cube;
-	engine::model::instance::ptr	window;
+	engine::model::instance::ptr	scene;
 }									instances;
 
 int									main()
@@ -36,18 +36,16 @@ int									main()
 	engine::model::manager::initialize();
 
 	models.cube = engine::model::manager::make_model(paths.cube);
-	models.window = engine::model::manager::make_model(paths.window);
+	models.scene = engine::model::manager::make_model(paths.scene);
 
 	instances.cube = engine::model::manager::make_instance(models.cube);
-	instances.cube->scale(100.f);
+	instances.cube->scale(10.f);
 	instances.cube->translate(engine::vec3(300, 100, 0));
 
-	instances.window = engine::model::manager::make_instance(models.window);
-	instances.window->scale(10.f);
-	instances.window->rotate(engine::vec3(0, 0, 0));
+	instances.scene = engine::model::manager::make_instance(models.scene);
 
-	engine::renderer::add_target(instances.cube);
-	engine::renderer::add_target(instances.window);
+//	engine::renderer::add_target(instances.cube);
+	engine::renderer::add_target(instances.scene);
 
 	engine::core::execute();
 

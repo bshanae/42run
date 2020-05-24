@@ -89,7 +89,7 @@ void					main()
 	vec3				light_direction = normalize(uniform_light.position - pass_position);
 
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
-	final_color.rgb += uniform_material.unite.ambient;
+	//final_color.rgb += uniform_material.unite.ambient;
 	final_color.rgb += calculate_diffuse(normal, light_direction);
 	final_color.rgb += calculate_specular(normal, light_direction);
 
