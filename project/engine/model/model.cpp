@@ -4,19 +4,24 @@
 
 using namespace		engine;
 
-void 				model::model::center()
+void				model::model::analyze()
 {
-	vec3			min = vec3(+1.f * std::numeric_limits<float>::infinity());
-	vec3			max = vec3(-1.f * std::numeric_limits<float>::infinity());
+	min = vec3(+1.f * std::numeric_limits<float>::infinity());
+	max = vec3(-1.f * std::numeric_limits<float>::infinity());
 
 	for (const auto &mesh : meshes)
 		for (const auto &vertex : mesh->vertices)
 		{
-			auto last_max = max;
-
 			min = glm::min(min, vertex.position);
 			max = glm::max(max, vertex.position);
 		}
+
+	size = max - min;
+	is_analyzed = true;
+}
+
+void 				model::model::center()
+{
 
 	const vec3		offset = min + (max - min) / vec3(2.f);
 

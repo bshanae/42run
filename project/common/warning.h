@@ -16,7 +16,8 @@ namespace									common::warning
 		model_material_property_error,
 		model_bone_not_found,
 		model_animation_not_found,
-		model_bone_without_animation
+		model_bone_without_animation,
+		model_is_not_analyzed
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
@@ -25,7 +26,8 @@ namespace									common::warning
 		{id::model_material_property_error,	"Engine, Model, Loader : Material property error"},
 		{id::model_bone_not_found,			"Engine, Model, Loader : Bone not found"},
 		{id::model_animation_not_found,		"Engine, Model, Loader : Animation not found"},
-		{id::model_bone_without_animation,	"Engine, Model, Loader : Bone does't have animation"}
+		{id::model_bone_without_animation,	"Engine, Model, Loader : Bone does't have animation"},
+		{id::model_is_not_analyzed,			"Engine, Model, Model : Object is not analyzed"}
 	};
 
 	inline void 							raise(id id)
