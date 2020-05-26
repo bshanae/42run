@@ -69,6 +69,7 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 				uniform_vec3	ambient;
 				uniform_vec3	diffuse;
 				uniform_vec3	specular;
+				uniform_vec3	emission;
 				uniform_float	alpha;
 			}					unite;
 

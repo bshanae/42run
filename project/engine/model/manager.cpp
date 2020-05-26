@@ -184,6 +184,7 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 	aiColor3D				ambient;
 	aiColor3D				diffuse;
 	aiColor3D				specular;
+	aiColor3D				emission;
 	float					opacity;
 
 #define GET_MATERIAL_PROPERTY(key, target)										\
@@ -193,11 +194,13 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_AMBIENT, ambient);
 	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_DIFFUSE, diffuse);
 	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_SPECULAR, specular);
+	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_EMISSIVE, emission);
 	GET_MATERIAL_PROPERTY(AI_MATKEY_OPACITY, opacity);
 
 	target->unite.ambient = converter::to_glm(ambient);
 	target->unite.diffuse = converter::to_glm(diffuse);
 	target->unite.specular = converter::to_glm(specular);
+	target->unite.emission = converter::to_glm(emission);
 	target->unite.alpha = opacity;
 
 	auto					construct_texture = [this, source](texture::ptr &target, aiTextureType type)

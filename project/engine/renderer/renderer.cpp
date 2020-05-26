@@ -18,6 +18,7 @@ using namespace		engine;
 	uniforms.material.unite.ambient = program.make_uniform<vec3>("uniform_material.unite.ambient");
 	uniforms.material.unite.diffuse = program.make_uniform<vec3>("uniform_material.unite.diffuse");
 	uniforms.material.unite.specular = program.make_uniform<vec3>("uniform_material.unite.specular");
+	uniforms.material.unite.emission = program.make_uniform<vec3>("uniform_material.unite.emission");
 	uniforms.material.unite.alpha = program.make_uniform<float>("uniform_material.unite.alpha");
 
 	uniforms.material.textures.ambient.is_valid = program.make_uniform<int>("uniform_material.textures.ambient.is_valid");
@@ -105,6 +106,7 @@ void				renderer::render(const model::instance::ptr &model)
 		uniforms.material.unite.ambient.save(mesh->material->unite.ambient);
 		uniforms.material.unite.diffuse.save(mesh->material->unite.diffuse);
 		uniforms.material.unite.specular.save(mesh->material->unite.specular);
+		uniforms.material.unite.emission.save(mesh->material->unite.emission);
 		uniforms.material.unite.alpha.save(mesh->material->unite.alpha);
 
 		uniforms.material.textures.ambient.is_valid.save(mesh->material->textures.ambient != nullptr);

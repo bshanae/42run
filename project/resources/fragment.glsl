@@ -27,6 +27,7 @@ uniform struct
 		vec3			ambient;
 		vec3			diffuse;
 		vec3			specular;
+		vec3			emission;
 		float			alpha;
 	}					unite;
 
@@ -103,6 +104,7 @@ void					main()
 //	final_color.rgb += calculate_ambient();
 	final_color.rgb += calculate_diffuse(normal, light_direction);
 	final_color.rgb += calculate_specular(normal, light_direction);
+	final_color.rgb += uniform_material.unite.emission;
 
 //	final_color = vec4(pass_UV, 0, 1);
 //	final_color = vec4(uniform_material.textures.specular.is_valid, 0, 0, 1);
