@@ -147,6 +147,8 @@ void				renderer::callback()
 	static vec3 	light_position = LIGHT_POSITION;
 	bool			light_changed = false;
 
+	static bool		wireframe_mod = false;
+
 	program.use(true);
 
 	switch (key)
@@ -198,7 +200,17 @@ void				renderer::callback()
 			break ;
 
 #warning "Debug only"
+
+		case engine::interface::key::letter_x :
+			wireframe_mod = not wireframe_mod;
+			if (wireframe_mod)
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			else
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			break ;
+
 #define SHIFT 2
+
 
 		case engine::interface::key::letter_j :
 			light_position.x -= SHIFT;
