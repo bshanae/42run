@@ -60,7 +60,7 @@ int									main()
 
 //	engine::renderer::add_target(instances.cube);
 	engine::renderer::add_target(instances.scene_left_block);
-//	engine::renderer::add_target(instances.scene_right_block);
+	engine::renderer::add_target(instances.scene_right_block);
 
 	engine::core::execute();
 
