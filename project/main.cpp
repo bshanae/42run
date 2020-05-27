@@ -3,20 +3,20 @@
 struct
 {
 	engine::path					scene = "/Users/belchenkovova/Desktop/42run Workspace/Models/Scene.obj";
-	engine::path					run = "/Users/belchenkovova/Desktop/42run Workspace/Models/Running.fbx";
+	engine::path					character = "/Users/belchenkovova/Desktop/42run Workspace/Models/Character.fbx";
 }									paths;
 
 struct
 {
 	engine::model::model::ptr		scene;
-	engine::model::model::ptr		run;
+	engine::model::model::ptr		character;
 }									models;
 
 struct
 {
 	engine::model::instance::ptr	scene_left_block;
 	engine::model::instance::ptr	scene_right_block;
-	engine::model::instance::ptr	run;
+	engine::model::instance::ptr	character;
 }									instances;
 
 int									main()
@@ -36,15 +36,15 @@ int									main()
 	engine::renderer::initialize();
 	engine::model::manager::initialize();
 
-	models.scene = engine::model::manager::make_model(paths.scene, 0);
-	models.run = engine::model::manager::make_model(paths.run);
+	models.scene = engine::model::manager::make_model(paths.scene);
+	models.character = engine::model::manager::make_model(paths.character);
 
 	models.scene->analyze();
 	models.scene->center();
 
 	instances.scene_left_block = engine::model::manager::make_instance(models.scene);
 	instances.scene_right_block = engine::model::manager::make_instance(models.scene);
-	instances.run = engine::model::manager::make_instance(models.run);
+	instances.character = engine::model::manager::make_instance(models.character);
 
 //	Scene
 
@@ -57,14 +57,15 @@ int									main()
 	instances.scene_right_block->translate(shift * engine::vec3(+1.f));
 	instances.scene_right_block->rotate(engine::vec3(0, 180, 0));
 
-	instances.run->scale(0.1f);
-	instances.run->rotate(engine::vec3(0, 180, 0));
+	instances.character->scale(0.1f);
+	instances.character->translate(engine::vec3(0, -10, 0));
+	instances.character->rotate(engine::vec3(0, 180, 0));
 
 	engine::renderer::add_target(instances.scene_left_block);
 	engine::renderer::add_target(instances.scene_right_block);
-	engine::renderer::add_target(instances.run);
+	engine::renderer::add_target(instances.character);
 
-	models.run->animate(engine::model::animation(0, 19, 1));
+	models.character->animate(engine::model::animation(0, 63, 1));
 
 	engine::core::execute();
 

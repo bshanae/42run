@@ -6,17 +6,17 @@
 
 using namespace				engine;
 
-model::model::ptr			model::manager::make_model(const path &source, uint import_flags)
+model::model::ptr			model::manager::make_model(const path &source)
 {
 	auto					&instance = manager::instance();
-	auto					model = instance->make_model_non_static(source, import_flags);
+	auto					model = instance->make_model_non_static(source);
 
 	return (model);
 }
 
-model::model::ptr			model::manager::make_model_non_static(const path &source, uint import_flags)
+model::model::ptr			model::manager::make_model_non_static(const path &source)
 {
-	scene = importer.ReadFile(source, import_flags);
+	scene = importer.ReadFile(source, 0);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
 	{
@@ -242,8 +242,11 @@ pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 		if (bone->name == name)
 			return {bone, bone->id};
 
-	if (name != "RootNode")
+	if (name != "Null")
+	{
 		common::warning::raise(common::warning::id::model_bone_not_found);
+		std::cerr << "Name = " << name << std::endl;
+	}
 	return {bone::ptr(), -1};
 }
 

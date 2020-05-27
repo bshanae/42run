@@ -18,7 +18,7 @@ public :
 
 IMPLEMENT_GLOBAL_INITIALIZER(manager)
 
-	static model::ptr			make_model(const path &source, uint import_flags = aiProcessPreset_TargetRealtime_Quality);
+	static model::ptr			make_model(const path &source);
 	static instance::ptr		make_instance(model::ptr model)
 	{
 		return (instance::make_ptr(model));
@@ -41,7 +41,7 @@ IMPLEMENT_GLOBAL_INSTANCER(manager)
 
 	path						directory;
 
-	model::ptr					make_model_non_static(const path &source, uint import_flags);
+	model::ptr					make_model_non_static(const path &source);
 
 	void						load_nodes();
 	void						load_meshes();
