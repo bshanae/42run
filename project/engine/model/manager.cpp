@@ -6,17 +6,17 @@
 
 using namespace				engine;
 
-model::model::ptr			model::manager::make_model(const path &source)
+model::model::ptr			model::manager::make_model(const path &source, uint import_flags)
 {
 	auto					&instance = manager::instance();
-	auto					model = instance->make_model_non_static(source);
+	auto					model = instance->make_model_non_static(source, import_flags);
 
 	return (model);
 }
 
-model::model::ptr			model::manager::make_model_non_static(const path &source)
+model::model::ptr			model::manager::make_model_non_static(const path &source, uint import_flags)
 {
-	scene = importer.ReadFile(source, 0);
+	scene = importer.ReadFile(source, import_flags);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
 	{

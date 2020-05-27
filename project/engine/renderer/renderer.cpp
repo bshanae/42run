@@ -72,6 +72,8 @@ void				renderer::render()
 
 void				renderer::render(const model::instance::ptr &model)
 {
+	assert(model);
+
 	auto			&skeleton = model->model->skeleton;
 
 	if (skeleton->bones.empty())

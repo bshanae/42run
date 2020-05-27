@@ -49,9 +49,9 @@ void 				core::execute()
 				callback();
 		instance->event.type_value = interface::event::type::none;
 
-//		if (instance->renderer->request)
+		if (instance->renderer->request)
 		{
-			calculate_fps();
+//			calculate_fps();
 
 			glClearColor(background.x, background.y, background.z, 1.f);
 			glClear(GL_COLOR_BUFFER_BIT);
