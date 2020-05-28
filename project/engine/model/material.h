@@ -2,7 +2,6 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/pointer.h"
 #include "engine/model/texture.h"
 
 class						engine::model::material

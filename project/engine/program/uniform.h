@@ -2,10 +2,10 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/holder.h"
+#include "engine/abstract/object_wrap.h"
 
 template 			<typename type>
-class 				engine::program::uniform : public engine::abstract::holder
+class 				engine::program::uniform : public engine::abstract::object_wrap
 {
 	friend class	engine::program::program;
 

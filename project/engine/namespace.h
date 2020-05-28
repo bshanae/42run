@@ -66,7 +66,7 @@ namespace				engine
 	{
 		template		<typename enum_type, typename underlying_type>
 		class			enum_wrap;
-		class			holder;
+		class			object_wrap;
 	}
 
 	namespace			program

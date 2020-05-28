@@ -1,10 +1,10 @@
 #pragma once
 
 #include "engine/namespace.h"
-#include "engine/abstract/holder.h"
+#include "engine/abstract/object_wrap.h"
 #include "engine/program/uniform.h"
 
-class					engine::program::program : public engine::abstract::holder
+class					engine::program::program : public engine::abstract::object_wrap
 {
 public :
 						program(const path &vertex_source, const path &fragment_source);

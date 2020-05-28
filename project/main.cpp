@@ -1,31 +1,5 @@
 #include "engine/engine.h"
-
-struct
-{
-	engine::path					scene = "/Users/belchenkovova/Desktop/42run Workspace/Models/Scene.obj";
-	engine::path					character = "/Users/belchenkovova/Desktop/42run Workspace/Models/Character.fbx";
-}									paths;
-
-struct
-{
-	using							type = engine::model::manager::flags_wrap;
-
-	type							scene;
-	type							character;
-}									flags;
-
-struct
-{
-	engine::model::model::ptr		scene;
-	engine::model::model::ptr		character;
-}									models;
-
-struct
-{
-	engine::model::instance::ptr	scene_left_block;
-	engine::model::instance::ptr	scene_right_block;
-	engine::model::instance::ptr	character;
-}									instances;
+#include "game/game.h"
 
 int									main()
 {
@@ -40,43 +14,13 @@ int									main()
 	engine::scene::camera::near_plane = 10.f;
 	engine::scene::camera::far_plane = 1000.f;
 
+	game::room::path = "/Users/belchenkovova/Desktop/42run Workspace/Models/Scene.obj";
+	game::character::path = "/Users/belchenkovova/Desktop/42run Workspace/Models/Character.fbx";
+
 	engine::core::initialize();
 	engine::renderer::initialize();
 	engine::model::manager::initialize();
-
-	flags.scene = engine::model::manager::flags::center;
-	flags.character = engine::model::manager::flags::triangulate;
-
-	models.scene = engine::model::manager::make_model(paths.scene, flags.scene);
-	models.character = engine::model::manager::make_model(paths.character, flags.character);
-
-	models.scene->analyze();
-	models.scene->center();
-
-	instances.scene_left_block = engine::model::manager::make_instance(models.scene);
-	instances.scene_right_block = engine::model::manager::make_instance(models.scene);
-	instances.character = engine::model::manager::make_instance(models.character);
-
-//	Scene
-
-	auto							shift = models.scene->read_size() / engine::vec3(2);
-
-	shift.y = 0;
-	shift.z = 0;
-
-	instances.scene_left_block->translate(shift * engine::vec3(-1.f));
-	instances.scene_right_block->translate(shift * engine::vec3(+1.f));
-	instances.scene_right_block->rotate(engine::vec3(0, 180, 0));
-
-	instances.character->scale(0.1f);
-	instances.character->translate(engine::vec3(0, -10, 0));
-	instances.character->rotate(engine::vec3(0, 180, 0));
-
-	engine::renderer::add_target(instances.scene_left_block);
-	engine::renderer::add_target(instances.scene_right_block);
-	engine::renderer::add_target(instances.character);
-
-	models.character->animate(engine::model::animation(1, 19, 1));
+	game::manager::initialize();
 
 	engine::core::execute();
 

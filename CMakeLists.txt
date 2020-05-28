@@ -49,16 +49,21 @@ set(SOURCE_ENGINE
 	project/engine/model/skeleton.cpp
 	project/engine/model/texture.cpp
 	project/engine/model/mesh.cpp
-	project/engine/model/model.cpp
+	project/engine/model/model_wrap.cpp
 	project/engine/model/instance.cpp
 	project/engine/model/manager.cpp
 
-	project/engine/renderer/renderer.cpp
-	)
+	project/engine/renderer/renderer.cpp)
+
+set(SOURCE_GAME
+	project/game/manager/manager.cpp
+	project/game/room/room.cpp
+	project/game/character/character.cpp)
 
 add_executable(42run
 	${SOURCE_EXTERNAL}
 	${SOURCE_MAIN}
-	${SOURCE_ENGINE})
+	${SOURCE_ENGINE}
+	${SOURCE_GAME})
 
 target_link_libraries(42run glfw assimp image)

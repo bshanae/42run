@@ -3,7 +3,6 @@
 #include "engine/namespace.h"
 
 #include "engine/abstract/enum_wrap.h"
-#include "engine/abstract/global.h"
 #include "engine/model/bone.h"
 #include "engine/model/model.h"
 #include "engine/model/instance.h"

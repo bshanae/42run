@@ -1,4 +1,6 @@
 #pragma once
 
-#include "common/error.h"
-#include "common/warning.h"
+#include "common/abstract/global_functionality.h"
+#include "common/abstract/pointer_functionality.h"
+#include "common/error/error.h"
+#include "common/error/warning.h"

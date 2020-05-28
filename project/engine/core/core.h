@@ -2,7 +2,6 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/global.h"
 #include "engine/interface/event.h"
 #include "engine/interface/callback.h"
 

@@ -2,7 +2,6 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/global.h"
 #include "engine/core/core.h"
 #include "engine/program/program.h"
 #include "engine/scene/scene.h"

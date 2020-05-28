@@ -2,10 +2,9 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/pointer.h"
-#include "engine/abstract/holder.h"
+#include "engine/abstract/object_wrap.h"
 
-class				engine::model::texture : public engine::abstract::holder
+class				engine::model::texture : public engine::abstract::object_wrap
 {
 	friend class	engine::renderer;
 
