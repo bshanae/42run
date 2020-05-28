@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <initializer_list>
+#include <type_traits>
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -63,6 +64,8 @@ namespace				engine
 
 	namespace			abstract
 	{
+		template		<typename enum_type, typename underlying_type>
+		class			enum_wrap;
 		class			holder;
 	}
 

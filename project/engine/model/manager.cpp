@@ -6,24 +6,28 @@
 
 using namespace				engine;
 
-model::model::ptr			model::manager::make_model(const path &source)
+model::model::ptr			model::manager::make_model(const path &source, flags_wrap wrap)
 {
 	auto					&instance = manager::instance();
-	auto					model = instance->make_model_non_static(source);
+	auto					model = instance->make_model_non_static(source, wrap);
 
+	if (wrap & flags::analyze or wrap & flags::center)
+		model->analyze();
+	if (wrap & flags::center)
+		model->center();
 	return (model);
 }
 
-model::model::ptr			model::manager::make_model_non_static(const path &source)
+model::model::ptr			model::manager::make_model_non_static(const path &source, flags_wrap wrap)
 {
-	scene = importer.ReadFile(source, 0);
+	uint 					assimp_flags;
+
+	if (wrap & flags::triangulate)
+		assimp_flags |= aiProcess_Triangulate;
+	scene = importer.ReadFile(source, assimp_flags);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
-	{
-		std::cout << "ASSIMP ERROR" << std::endl;
-		std::cout << importer.GetErrorString() << std::endl;
 		common::error::raise(common::error::id::ASSIMP_error);
-	}
 
 	nodes.clear();
 	meshes.clear();

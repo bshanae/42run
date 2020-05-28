@@ -8,6 +8,14 @@ struct
 
 struct
 {
+	using							type = engine::model::manager::flags_wrap;
+
+	type							scene;
+	type							character;
+}									flags;
+
+struct
+{
 	engine::model::model::ptr		scene;
 	engine::model::model::ptr		character;
 }									models;
@@ -36,8 +44,11 @@ int									main()
 	engine::renderer::initialize();
 	engine::model::manager::initialize();
 
-	models.scene = engine::model::manager::make_model(paths.scene);
-	models.character = engine::model::manager::make_model(paths.character);
+	flags.scene = engine::model::manager::flags::center;
+	flags.character = engine::model::manager::flags::triangulate;
+
+	models.scene = engine::model::manager::make_model(paths.scene, flags.scene);
+	models.character = engine::model::manager::make_model(paths.character, flags.character);
 
 	models.scene->analyze();
 	models.scene->center();
@@ -65,7 +76,7 @@ int									main()
 	engine::renderer::add_target(instances.scene_right_block);
 	engine::renderer::add_target(instances.character);
 
-	models.character->animate(engine::model::animation(0, 63, 1));
+	models.character->animate(engine::model::animation(1, 19, 1));
 
 	engine::core::execute();
 

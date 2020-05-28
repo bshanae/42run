@@ -2,6 +2,7 @@
 
 #include "engine/namespace.h"
 
+#include "engine/abstract/enum_wrap.h"
 #include "engine/abstract/global.h"
 #include "engine/model/bone.h"
 #include "engine/model/model.h"
@@ -18,7 +19,16 @@ public :
 
 IMPLEMENT_GLOBAL_INITIALIZER(manager)
 
-	static model::ptr			make_model(const path &source);
+	enum class					flags : uint
+	{
+		triangulate = 1u << 1u,
+		analyze = 1u << 2u,
+		center = 1u << 3u
+	};
+
+	using						flags_wrap = engine::abstract::enum_wrap<flags>;
+
+	static model::ptr			make_model(const path &source, flags_wrap wrap = flags_wrap());
 	static instance::ptr		make_instance(model::ptr model)
 	{
 		return (instance::make_ptr(model));
@@ -41,7 +51,7 @@ IMPLEMENT_GLOBAL_INSTANCER(manager)
 
 	path						directory;
 
-	model::ptr					make_model_non_static(const path &source);
+	model::ptr					make_model_non_static(const path &source, flags_wrap wrap);
 
 	void						load_nodes();
 	void						load_meshes();
