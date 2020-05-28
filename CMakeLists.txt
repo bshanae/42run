@@ -51,6 +51,7 @@ set(SOURCE_ENGINE
 	project/engine/model/mesh.cpp
 	project/engine/model/model_wrap.cpp
 	project/engine/model/instance.cpp
+	project/engine/model/group.cpp
 	project/engine/model/manager.cpp
 
 	project/engine/renderer/renderer.cpp)

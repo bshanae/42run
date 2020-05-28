@@ -41,6 +41,10 @@ using namespace		engine;
 	uniforms.instance.translation = program.make_uniform<mat4>("uniform_instance.translation");
 	uniforms.instance.rotation = program.make_uniform<mat4>("uniform_instance.rotation");
 
+	uniforms.group.scaling = program.make_uniform<mat4>("uniform_group.scaling");
+	uniforms.group.translation = program.make_uniform<mat4>("uniform_group.translation");
+	uniforms.group.rotation = program.make_uniform<mat4>("uniform_group.rotation");
+
 	program.use(true);
 
 	#warning "Debug only"
@@ -64,17 +68,24 @@ void				renderer::render()
 
 	uniforms.light.camera.save(scene.camera.position);
 
-	for (const auto &model : models)
-		render(model);
+	uniforms.group.scaling.save(mat4(1.f));
+	uniforms.group.translation.save(mat4(1.f));
+	uniforms.group.rotation.save(mat4(1.f));
+
+	for (const auto &instance : targets.instances)
+		render(instance);
+
+	for (const auto &group : targets.groups)
+		render(group);
 
 	program.use(false);
 }
 
-void				renderer::render(const model::instance::ptr &model)
+void				renderer::render(const model::instance::ptr &instance)
 {
-	assert(model);
+	assert(instance);
 
-	auto			&skeleton = model->model->skeleton;
+	auto			&skeleton = instance->model->skeleton;
 
 	if (skeleton->bones.empty())
 		uniforms.does_mesh_have_bones.save(0);
@@ -99,11 +110,11 @@ void				renderer::render(const model::instance::ptr &model)
 		}
 	}
 
-	uniforms.instance.scaling.save(model->scaling);
-	uniforms.instance.translation.save(model->translation);
-	uniforms.instance.rotation.save(model->rotation);
+	uniforms.instance.scaling.save(instance->scaling);
+	uniforms.instance.translation.save(instance->translation);
+	uniforms.instance.rotation.save(instance->rotation);
 
-	for (auto &mesh : model->model->meshes)
+	for (auto &mesh : instance->model->meshes)
 	{
 		uniforms.material.unite.ambient.save(mesh->material->unite.ambient);
 		uniforms.material.unite.diffuse.save(mesh->material->unite.diffuse);
@@ -140,6 +151,16 @@ void				renderer::render(const model::instance::ptr &model)
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+}
+
+void				renderer::render(const model::group::ptr &group)
+{
+	uniforms.group.scaling.save(group->scaling);
+	uniforms.group.translation.save(group->translation);
+	uniforms.group.rotation.save(group->rotation);
+
+	for (const auto &instance : group->data)
+		render(instance);
 }
 
 void				renderer::callback()
@@ -198,9 +219,9 @@ void				renderer::callback()
 			break ;
 
 		case engine::interface::key::enter :
-			for (auto &model : models)
-				if (model->model->skeleton->animation)
-					model->model->skeleton->update();
+//			for (auto &model : models)
+//				if (model->model->skeleton->animation)
+//					model->model->skeleton->update();
 			break ;
 
 #warning "Debug only"

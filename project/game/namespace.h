@@ -9,9 +9,10 @@ namespace			game
 
 	namespace		model
 	{
-		using		engine::model::manager;
 		using		engine::model::model;
 		using		engine::model::instance;
+		using		engine::model::group;
+		using		engine::model::manager;
 	}
 
 	class			model_wrap;

@@ -32,12 +32,14 @@ namespace				engine
 	using				std::optional;
 	using				std::pair;
 	using				std::string;
+
+	using				std::unique_ptr;
+	using				std::shared_ptr;
+	using				std::make_unique;
+	using				std::make_shared;
+
 	using				std::move;
 	using				std::filesystem::path;
-	using				std::unique_ptr;
-	using				std::make_unique;
-	using				std::shared_ptr;
-	using				std::make_shared;
 	using				std::initializer_list;
 
 	using				glm::ivec2;
@@ -88,6 +90,7 @@ namespace				engine
 		class			manager;
 		class			model;
 		class			instance;
+		class			group;
 	}
 
 	namespace			scene

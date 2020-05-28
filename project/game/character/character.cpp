@@ -20,5 +20,5 @@ using namespace					game;
 
 	model->animate(engine::model::animation(1, 19, 1));
 
-	engine::renderer::add_target(instance);
+	engine::renderer::target(instance);
 }

@@ -15,8 +15,7 @@ public :
 private :
 
 	model::model::ptr		model;
-	model::instance::ptr	instances[2];
-//	model::group::ptr		group[2];
+	model::group::ptr		groups[10];
 };
 
 

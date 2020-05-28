@@ -36,6 +36,13 @@ uniform struct
 	mat4						rotation;
 }								uniform_instance;
 
+uniform struct
+{
+	mat4						scaling;
+	mat4						translation;
+	mat4						rotation;
+}								uniform_group;
+
 ///////////////////////////////////////////////////////////////////////////////
 //								MAIN
 ///////////////////////////////////////////////////////////////////////////////
@@ -43,7 +50,11 @@ uniform struct
 void							main()
 {
 	mat4						bones_transformation = mat4(1.0);
+
 	mat4						instance_transformation;
+	mat4						group_transformation;
+
+	vec4						position;
 
 	if (uniform_does_mesh_have_bones)
 	{
@@ -54,10 +65,13 @@ void							main()
 	}
 
 	instance_transformation = uniform_instance.translation * uniform_instance.rotation * uniform_instance.scaling;
+	group_transformation = uniform_group.translation * uniform_group.rotation * uniform_group.scaling;
 
-	pass_position = in_position;
-	pass_normal = vec3(uniform_instance.rotation * vec4(in_normal, 0.f));
+	position = uniform_projection * uniform_view * group_transformation * instance_transformation * bones_transformation * vec4(in_position, 1.f);
+
+	pass_position = position.xyz;
+	pass_normal = vec3(uniform_group.rotation * uniform_instance.rotation * vec4(in_normal, 0.f));
 	pass_UV = in_UV;
 
-	gl_Position = uniform_projection * uniform_view * instance_transformation * bones_transformation * vec4(in_position, 1.f);
+	gl_Position = position;
 }

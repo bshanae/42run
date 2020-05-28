@@ -8,6 +8,7 @@
 #include "engine/model/skeleton.h"
 #include "engine/model/model.h"
 #include "engine/model/instance.h"
+#include "engine/model/group.h"
 
 class							engine::renderer
 {
@@ -23,9 +24,14 @@ START_GLOBAL_CUSTOM_INITIALIZER(renderer)
 	engine::core::connect_renderer();
 FINISH_GLOBAL_CUSTOM_INITIALIZER
 
-	static void					add_target(const model::instance::ptr &model)
+	static void					target(const model::instance::ptr &target)
 	{
-		instance()->models.push_back(model);
+		instance()->targets.instances.push_back(target);
+	}
+
+	static void					target(const model::group::ptr &target)
+	{
+		instance()->targets.groups.push_back(target);
 	}
 
 	bool						request = true;
@@ -34,11 +40,18 @@ private :
 
 IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
-	using						models_type = vector<shared_ptr<model::instance>>;
-	models_type					models;
+	struct
+	{
+		using					instances_type = vector<model::instance::ptr>;
+		using					groups_type = vector<model::group::ptr>;
+
+		instances_type			instances;
+		groups_type				groups;
+	}							targets;
 
 	void						render();
-	void						render(const model::instance::ptr &model);
+	void						render(const model::instance::ptr &instance);
+	void						render(const model::group::ptr &group);
 
 	void						callback();
 
@@ -95,5 +108,12 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 			uniform_mat4		translation;
 			uniform_mat4		rotation;
 		}						instance;
+
+		struct
+		{
+			uniform_mat4		scaling;
+			uniform_mat4		translation;
+			uniform_mat4		rotation;
+		}						group;
 	}							uniforms;
 };

@@ -6,6 +6,7 @@
 #include "engine/model/bone.h"
 #include "engine/model/model.h"
 #include "engine/model/instance.h"
+#include "engine/model/group.h"
 
 class							engine::model::manager
 {
@@ -28,9 +29,16 @@ IMPLEMENT_GLOBAL_INITIALIZER(manager)
 	using						flags_wrap = engine::abstract::enum_wrap<flags>;
 
 	static model::ptr			make_model(const path &source, flags_wrap wrap = flags_wrap());
-	static instance::ptr		make_instance(model::ptr model)
+
+	template					<typename ...args_type>
+	static instance::ptr		make_instance(args_type ...args)
 	{
-		return (instance::make_ptr(model));
+		return (instance::make_ptr(args...));
+	}
+
+	static group::ptr			make_group(const initializer_list<instance::ptr> &list)
+	{
+		return (group::make_ptr(list));
 	}
 
 private :
