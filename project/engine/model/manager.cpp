@@ -246,11 +246,7 @@ pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 		if (bone->name == name)
 			return {bone, bone->id};
 
-	if (name != "Null")
-	{
-		common::warning::raise(common::warning::id::model_bone_not_found);
-		std::cerr << "Name = " << name << std::endl;
-	}
+	common::warning::raise(common::warning::id::model_bone_not_found);
 	return {bone::ptr(), -1};
 }
 

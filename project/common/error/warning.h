@@ -30,10 +30,14 @@ namespace									common::warning
 		{id::model_is_not_analyzed,			"Engine, Model, Model : Object is not analyzed"}
 	};
 
+	inline bool								ignore = false;
+
 	inline void 							raise(id id)
 	{
 		auto								iterator = messages.find(id);
 
+		if (ignore)
+			return ;
 		std::cerr << "42run Warning";
 		if (iterator != messages.end())
 			std::cerr << " : " << iterator->second;

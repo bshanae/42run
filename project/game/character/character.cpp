@@ -7,7 +7,10 @@ using namespace					game;
 	model::manager::flags_wrap	flags;
 
 	flags = model::manager::flags::triangulate;
+
+	common::warning::ignore = true;
 	model = model::manager::make_model(path, flags);
+	common::warning::ignore = false;
 
 	instance = engine::model::manager::make_instance(model);
 
