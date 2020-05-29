@@ -60,7 +60,7 @@ vec3					calculate_ambient()
 		return (uniform_material.unite.ambient);
 }
 
-#define DIFFUSE_FLOOR	0.3
+#define DIFFUSE_FLOOR	0.5
 
 vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 {
