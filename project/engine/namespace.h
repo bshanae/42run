@@ -50,6 +50,24 @@ namespace				engine
 	using				glm::mat4;
 	using				glm::quat;
 
+	struct				settings
+	{
+		ivec2			window_size;
+		string			window_name;
+		vec3			background = vec3(0.f, 0.f, 0.f);
+		int				number_of_samples = 0;
+
+		float			camera_movement_speed = 0.f;
+		float			camera_rotation_speed = 0.f;
+		vec3			camera_position = vec3(0.f, 0.f, 0.f);
+		float			camera_yaw = -90.f;
+		float			camera_pitch = 0.f;
+		float			camera_near_plane = 0.1f;
+		float			camera_far_plane = 100.f;
+	};
+
+	struct settings		&settings();
+
 	namespace			converter
 	{}
 

@@ -10,9 +10,12 @@ using namespace		engine;
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	glfwWindowHint(GLFW_SAMPLES, number_of_samples);
+	glfwWindowHint(GLFW_SAMPLES, settings().number_of_samples);
 
-	window = glfwCreateWindow(window_size.x, window_size.y, window_name.c_str(), nullptr, nullptr);
+	window = glfwCreateWindow(
+		settings().window_size.x, settings().window_size.y,
+		settings().window_name.c_str(),
+		nullptr, nullptr);
 	if (window == nullptr)
 		common::error::raise(common::error::id::GLFW_error);
 	glfwMakeContextCurrent(window);
@@ -20,8 +23,8 @@ using namespace		engine;
 	if (not gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		common::error::raise(common::error::id::GLAD_error);
 
-	glfwGetFramebufferSize(window, &window_size.x, &window_size.y);
-	glViewport(0, 0, window_size.x, window_size.y);
+	glfwGetFramebufferSize(window, &settings().window_size.x, &settings().window_size.y);
+	glViewport(0, 0, settings().window_size.x, settings().window_size.y);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

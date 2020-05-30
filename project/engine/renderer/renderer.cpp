@@ -219,9 +219,9 @@ void				renderer::callback()
 			break ;
 
 		case engine::interface::key::enter :
-//			for (auto &model : models)
-//				if (model->model->skeleton->animation)
-//					model->model->skeleton->update();
+			for (auto &instance : targets.instances)
+				if (instance->model->skeleton->animation)
+					instance->model->skeleton->update();
 			break ;
 
 #warning "Debug only"

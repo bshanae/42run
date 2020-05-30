@@ -5,6 +5,8 @@ using namespace		engine;
 
 void				scene::camera::move(enum movement movement)
 {
+	auto 			movement_speed = settings().camera_movement_speed;
+
 	switch (movement)
 	{
 		case movement::left :
@@ -35,6 +37,8 @@ void				scene::camera::move(enum movement movement)
 
 void				scene::camera::rotate(enum rotation rotation)
 {
+	auto 			rotation_speed = settings().camera_rotation_speed;
+
 	switch (rotation)
 	{
 		case rotation::left :
@@ -62,8 +66,8 @@ mat4				scene::camera::projection_matrix() const
 {
 	return (glm::perspective(
 		glm::radians(30.f),
-		(float)core::window_size.x / (float)core::window_size.y,
-		near_plane, far_plane));
+		(float)settings().window_size.x / (float)settings().window_size.y,
+		settings().camera_near_plane, settings().camera_far_plane));
 }
 
 mat4				scene::camera::view_matrix() const

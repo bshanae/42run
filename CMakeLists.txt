@@ -33,6 +33,8 @@ set(SOURCE_MAIN
 	project/main.cpp)
 
 set(SOURCE_ENGINE
+	project/engine/engine.cpp
+
 	project/engine/core/core.cpp
 	project/engine/core/execute.cpp
 	project/engine/core/callback.cpp
@@ -57,6 +59,8 @@ set(SOURCE_ENGINE
 	project/engine/renderer/renderer.cpp)
 
 set(SOURCE_GAME
+	project/game/game.cpp
+
 	project/game/manager/manager.cpp
 	project/game/room/room.cpp
 	project/game/character/character.cpp)

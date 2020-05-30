@@ -35,6 +35,7 @@ void 				calculate_fps()
 
 void 				core::execute()
 {
+	auto			background = settings().background;
 	auto			&instance = core::instance();
 
 	if (not instance->renderer)

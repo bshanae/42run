@@ -24,6 +24,7 @@ model::model::ptr			model::manager::make_model_non_static(const path &source, fl
 
 	if (wrap & flags::triangulate)
 		assimp_flags |= aiProcess_Triangulate;
+
 	scene = importer.ReadFile(source, assimp_flags);
 
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)

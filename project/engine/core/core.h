@@ -7,13 +7,6 @@
 
 class								engine::core
 {
-public :
-
-	inline static ivec2				window_size;
-	inline static string			window_name;
-	inline static vec3				background = vec3(0.f, 0.f, 0.f);
-	inline static int				number_of_samples = 0;
-
 private :
 									core();
 public :

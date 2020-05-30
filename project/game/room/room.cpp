@@ -4,39 +4,50 @@ using namespace					game;
 
 								room::room()
 {
-	vec3 						shift;
-	model::manager::flags_wrap	flags;
+	model::flags_wrap			center_flag = model::flags::center;
 
-	//							Model
+//								Model
 
-	flags = model::manager::flags::center;
-	model = model::manager::make_model(path, flags);
+	models.room = model::manager::make_model(sources().room);
+	models.chair = model::manager::make_model(sources().chair, center_flag);
+	models.mac = model::manager::make_model(sources().mac, center_flag);
+	models.keyboard = model::manager::make_model(sources().keyboard, center_flag);
 
-	//							Instances
+//								Instances
 
-	model::instance::ptr		instances[2];
+	instances.room = engine::model::manager::make_instance(models.room);
+	instances.chair = engine::model::manager::make_instance(models.chair);
+	instances.mac = engine::model::manager::make_instance(models.mac);
+	instances.keyboard = engine::model::manager::make_instance(models.keyboard);
 
-	instances[0] = engine::model::manager::make_instance(model);
-	instances[1] = engine::model::manager::make_instance(model);
+//								Transformations
 
-	shift = vec3();
-	shift.x = model->read_size().x / 2.f;
+	instances.chair->translate(models.chair->read_offset());
+	instances.mac->translate(models.mac->read_offset());
+	instances.keyboard->translate(models.keyboard->read_offset());
 
-	instances[0]->translate(shift * vec3(-1.f));
-	instances[1]->translate(shift * vec3(+1.f));
-	instances[1]->rotate(vec3(0, 180, 0));
+//								Targets
 
-	//							Groups
+	engine::renderer::target(instances.room);
+	engine::renderer::target(instances.chair);
+	engine::renderer::target(instances.mac);
+	engine::renderer::target(instances.keyboard);
 
-	for (auto &group : groups)
-		group = engine::model::group::make_ptr({instances[0], instances[1]});
-
-	shift = vec3();
-	shift.z = -1.f * model->read_size().z;
-
-	for (int i = 1; i < 10; i++)
-		groups[i]->translate(shift * vec3(static_cast<float>(i)));
-
-	for (auto &group : groups)
-		engine::renderer::target(group);
+////	instances[0]->translate(shift * vec3(-1.f));
+////	instances[1]->translate(shift * vec3(+1.f));
+////	instances[1]->rotate(vec3(0, 180, 0));
+//
+//	//							Groups
+//
+//	for (auto &group : groups)
+//		group = engine::model::group::make_ptr({instances[0]});
+//
+//	shift = vec3();
+//	shift.z = -1.f * model->read_size().z;
+//
+//	for (int i = 1; i < 10; i++)
+//		groups[i]->translate(shift * vec3(static_cast<float>(i)));
+//
+//	for (auto &group : groups)
+//		engine::renderer::target(group);
 }

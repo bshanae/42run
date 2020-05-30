@@ -25,7 +25,7 @@ void 				model::model::center()
 	if (not is_analyzed)
 		common::warning::raise(common::warning::id::model_is_not_analyzed);
 
-	const vec3		offset = min + (max - min) / vec3(2.f);
+	offset = min + (max - min) / vec3(2.f);
 
 	for (auto &mesh : meshes)
 	{
@@ -36,4 +36,6 @@ void 				model::model::center()
 		glBufferData(GL_ARRAY_BUFFER, mesh->vertices.size() * sizeof(mesh::vertex), mesh->vertices.data(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
+
+	is_centered = true;
 }

@@ -7,9 +7,6 @@ class						game::character
 	friend class			manager;
 
 public :
-
-	static inline path		path;
-
 							character();
 							~character() = default;
 private :
