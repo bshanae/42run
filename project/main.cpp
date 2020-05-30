@@ -3,6 +3,8 @@
 
 int									main()
 {
+	common::seed = 123;
+
 	engine::settings().window_size = engine::ivec2(1280, 720);
 	engine::settings().window_name = "42run";
 	engine::settings().background = engine::vec3(0.7f, 0.7f, 0.7f);

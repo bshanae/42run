@@ -26,6 +26,20 @@ public :
 		return (shared_ptr<group>(raw));
 	}
 
+	ptr					copy() const
+	{
+		auto			result = make_ptr({});
+
+		for (auto &item : data)
+			result->data.push_back(item->copy());
+
+		result->scaling = scaling;
+		result->translation = translation;
+		result->rotation = rotation;
+
+		return (result);
+	}
+
 	void 				scale(float value);
 	void 				translate(vec3 value);
 	void 				rotate(vec3 angles);

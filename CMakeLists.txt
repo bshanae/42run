@@ -29,8 +29,8 @@ include_directories(
 set(SOURCE_EXTERNAL
 	project/external/glad/src/glad.c)
 
-set(SOURCE_MAIN
-	project/main.cpp)
+set(SOURCE_COMMON
+	project/common/random/random.cpp)
 
 set(SOURCE_ENGINE
 	project/engine/engine.cpp
@@ -51,7 +51,7 @@ set(SOURCE_ENGINE
 	project/engine/model/skeleton.cpp
 	project/engine/model/texture.cpp
 	project/engine/model/mesh.cpp
-	project/engine/model/model_wrap.cpp
+	project/engine/model/model.cpp
 	project/engine/model/instance.cpp
 	project/engine/model/group.cpp
 	project/engine/model/manager.cpp
@@ -65,10 +65,14 @@ set(SOURCE_GAME
 	project/game/room/room.cpp
 	project/game/character/character.cpp)
 
+set(SOURCE_MAIN
+	project/main.cpp)
+
 add_executable(42run
 	${SOURCE_EXTERNAL}
-	${SOURCE_MAIN}
+	${SOURCE_COMMON}
 	${SOURCE_ENGINE}
-	${SOURCE_GAME})
+	${SOURCE_GAME}
+	${SOURCE_MAIN})
 
 target_link_libraries(42run glfw assimp image)

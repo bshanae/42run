@@ -8,21 +8,12 @@
 #include <initializer_list>
 #include <type_traits>
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include "assimp/scene.h"
-#include "assimp/Importer.hpp"
-#include "assimp/postprocess.h"
-#include "assimp/types.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/quaternion.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include "glm/gtx/euler_angles.hpp"
-#include "glm/gtx/transform.hpp"
-
+#include "common/external/glad.h"
+#include "common/external/glfw.h"
+#include "common/external/assimp.h"
+#include "common/external/glm.h"
 #include "common/common.h"
+
 #include "debug.h"
 
 namespace				engine
@@ -49,6 +40,11 @@ namespace				engine
 	using				glm::mat3;
 	using				glm::mat4;
 	using				glm::quat;
+
+	using				common::float_range;
+	using				common::vec3_range;
+
+	using				common::random;
 
 	struct				settings
 	{

@@ -19,9 +19,24 @@ public :
 
 IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(instance)
 
-	void 					scale(float value);
-	void 					translate(vec3 value);
-	void 					rotate(vec3 angles);
+	ptr						copy() const
+	{
+		auto				result = make_ptr(model);
+
+		result->scaling = scaling;
+		result->translation = translation;
+		result->rotation = rotation;
+
+		return (result);
+	}
+
+	void 					scale(float value, bool reset = false);
+	void 					translate(vec3 value, bool reset = false);
+	void 					rotate(vec3 angles, bool reset = false);
+
+	void 					randomize_scaling(const float_range &range);
+	void 					randomize_translation(const vec3_range &range);
+	void 					randomize_rotation(const vec3_range &range);
 
 private :
 
