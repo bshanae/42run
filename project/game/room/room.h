@@ -11,6 +11,12 @@ public :
 								~room() = default;
 private :
 
+	void						build_models();
+	void						build_main_instances();
+	void						build_unique_groups();
+	void						offset_groups();
+	void						target();
+
 	struct
 	{
 		model::model::ptr		room;
@@ -19,15 +25,18 @@ private :
 		model::model::ptr		keyboard;
 	}							models;
 
+	static constexpr int		number_of_groups = 10;
+	static constexpr int		number_of_accessories = 8;
+
 	struct
 	{
 		model::instance::ptr	room;
-		model::instance::ptr	chair[8];
-		model::instance::ptr	mac[8];
-		model::instance::ptr	keyboard[8];
-	}							instances;
+		model::instance::ptr	chair[number_of_accessories];
+		model::instance::ptr	mac[number_of_accessories];
+		model::instance::ptr	keyboard[number_of_accessories];
+	}							instances[number_of_groups];
 
-	model::group::ptr			groups[10];
+	model::group::ptr			groups[number_of_groups];
 
 	struct
 	{
