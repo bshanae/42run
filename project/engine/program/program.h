@@ -6,9 +6,12 @@
 
 class					engine::program::program : public engine::abstract::object_wrap
 {
-public :
+private :
 						program(const path &vertex_source, const path &fragment_source);
+public :
 						~program() override;
+
+IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(program)
 
 	void				use(bool state) const override
 	{

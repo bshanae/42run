@@ -27,8 +27,17 @@ model::model::ptr			model::manager::make_model_non_static(const path &source, fl
 
 	scene = importer.ReadFile(source, assimp_flags);
 
+#if DEBUG_STATE
+	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
+	{
+		std::cout << "DEBUG // ASSIMP OUTPUT" << std::endl;
+		std::cout << importer.GetErrorString() << std::endl;
+		common::error::raise(common::error::id::ASSIMP_error);
+	}
+#else
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
 		common::error::raise(common::error::id::ASSIMP_error);
+#endif
 
 	nodes.clear();
 	meshes.clear();

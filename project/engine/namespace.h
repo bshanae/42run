@@ -14,8 +14,6 @@
 #include "common/external/glm.h"
 #include "common/common.h"
 
-#include "debug.h"
-
 namespace				engine
 {
 	using				std::vector;
@@ -23,6 +21,11 @@ namespace				engine
 	using				std::optional;
 	using				std::pair;
 	using				std::string;
+	using				std::ifstream;
+	using				std::stringstream;
+
+	using				std::filesystem::path;
+	using				std::filesystem::exists;
 
 	using				std::unique_ptr;
 	using				std::shared_ptr;
@@ -30,7 +33,6 @@ namespace				engine
 	using				std::make_shared;
 
 	using				std::move;
-	using				std::filesystem::path;
 	using				std::initializer_list;
 
 	using				glm::ivec2;
@@ -52,6 +54,9 @@ namespace				engine
 		string			window_name;
 		vec3			background = vec3(0.f, 0.f, 0.f);
 		int				number_of_samples = 0;
+
+		string			glsl_version;
+		path			glsl_path;
 
 		float			camera_movement_speed = 0.f;
 		float			camera_rotation_speed = 0.f;

@@ -1,0 +1,4 @@
+#define BONES_IN_VERTEX		6
+#define BONES_IN_SKELETON	100
+
+#define LIGHTS_NUMBER		10

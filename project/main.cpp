@@ -10,6 +10,9 @@ int									main()
 	engine::settings().background = engine::vec3(0.7f, 0.7f, 0.7f);
 	engine::settings().number_of_samples = 2;
 
+	engine::settings().glsl_version = "330 core";
+	engine::settings().glsl_path = "project/resources/engine";
+
 	engine::settings().camera_position = engine::vec3(0.f, 10.f, 100.f);
 	engine::settings().camera_movement_speed = 2.f;
 	engine::settings().camera_rotation_speed = 2.f;

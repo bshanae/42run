@@ -2,7 +2,7 @@
 
 using namespace				engine::program;
 
-shader::shader(type type, const path &source)
+							shader::shader(type type, const path &source)
 {
 	auto					write_file_to_stream = [](stringstream &stream, const path &path)
 	{
@@ -12,6 +12,10 @@ shader::shader(type type, const path &source)
 		if (not file.is_open())
 			common::error::raise(common::error::id::shader_file_error);
 
+//		std::cout << "<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
+//		std::cout << file.rdbuf() << std::endl;
+//		std::cout << "<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
+
 		stream << file.rdbuf();
 
 		file.close();
@@ -19,12 +23,27 @@ shader::shader(type type, const path &source)
 
 	std::stringstream		stream;
 
-	stream << "#version " << settings().glsl_version;
-	if (auto path = settings().glsl_path / "shared.h"; exists(path))
-		write_file_to_stream(stream, path);
+//	stream << "#version " << settings().glsl_version;
+//	if (auto path = settings().glsl_path / "shared.h"; exists(path))
+//		write_file_to_stream(stream, path);
 	write_file_to_stream(stream, source);
 
-	const string			string = stream.str();
+	auto					read_file = [](const path &source)
+	{
+		std::ifstream		file;
+		std::stringstream	stream;
+
+		file.open(source);
+		if (not file.is_open())
+			common::error::raise(common::error::id::shader_file_error);
+
+		stream << file.rdbuf();
+		file.close();
+		return (stream.str());
+	};
+
+//	const string			string = stream.str();
+	const string			string = read_file(source);
 	const char				*raw_string = string.data();
 
 	object = glCreateShader(static_cast<GLuint>(type));
@@ -52,7 +71,7 @@ shader::shader(type type, const path &source)
 		common::error::raise(common::error::id::shader_compilation_error);
 #endif
 }
-shader::~shader()
+							shader::~shader()
 {
 	glDeleteShader(object);
 }

@@ -13,20 +13,27 @@ using namespace		engine::program;
 
 	glAttachShader(object, vertex_shader.object);
 	glAttachShader(object, fragment_shader.object);
-
 	glLinkProgram(object);
 
 	GLint			success;
-	GLchar			log[512];
+
+	glGetProgramiv(object, GL_LINK_STATUS, &success);
+
+#if DEBUG_STATE
+	GLchar			log[1024];
 
 	glGetProgramiv(object, GL_LINK_STATUS, &success);
 	if (not success)
 	{
-		glGetProgramInfoLog(object, 512, nullptr, log);
-		std::cout << "OPENGL ERROR" << std::endl;
-		std::cout << log << std::endl;
+		glGetProgramInfoLog(object, 1024, nullptr, log);
+		std::cout << "DEBUG // GLSL OUTPUT" << std::endl << std::endl;
+		std::cout << log << std::endl << std::endl;
 		common::error::raise(common::error::id::program_compilation_error);
 	}
+#else
+	if (not success)
+		common::error::raise(common::error::id::program_compilation_error);
+#endif
 }
 
 					program::~program()

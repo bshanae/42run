@@ -9,43 +9,47 @@ using namespace		engine;
 //#define LIGHT_POSITION vec3(-200, 250, 100)
 #define LIGHT_POSITION vec3(0, 30, 0)
 
-					renderer::renderer() :
-					program("project/resources/vertex.glsl", "project/resources/fragment.glsl")
+					renderer::renderer()
 {
-	uniforms.projection = program.make_uniform<mat4>("uniform_projection");
-	uniforms.view = program.make_uniform<mat4>("uniform_view");
+	auto			vertex = settings().glsl_path / "main.vertex.glsl";
+	auto			fragment = settings().glsl_path / "main.fragment.glsl";
 
-	uniforms.material.unite.ambient = program.make_uniform<vec3>("uniform_material.unite.ambient");
-	uniforms.material.unite.diffuse = program.make_uniform<vec3>("uniform_material.unite.diffuse");
-	uniforms.material.unite.specular = program.make_uniform<vec3>("uniform_material.unite.specular");
-	uniforms.material.unite.emission = program.make_uniform<vec3>("uniform_material.unite.emission");
-	uniforms.material.unite.alpha = program.make_uniform<float>("uniform_material.unite.alpha");
+	program = engine::program::program::make_ptr(vertex, fragment);
 
-	uniforms.material.textures.ambient.is_valid = program.make_uniform<int>("uniform_material.textures.ambient.is_valid");
-	uniforms.material.textures.ambient.value = program.make_uniform<int>("uniform_material.textures.ambient.value");
+	uniforms.projection = program->make_uniform<mat4>("uniform_projection");
+	uniforms.view = program->make_uniform<mat4>("uniform_view");
 
-	uniforms.material.textures.diffuse.is_valid = program.make_uniform<int>("uniform_material.textures.diffuse.is_valid");
-	uniforms.material.textures.diffuse.value = program.make_uniform<int>("uniform_material.textures.diffuse.value");
+	uniforms.material.unite.ambient = program->make_uniform<vec3>("uniform_material.unite.ambient");
+	uniforms.material.unite.diffuse = program->make_uniform<vec3>("uniform_material.unite.diffuse");
+	uniforms.material.unite.specular = program->make_uniform<vec3>("uniform_material.unite.specular");
+	uniforms.material.unite.emission = program->make_uniform<vec3>("uniform_material.unite.emission");
+	uniforms.material.unite.alpha = program->make_uniform<float>("uniform_material.unite.alpha");
 
-	uniforms.material.textures.specular.is_valid = program.make_uniform<int>("uniform_material.textures.specular.is_valid");
-	uniforms.material.textures.specular.value = program.make_uniform<int>("uniform_material.textures.specular.value");
+	uniforms.material.textures.ambient.is_valid = program->make_uniform<int>("uniform_material.textures.ambient.is_valid");
+	uniforms.material.textures.ambient.value = program->make_uniform<int>("uniform_material.textures.ambient.value");
 
-	uniforms.light.camera = program.make_uniform<vec3>("uniform_light.camera");
-	uniforms.light.position = program.make_uniform<vec3>("uniform_light.position");
+	uniforms.material.textures.diffuse.is_valid = program->make_uniform<int>("uniform_material.textures.diffuse.is_valid");
+	uniforms.material.textures.diffuse.value = program->make_uniform<int>("uniform_material.textures.diffuse.value");
 
-	uniforms.does_mesh_have_bones = program.make_uniform<int>("uniform_does_mesh_have_bones");
+	uniforms.material.textures.specular.is_valid = program->make_uniform<int>("uniform_material.textures.specular.is_valid");
+	uniforms.material.textures.specular.value = program->make_uniform<int>("uniform_material.textures.specular.value");
+
+	uniforms.light.camera = program->make_uniform<vec3>("uniform_light.camera");
+	uniforms.light.position = program->make_uniform<vec3>("uniform_light.position");
+
+	uniforms.does_mesh_have_bones = program->make_uniform<int>("uniform_does_mesh_have_bones");
 	for (int i = 0; i < model::skeleton::bones_limit; i++)
-		uniforms.bones_transformations[i] = program.make_uniform<mat4>("uniform_bones_transformations[" + std::to_string(i) + "]");
+		uniforms.bones_transformations[i] = program->make_uniform<mat4>("uniform_bones_transformations[" + std::to_string(i) + "]");
 
-	uniforms.instance.scaling = program.make_uniform<mat4>("uniform_instance.scaling");
-	uniforms.instance.translation = program.make_uniform<mat4>("uniform_instance.translation");
-	uniforms.instance.rotation = program.make_uniform<mat4>("uniform_instance.rotation");
+	uniforms.instance.scaling = program->make_uniform<mat4>("uniform_instance.scaling");
+	uniforms.instance.translation = program->make_uniform<mat4>("uniform_instance.translation");
+	uniforms.instance.rotation = program->make_uniform<mat4>("uniform_instance.rotation");
 
-	uniforms.group.scaling = program.make_uniform<mat4>("uniform_group.scaling");
-	uniforms.group.translation = program.make_uniform<mat4>("uniform_group.translation");
-	uniforms.group.rotation = program.make_uniform<mat4>("uniform_group.rotation");
+	uniforms.group.scaling = program->make_uniform<mat4>("uniform_group.scaling");
+	uniforms.group.translation = program->make_uniform<mat4>("uniform_group.translation");
+	uniforms.group.rotation = program->make_uniform<mat4>("uniform_group.rotation");
 
-	program.use(true);
+	program->use(true);
 
 	#warning "Debug only"
 	uniforms.light.position.save(LIGHT_POSITION);
@@ -54,14 +58,14 @@ using namespace		engine;
 	uniforms.material.textures.diffuse.value.save(1);
 	uniforms.material.textures.specular.value.save(2);
 
-	program.use(false);
+	program->use(false);
 }
 
 void				renderer::render()
 {
 	request = false;
 
-	program.use(true);
+	program->use(true);
 
 	uniforms.projection.save(scene.camera.projection_matrix());
 	uniforms.view.save(scene.camera.view_matrix());
@@ -78,7 +82,7 @@ void				renderer::render()
 	for (const auto &group : targets.groups)
 		render(group);
 
-	program.use(false);
+	program->use(false);
 }
 
 void				renderer::render(const model::instance::ptr &instance)
@@ -174,7 +178,7 @@ void				renderer::callback()
 
 	static bool		wireframe_mod = false;
 
-	program.use(true);
+	program->use(true);
 
 	switch (key)
 	{
@@ -274,13 +278,13 @@ void				renderer::callback()
 			break ;
 
 		default :
-			program.use(false);
+			program->use(false);
 			return ;
 	}
 
 	if (light_changed)
 		std::cerr << "Light position : " << glm::to_string(light_position) << std::endl;
 
-	program.use(false);
+	program->use(false);
 	request = true;
 }
