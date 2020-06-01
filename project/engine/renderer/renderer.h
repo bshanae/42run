@@ -36,6 +36,32 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 
 	bool							request = true;
 
+	enum class 						light_type : int
+	{
+		directional = 0,
+		point = 1
+	};
+
+	static void 					light(light_type type, vec3 data, vec3 color)
+	{
+		auto						&light_data = instance()->light_data;
+
+		if (light_data.size == SHARED_LIGHTS_CAPACITY)
+		{
+			common::warning::raise(common::warning::id::renderer_no_space_for_light);
+			return ;
+		}
+
+		light_data.direction_or_position[light_data.size].x = data.x;
+		light_data.direction_or_position[light_data.size].y = data.y;
+		light_data.direction_or_position[light_data.size].z = data.z;
+		light_data.direction_or_position[light_data.size].w = (float)(int)type;
+
+		light_data.color[light_data.size] = color;
+
+		light_data.size++;
+	}
+
 private :
 
 IMPLEMENT_GLOBAL_INSTANCER(renderer)
@@ -49,18 +75,29 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 		groups_type					groups;
 	}								targets;
 
+	void 							upload_camera_data();
+	void 							upload_light_data();
+
 	void							render();
 	void							render(const model::instance::ptr &instance);
 	void							render(const model::group::ptr &group);
 
 	void							callback();
 
-	engine::program::program::ptr		program;
+	engine::program::program::ptr	program;
 	engine::scene::scene			scene;
+
+	struct
+	{
+		int							size = 0;
+		vec4						direction_or_position[SHARED_LIGHTS_CAPACITY];
+		vec3						color[SHARED_LIGHTS_CAPACITY];
+	}								light_data;
 
 	using 							uniform_int = engine::program::uniform<int>;
 	using 							uniform_float = engine::program::uniform<float>;
 	using 							uniform_vec3 = engine::program::uniform<vec3>;
+	using 							uniform_vec4 = engine::program::uniform<vec4>;
 	using 							uniform_mat4 = engine::program::uniform<mat4>;
 
 	struct							texture_wrap
@@ -93,10 +130,13 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 			}						textures;
 		}							material;
 
+		uniform_vec3				camera_position;
+
 		struct
 		{
-			uniform_vec3			camera;
-			uniform_vec3			position;
+			uniform_int				size;
+			uniform_vec4			direction_or_position[SHARED_LIGHTS_CAPACITY];
+			uniform_vec3			color[SHARED_LIGHTS_CAPACITY];
 		}							light;
 
 		uniform_int 				does_mesh_have_bones;

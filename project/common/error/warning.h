@@ -18,7 +18,8 @@ namespace									common::warning
 		model_animation_not_found,
 		model_bone_without_animation,
 		model_is_not_analyzed,
-		model_is_not_centered
+		model_is_not_centered,
+		renderer_no_space_for_light
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
@@ -28,7 +29,8 @@ namespace									common::warning
 		{id::model_animation_not_found,		"Engine, Model, Loader : Animation not found"},
 		{id::model_bone_without_animation,	"Engine, Model, Loader : Bone does't have animation"},
 		{id::model_is_not_analyzed,			"Engine, Model, Model : Object is not analyzed"},
-		{id::model_is_not_centered,			"Engine, Model, Model : Object is not centered"}
+		{id::model_is_not_centered,			"Engine, Model, Model : Object is not centered"},
+		{id::renderer_no_space_for_light,	"Engine, Renderer : Lights data is full"}
 	};
 
 	inline bool								ignore = false;

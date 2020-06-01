@@ -10,11 +10,10 @@ class 				engine::program::uniform : public engine::abstract::object_wrap
 	friend class	engine::program::program;
 
 public :
-
 					uniform() = default;
 					~uniform() override = default;
 
-	void			save(const type &data)
+	void			upload(const type &data)
 	{
 		if (object == -1)
 			common::error::raise(common::error::id::uniform_bad_value);

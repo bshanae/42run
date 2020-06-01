@@ -11,7 +11,7 @@ public :
 
 IMPLEMENT_GLOBAL_INITIALIZER(manager)
 
-					manager() = default;
+					manager();
 					~manager() = default;
 
 private :

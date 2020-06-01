@@ -12,12 +12,13 @@ public  :
 	friend class 			model;
 	friend class 			engine::renderer;
 
-	static constexpr int	bones_limit = 100;
+	static constexpr int	bones_limit = SHARED_BONES_IN_SKELETON;
 
 IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(skeleton)
 
 public:
-							skeleton(const vector<bone::ptr> &bones) :
+
+	explicit				skeleton(const vector<bone::ptr> &bones) :
 							bones(bones)
 							{}
 							~skeleton() = default;

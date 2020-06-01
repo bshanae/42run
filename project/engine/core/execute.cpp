@@ -41,6 +41,9 @@ void 				core::execute()
 	if (not instance->renderer)
 		common::error::raise(common::error::id::core_renderer_not_connected);
 
+	instance->renderer->upload_camera_data();
+	instance->renderer->upload_light_data();
+
 	while (not glfwWindowShouldClose(instance->window))
 	{
 		glfwPollEvents();

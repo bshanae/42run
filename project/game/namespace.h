@@ -6,8 +6,9 @@ namespace				game
 {
 	using				engine::path;
 
-	using				engine::float_range;
 	using				engine::vec3;
+	using				engine::vec4;
+	using				engine::float_range;
 	using				engine::vec3_range;
 
 	struct				sources

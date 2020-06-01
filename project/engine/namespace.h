@@ -14,6 +14,8 @@
 #include "common/external/glm.h"
 #include "common/common.h"
 
+#include "resources/engine/shared.h"
+
 namespace				engine
 {
 	using				std::vector;
@@ -33,6 +35,7 @@ namespace				engine
 	using				std::make_shared;
 
 	using				std::move;
+	using				std::to_string;
 	using				std::initializer_list;
 
 	using				glm::ivec2;

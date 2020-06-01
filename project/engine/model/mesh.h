@@ -22,7 +22,7 @@ IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(mesh)
 		vec3					normal;
 		vec2					UV;
 
-		static constexpr int	bones_limit = 6;
+		static constexpr int	bones_limit = SHARED_BONES_IN_VERTEX;
 
 		float					bones_ids[bones_limit] = {0.0f};
 		float					bones_weights[bones_limit] = {0.0f};

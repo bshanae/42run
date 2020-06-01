@@ -34,8 +34,15 @@ using namespace		engine;
 	uniforms.material.textures.specular.is_valid = program->make_uniform<int>("uniform_material.textures.specular.is_valid");
 	uniforms.material.textures.specular.value = program->make_uniform<int>("uniform_material.textures.specular.value");
 
-	uniforms.light.camera = program->make_uniform<vec3>("uniform_light.camera");
-	uniforms.light.position = program->make_uniform<vec3>("uniform_light.position");
+	uniforms.camera_position = program->make_uniform<vec3>("uniform_camera_position");
+
+	uniforms.light.size = program->make_uniform<int>("uniform_light.size");
+
+	for (int i = 0; i < SHARED_LIGHTS_CAPACITY; i++)
+	{
+		uniforms.light.direction_or_position[i] = program->make_uniform<vec4>("uniform_light.direction_or_position[" + to_string(i) + "]");
+		uniforms.light.color[i] = program->make_uniform<vec3>("uniform_light.color[" + to_string(i) + "]");
+	}
 
 	uniforms.does_mesh_have_bones = program->make_uniform<int>("uniform_does_mesh_have_bones");
 	for (int i = 0; i < model::skeleton::bones_limit; i++)
@@ -52,11 +59,35 @@ using namespace		engine;
 	program->use(true);
 
 	#warning "Debug only"
-	uniforms.light.position.save(LIGHT_POSITION);
+//	uniforms.light.position.upload(LIGHT_POSITION);
 
-	uniforms.material.textures.ambient.value.save(0);
-	uniforms.material.textures.diffuse.value.save(1);
-	uniforms.material.textures.specular.value.save(2);
+	uniforms.material.textures.ambient.value.upload(0);
+	uniforms.material.textures.diffuse.value.upload(1);
+	uniforms.material.textures.specular.value.upload(2);
+
+	program->use(false);
+}
+
+void 				renderer::upload_camera_data()
+{
+	program->use(true);
+
+	uniforms.camera_position.upload(scene.camera.position);
+
+	program->use(false);
+}
+
+void 				renderer::upload_light_data()
+{
+	program->use(true);
+
+	uniforms.light.size.upload(light_data.size);
+
+	for (int i = 0; i < SHARED_LIGHTS_CAPACITY; i++)
+	{
+		uniforms.light.direction_or_position[i].upload(light_data.direction_or_position[i]);
+		uniforms.light.color[i].upload(light_data.color[i]);
+	}
 
 	program->use(false);
 }
@@ -67,14 +98,12 @@ void				renderer::render()
 
 	program->use(true);
 
-	uniforms.projection.save(scene.camera.projection_matrix());
-	uniforms.view.save(scene.camera.view_matrix());
+	uniforms.projection.upload(scene.camera.projection_matrix());
+	uniforms.view.upload(scene.camera.view_matrix());
 
-	uniforms.light.camera.save(scene.camera.position);
-
-	uniforms.group.scaling.save(mat4(1.f));
-	uniforms.group.translation.save(mat4(1.f));
-	uniforms.group.rotation.save(mat4(1.f));
+	uniforms.group.scaling.upload(mat4(1.f));
+	uniforms.group.translation.upload(mat4(1.f));
+	uniforms.group.rotation.upload(mat4(1.f));
 
 	for (const auto &instance : targets.instances)
 		render(instance);
@@ -92,12 +121,12 @@ void				renderer::render(const model::instance::ptr &instance)
 	auto			&skeleton = instance->model->skeleton;
 
 	if (skeleton->bones.empty())
-		uniforms.does_mesh_have_bones.save(0);
+		uniforms.does_mesh_have_bones.upload(0);
 	else
 	{
 		mat4		transformation;
 
-		uniforms.does_mesh_have_bones.save(1);
+		uniforms.does_mesh_have_bones.upload(1);
 
 		for (int i = 0; i < model::skeleton::bones_limit; i++)
 		{
@@ -109,38 +138,38 @@ void				renderer::render(const model::instance::ptr &instance)
 				transformation *= skeleton->bones[i]->get_parents_transformation();
 				transformation *= converter::to_glm(skeleton->bones[i]->node->mTransformation);
 				transformation *= skeleton->bones[i]->offset;
-				uniforms.bones_transformations[i].save(transformation);
+				uniforms.bones_transformations[i].upload(transformation);
 			}
 		}
 	}
 
-	uniforms.instance.scaling.save(instance->scaling);
-	uniforms.instance.translation.save(instance->translation);
-	uniforms.instance.rotation.save(instance->rotation);
+	uniforms.instance.scaling.upload(instance->scaling);
+	uniforms.instance.translation.upload(instance->translation);
+	uniforms.instance.rotation.upload(instance->rotation);
 
 	for (auto &mesh : instance->model->meshes)
 	{
-		uniforms.material.unite.ambient.save(mesh->material->unite.ambient);
-		uniforms.material.unite.diffuse.save(mesh->material->unite.diffuse);
-		uniforms.material.unite.specular.save(mesh->material->unite.specular);
-		uniforms.material.unite.emission.save(mesh->material->unite.emission);
-		uniforms.material.unite.alpha.save(mesh->material->unite.alpha);
+		uniforms.material.unite.ambient.upload(mesh->material->unite.ambient);
+		uniforms.material.unite.diffuse.upload(mesh->material->unite.diffuse);
+		uniforms.material.unite.specular.upload(mesh->material->unite.specular);
+		uniforms.material.unite.emission.upload(mesh->material->unite.emission);
+		uniforms.material.unite.alpha.upload(mesh->material->unite.alpha);
 
-		uniforms.material.textures.ambient.is_valid.save(mesh->material->textures.ambient != nullptr);
+		uniforms.material.textures.ambient.is_valid.upload(mesh->material->textures.ambient != nullptr);
 		if (mesh->material->textures.ambient)
 		{
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.ambient->object);
 		}
 
-		uniforms.material.textures.diffuse.is_valid.save(mesh->material->textures.diffuse != nullptr);
+		uniforms.material.textures.diffuse.is_valid.upload(mesh->material->textures.diffuse != nullptr);
 		if (mesh->material->textures.diffuse)
 		{
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, mesh->material->textures.diffuse->object);
 		}
 
-		uniforms.material.textures.specular.is_valid.save(mesh->material->textures.specular != nullptr);
+		uniforms.material.textures.specular.is_valid.upload(mesh->material->textures.specular != nullptr);
 		if (mesh->material->textures.specular)
 		{
 			glActiveTexture(GL_TEXTURE2);
@@ -159,9 +188,9 @@ void				renderer::render(const model::instance::ptr &instance)
 
 void				renderer::render(const model::group::ptr &group)
 {
-	uniforms.group.scaling.save(group->scaling);
-	uniforms.group.translation.save(group->translation);
-	uniforms.group.rotation.save(group->rotation);
+	uniforms.group.scaling.upload(group->scaling);
+	uniforms.group.translation.upload(group->translation);
+	uniforms.group.rotation.upload(group->rotation);
 
 	for (const auto &instance : group->data)
 		render(instance);
@@ -173,53 +202,58 @@ void				renderer::callback()
 	auto			key = event.read_key();
 	auto			&camera = scene.camera;
 
-	static vec3 	light_position = LIGHT_POSITION;
-	bool			light_changed = false;
-
 	static bool		wireframe_mod = false;
-
-	program->use(true);
 
 	switch (key)
 	{
 		case engine::interface::key::letter_a :
 			camera.move(scene::camera::movement::left);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::letter_d :
 			camera.move(scene::camera::movement::right);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::letter_w :
 			camera.move(scene::camera::movement::forth);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::letter_s :
 			camera.move(scene::camera::movement::back);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::letter_q :
 			camera.move(scene::camera::movement::up);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::letter_e :
 			camera.move(scene::camera::movement::down);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::left :
 			camera.rotate(scene::camera::rotation::left);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::right :
 			camera.rotate(scene::camera::rotation::right);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::up :
 			camera.rotate(scene::camera::rotation::up);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::down :
 			camera.rotate(scene::camera::rotation::down);
+			upload_camera_data();
 			break ;
 
 		case engine::interface::key::enter :
@@ -229,7 +263,6 @@ void				renderer::callback()
 			break ;
 
 #warning "Debug only"
-
 		case engine::interface::key::letter_x :
 			wireframe_mod = not wireframe_mod;
 			if (wireframe_mod)
@@ -238,53 +271,9 @@ void				renderer::callback()
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			break ;
 
-#define SHIFT 2
-
-
-		case engine::interface::key::letter_j :
-			light_position.x -= SHIFT;
-			uniforms.light.position.save(light_position);
-			light_changed = true;
-			break ;
-
-		case engine::interface::key::letter_l :
-			light_position.x += SHIFT;
-			uniforms.light.position.save(light_position);
-			light_changed = true;
-			break ;
-
-		case engine::interface::key::letter_i :
-			light_position.z -= SHIFT;
-			uniforms.light.position.save(light_position);
-			light_changed = true;
-			break ;
-
-		case engine::interface::key::letter_k :
-			light_position.z += SHIFT;
-			uniforms.light.position.save(light_position);
-			light_changed = true;
-			break ;
-
-		case engine::interface::key::letter_u :
-			light_position.y += SHIFT;
-			uniforms.light.position.save(light_position);
-			light_changed = true;
-			break ;
-
-		case engine::interface::key::letter_o :
-			light_position.y -= SHIFT;
-			uniforms.light.position.save(light_position);
-			light_changed = true;
-			break ;
-
 		default :
-			program->use(false);
 			return ;
 	}
 
-	if (light_changed)
-		std::cerr << "Light position : " << glm::to_string(light_position) << std::endl;
-
-	program->use(false);
 	request = true;
 }

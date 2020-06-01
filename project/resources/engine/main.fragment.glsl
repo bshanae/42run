@@ -1,5 +1,3 @@
-#version 330 core
-
 ///////////////////////////////////////////////////////////////////////////////
 //						IN-OUT
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,11 +37,13 @@ uniform struct
 	}					textures;
 }						uniform_material;
 
+uniform vec3			uniform_camera_position;
+
 uniform struct
 {
-	vec3				camera;
-	vec3				position;
-	float				intensity;
+	int					size;
+	vec4				direction_or_position[SHARED_LIGHTS_CAPACITY];
+	vec3				color[SHARED_LIGHTS_CAPACITY];
 }						uniform_light;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,8 +60,6 @@ vec3					calculate_ambient()
 		return (uniform_material.unite.ambient);
 }
 
-#define DIFFUSE_FLOOR	0.5
-
 vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 {
 	vec3				material_color;
@@ -70,12 +68,10 @@ vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 	if (uniform_material.textures.diffuse.is_valid)
 		material_color *= texture(uniform_material.textures.diffuse.value, pass_UV).rgb;
 
-	float				intensity = max(dot(normal, light_direction), DIFFUSE_FLOOR);
+	float				intensity = dot(normal, light_direction);
 
 	return (material_color * intensity);
 }
-
-#define SPECULAR_FLOOR	0.0
 
 vec3					calculate_specular(vec3 normal, vec3 light_direction)
 {
@@ -85,11 +81,10 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 	if (uniform_material.textures.specular.is_valid)
 		material_factor *= texture(uniform_material.textures.specular.value, pass_UV).r;
 
-	vec3				view_direction = normalize(uniform_light.camera - pass_position);
+	vec3				view_direction = normalize(uniform_camera_position - pass_position);
 	vec3				reflect_direction = reflect(-light_direction, normal);
 	float				intensity = dot(view_direction, reflect_direction);
 
-	intensity = max(intensity, SPECULAR_FLOOR);
 	intensity = pow(intensity, 512);
 
 	return (material_factor * intensity);
@@ -97,15 +92,30 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 
 void					main()
 {
-	vec3				normal = normalize(pass_normal);
-	vec3				light_direction = normalize(uniform_light.position - pass_position);
-
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
 //	final_color.rgb += calculate_ambient();
-	final_color.rgb += calculate_diffuse(normal, light_direction);
-	final_color.rgb += calculate_specular(normal, light_direction);
+
+	vec3				normal = normalize(pass_normal);
+	vec3				light_direction;
+
+	for (int i = 0; i < uniform_light.size; i++)
+	{
+//						w = 0.0 -> directional light
+//						w = 1.0 -> point light
+
+		if (uniform_light.direction_or_position[i].w == 0.0)
+			light_direction = normalize(uniform_light.direction_or_position[i].xyz);
+		else if (uniform_light.direction_or_position[i].w == 1.0)
+			light_direction = normalize(uniform_light.direction_or_position[i].xyz - pass_position);
+
+		final_color.rgb += calculate_diffuse(normal, light_direction);
+//		final_color.rgb += calculate_specular(normal, light_direction);
+	}
+
 	final_color.rgb += uniform_material.unite.emission;
 
-//	final_color = vec4(pass_UV, 0, 1);
-//	final_color = vec4(uniform_material.textures.specular.is_valid, 0, 0, 1);
+//	DEBUG
+
+
+	vec3 x = uniform_camera_position;
 }
