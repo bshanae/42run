@@ -84,10 +84,10 @@ vec3					calculate_specular(vec3 normal, vec3 direction_to_light)
 		material_factor *= texture(uniform_material.textures.specular.value, pass_UV).r;
 
 	vec3				view_direction = normalize(uniform_camera_position - pass_position);
-	vec3				reflect_direction = reflect(-direction_to_light, normal);
-	float				intensity = dot(view_direction, reflect_direction);
+	vec3				reflection_direction = reflect(-direction_to_light, normal);
+	float				intensity = dot(view_direction, reflection_direction);
 
-	intensity = pow(intensity, 512);
+	intensity = pow(max(intensity, 0.0), 512);
 
 	return (material_factor * intensity);
 }
@@ -135,7 +135,7 @@ void					main()
 		}
 
 		final_color.rgb += attenuation * uniform_light.color[i] * uniform_light.intensity[i] * calculate_diffuse(normal, direction_to_light);
-//		final_color.rgb += calculate_specular(normal, direction_to_light);
+		final_color.rgb += attenuation * uniform_light.color[i] * uniform_light.intensity[i] * calculate_specular(normal, direction_to_light);
 	}
 
 	final_color.rgb += uniform_material.unite.emission;
