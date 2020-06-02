@@ -56,7 +56,9 @@ set(SOURCE_ENGINE
 	project/engine/model/group.cpp
 	project/engine/model/manager.cpp
 
-	project/engine/renderer/renderer.cpp)
+	project/engine/renderer/render.cpp
+	project/engine/renderer/callback.cpp
+	project/engine/renderer/data.cpp)
 
 set(SOURCE_GAME
 	project/game/game.cpp

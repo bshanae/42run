@@ -42,8 +42,10 @@ uniform vec3			uniform_camera_position;
 uniform struct
 {
 	int					size;
-	vec4				direction_or_position[SHARED_LIGHTS_CAPACITY];
+	int					type[SHARED_LIGHTS_CAPACITY];
+	vec3				data[SHARED_LIGHTS_CAPACITY];
 	vec3				color[SHARED_LIGHTS_CAPACITY];
+	float				intensity[SHARED_LIGHTS_CAPACITY];
 }						uniform_light;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,7 +62,7 @@ vec3					calculate_ambient()
 		return (uniform_material.unite.ambient);
 }
 
-vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
+vec3					calculate_diffuse(vec3 normal, vec3 direction_to_light)
 {
 	vec3				material_color;
 
@@ -68,12 +70,12 @@ vec3					calculate_diffuse(vec3 normal, vec3 light_direction)
 	if (uniform_material.textures.diffuse.is_valid)
 		material_color *= texture(uniform_material.textures.diffuse.value, pass_UV).rgb;
 
-	float				intensity = dot(normal, light_direction);
+	float				intensity = dot(normal, direction_to_light);
 
 	return (material_color * intensity);
 }
 
-vec3					calculate_specular(vec3 normal, vec3 light_direction)
+vec3					calculate_specular(vec3 normal, vec3 direction_to_light)
 {
 	vec3				material_factor;
 
@@ -82,7 +84,7 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 		material_factor *= texture(uniform_material.textures.specular.value, pass_UV).r;
 
 	vec3				view_direction = normalize(uniform_camera_position - pass_position);
-	vec3				reflect_direction = reflect(-light_direction, normal);
+	vec3				reflect_direction = reflect(-direction_to_light, normal);
 	float				intensity = dot(view_direction, reflect_direction);
 
 	intensity = pow(intensity, 512);
@@ -90,26 +92,50 @@ vec3					calculate_specular(vec3 normal, vec3 light_direction)
 	return (material_factor * intensity);
 }
 
+float					calculate_attenuation(float distance)
+{
+	return
+	(
+		1.0f /
+		(
+			SHARED_ATTENUATION_CONSTANT +
+			SHARED_ATTENUATION_LINEAR * distance +
+			SHARED_ATTENUATION_QUADRATIC * (distance * distance)
+		)
+	);
+}
+
+
 void					main()
 {
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
 //	final_color.rgb += calculate_ambient();
 
 	vec3				normal = normalize(pass_normal);
-	vec3				light_direction;
+	vec3				direction_to_light;
+	float				distance_to_light;
+	float				attenuation;
 
 	for (int i = 0; i < uniform_light.size; i++)
 	{
 //						w = 0.0 -> directional light
 //						w = 1.0 -> point light
 
-		if (uniform_light.direction_or_position[i].w == 0.0)
-			light_direction = normalize(uniform_light.direction_or_position[i].xyz);
-		else if (uniform_light.direction_or_position[i].w == 1.0)
-			light_direction = normalize(uniform_light.direction_or_position[i].xyz - pass_position);
+		if (uniform_light.type[i] == SHARED_LIGHT_TYPE_DIRECTIONAL)
+		{
+			direction_to_light = normalize(uniform_light.data[i]);
+			attenuation = 1.0f;
+		}
+		else if (uniform_light.type[i] == SHARED_LIGHT_TYPE_POINT)
+		{
+			direction_to_light = normalize(uniform_light.data[i] - pass_position);
+			distance_to_light = length(uniform_light.data[i] - pass_position);
+			attenuation = calculate_attenuation(distance_to_light);
+//			attenuation = 1.0f;
+		}
 
-		final_color.rgb += calculate_diffuse(normal, light_direction);
-//		final_color.rgb += calculate_specular(normal, light_direction);
+		final_color.rgb += attenuation * uniform_light.color[i] * uniform_light.intensity[i] * calculate_diffuse(normal, direction_to_light);
+//		final_color.rgb += calculate_specular(normal, direction_to_light);
 	}
 
 	final_color.rgb += uniform_material.unite.emission;

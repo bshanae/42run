@@ -15,7 +15,17 @@ class								engine::renderer
 	friend class					core;
 
 private :
-									renderer();
+									renderer()
+	{
+		program = engine::program::program::make_ptr
+		(
+			settings().glsl_path / "main.vertex.glsl",
+			settings().glsl_path / "main.fragment.glsl"
+		);
+
+		initialize_data();
+	}
+
 public :
 	virtual							~renderer() = default;
 public :
@@ -38,11 +48,16 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 
 	enum class 						light_type : int
 	{
-		directional = 0,
-		point = 1
+		empty = SHARED_LIGHT_TYPE_EMPTY,
+		directional = SHARED_LIGHT_TYPE_DIRECTIONAL,
+		point = SHARED_LIGHT_TYPE_POINT
 	};
 
-	static void 					light(light_type type, vec3 data, vec3 color)
+	static void 					light(
+									light_type type,
+									const vec3 &data,
+									const vec3 &color,
+									float intensity)
 	{
 		auto						&light_data = instance()->light_data;
 
@@ -52,12 +67,10 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 			return ;
 		}
 
-		light_data.direction_or_position[light_data.size].x = data.x;
-		light_data.direction_or_position[light_data.size].y = data.y;
-		light_data.direction_or_position[light_data.size].z = data.z;
-		light_data.direction_or_position[light_data.size].w = (float)(int)type;
-
+		light_data.type[light_data.size] = type;
+		light_data.data[light_data.size] = data;
 		light_data.color[light_data.size] = color;
+		light_data.intensity[light_data.size] = intensity;
 
 		light_data.size++;
 	}
@@ -75,6 +88,8 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 		groups_type					groups;
 	}								targets;
 
+	void							initialize_data();
+
 	void 							upload_camera_data();
 	void 							upload_light_data();
 
@@ -90,8 +105,10 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 	struct
 	{
 		int							size = 0;
-		vec4						direction_or_position[SHARED_LIGHTS_CAPACITY];
-		vec3						color[SHARED_LIGHTS_CAPACITY];
+		light_type					type[SHARED_LIGHTS_CAPACITY] = {};
+		vec3						data[SHARED_LIGHTS_CAPACITY] = {vec3(0.f)};
+		vec3						color[SHARED_LIGHTS_CAPACITY] = {vec3(0.f)};
+		float						intensity[SHARED_LIGHTS_CAPACITY] = {0.f};
 	}								light_data;
 
 	using 							uniform_int = engine::program::uniform<int>;
@@ -135,8 +152,10 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 		struct
 		{
 			uniform_int				size;
-			uniform_vec4			direction_or_position[SHARED_LIGHTS_CAPACITY];
+			uniform_int				type[SHARED_LIGHTS_CAPACITY];
+			uniform_vec3			data[SHARED_LIGHTS_CAPACITY];
 			uniform_vec3			color[SHARED_LIGHTS_CAPACITY];
+			uniform_float			intensity[SHARED_LIGHTS_CAPACITY];
 		}							light;
 
 		uniform_int 				does_mesh_have_bones;
