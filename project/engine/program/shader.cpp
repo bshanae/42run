@@ -10,7 +10,7 @@ shader::shader(type type, const path &source)
 
 		file.open(path);
 		if (not file.is_open())
-			common::error::raise(common::error::id::shader_file_error);
+			error::raise(error::id::shader_file_error);
 
 		stream << file.rdbuf();
 
@@ -45,11 +45,11 @@ shader::shader(type type, const path &source)
 		std::cout << raw_string << std::endl << std::endl;
 		std::cout << "DEBUG // GLSL OUTPUT" << std::endl << std::endl;
 		std::cout << log << std::endl << std::endl;
-		common::error::raise(common::error::id::shader_compilation_error);
+		error::raise(error::id::shader_compilation_error);
 	}
 #else
 	if (not success)
-		common::error::raise(common::error::id::shader_compilation_error);
+		error::raise(error::id::shader_compilation_error);
 #endif
 }
 shader::~shader()

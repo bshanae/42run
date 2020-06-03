@@ -38,13 +38,14 @@ set(SOURCE_ENGINE
 	project/engine/core/core.cpp
 	project/engine/core/execute.cpp
 	project/engine/core/callback.cpp
-	project/engine/core/connect_renderer.cpp
+	project/engine/core/connect_with_global.cpp
 
 	project/engine/converter/converter.cpp
 
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
 
+	project/engine/scene/scene.cpp
 	project/engine/scene/camera.cpp
 
 	project/engine/model/bone.cpp
@@ -57,6 +58,7 @@ set(SOURCE_ENGINE
 	project/engine/model/manager.cpp
 
 	project/engine/renderer/render.cpp
+	project/engine/renderer/connect_with_global.cpp
 	project/engine/renderer/callback.cpp
 	project/engine/renderer/data.cpp)
 

@@ -17,7 +17,7 @@ class								engine::renderer
 private :
 									renderer()
 	{
-		program = engine::program::program::make_ptr
+		program = program::program::make_ptr
 		(
 			settings().glsl_path / "main.vertex.glsl",
 			settings().glsl_path / "main.fragment.glsl"
@@ -28,65 +28,18 @@ private :
 
 public :
 	virtual							~renderer() = default;
-public :
 
 START_GLOBAL_CUSTOM_INITIALIZER(renderer)
-	engine::core::connect_renderer();
+	connect_with_global();
 FINISH_GLOBAL_CUSTOM_INITIALIZER
 
-	static void						target(const model::instance::ptr &target)
-	{
-		instance()->targets.instances.push_back(target);
-	}
-
-	static void						target(const model::group::ptr &target)
-	{
-		instance()->targets.groups.push_back(target);
-	}
-
 	bool							request = true;
-
-	enum class 						light_type : int
-	{
-		empty = SHARED_LIGHT_TYPE_EMPTY,
-		directional = SHARED_LIGHT_TYPE_DIRECTIONAL,
-		point = SHARED_LIGHT_TYPE_POINT
-	};
-
-	static void 					light(
-									light_type type,
-									const vec3 &data,
-									const vec3 &color,
-									float intensity)
-	{
-		auto						&light_data = instance()->light_data;
-
-		if (light_data.size == SHARED_LIGHTS_CAPACITY)
-		{
-			common::warning::raise(common::warning::id::renderer_no_space_for_light);
-			return ;
-		}
-
-		light_data.type[light_data.size] = type;
-		light_data.data[light_data.size] = data;
-		light_data.color[light_data.size] = color;
-		light_data.intensity[light_data.size] = intensity;
-
-		light_data.size++;
-	}
 
 private :
 
 IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
-	struct
-	{
-		using						instances_type = vector<model::instance::ptr>;
-		using						groups_type = vector<model::group::ptr>;
-
-		instances_type				instances;
-		groups_type					groups;
-	}								targets;
+	static void						connect_with_global();
 
 	void							initialize_data();
 
@@ -99,28 +52,26 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
 	void							callback();
 
-	engine::program::program::ptr	program;
-	engine::scene::scene			scene;
+	program::program::ptr			program;
 
-	struct
-	{
-		int							size = 0;
-		light_type					type[SHARED_LIGHTS_CAPACITY] = {};
-		vec3						data[SHARED_LIGHTS_CAPACITY] = {vec3(0.f)};
-		vec3						color[SHARED_LIGHTS_CAPACITY] = {vec3(0.f)};
-		float						intensity[SHARED_LIGHTS_CAPACITY] = {0.f};
-	}								light_data;
+	using 							uniform_int = program::uniform<int>;
+	using 							uniform_float = program::uniform<float>;
+	using 							uniform_vec3 = program::uniform<vec3>;
+	using 							uniform_vec4 = program::uniform<vec4>;
+	using 							uniform_mat4 = program::uniform<mat4>;
 
-	using 							uniform_int = engine::program::uniform<int>;
-	using 							uniform_float = engine::program::uniform<float>;
-	using 							uniform_vec3 = engine::program::uniform<vec3>;
-	using 							uniform_vec4 = engine::program::uniform<vec4>;
-	using 							uniform_mat4 = engine::program::uniform<mat4>;
-
-	struct							texture_wrap
+	struct							texture_glsl
 	{
 		uniform_int 				is_valid;
 		uniform_int 				value;
+	};
+	
+	struct 							light_glsl
+	{
+		uniform_int					type;
+		uniform_vec3				data;
+		uniform_vec3				color;
+		uniform_float				power;
 	};
 
 	struct
@@ -141,22 +92,19 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
 			struct
 			{
-				texture_wrap		ambient;
-				texture_wrap		diffuse;
-				texture_wrap		specular;
+				texture_glsl		ambient;
+				texture_glsl		diffuse;
+				texture_glsl		specular;
 			}						textures;
 		}							material;
-
-		uniform_vec3				camera_position;
-
+		
 		struct
 		{
-			uniform_int				size;
-			uniform_int				type[SHARED_LIGHTS_CAPACITY];
-			uniform_vec3			data[SHARED_LIGHTS_CAPACITY];
-			uniform_vec3			color[SHARED_LIGHTS_CAPACITY];
-			uniform_float			intensity[SHARED_LIGHTS_CAPACITY];
-		}							light;
+			uniform_vec3			camera_position;
+
+			uniform_int				lights_size;
+			light_glsl				lights[SHARED_LIGHTS_CAPACITY];
+		}							scene;
 
 		uniform_int 				does_mesh_have_bones;
 		uniform_mat4 				bones_transformations[model::skeleton::bones_limit];

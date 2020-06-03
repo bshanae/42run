@@ -27,6 +27,7 @@ int									main()
 
 	engine::core::initialize();
 	engine::renderer::initialize();
+	engine::scene::scene::initialize();
 	engine::model::manager::initialize();
 	game::manager::initialize();
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <array>
 #include <list>
 #include <fstream>
 #include <sstream>
@@ -16,111 +17,132 @@
 
 #include "resources/engine/shared.h"
 
-namespace				engine
+namespace							engine
 {
-	using				std::vector;
-	using				std::list;
-	using				std::optional;
-	using				std::pair;
-	using				std::string;
-	using				std::ifstream;
-	using				std::stringstream;
+	using							std::vector;
+	using							std::list;
+	using							std::array;
+	using							std::optional;
+	using							std::pair;
+	using							std::string;
+	using							std::ifstream;
+	using							std::stringstream;
 
-	using				std::filesystem::path;
-	using				std::filesystem::exists;
+	using							std::filesystem::path;
+	using							std::filesystem::exists;
 
-	using				std::unique_ptr;
-	using				std::shared_ptr;
-	using				std::make_unique;
-	using				std::make_shared;
+	using							std::unique_ptr;
+	using							std::shared_ptr;
+	using							std::make_unique;
+	using							std::make_shared;
 
-	using				std::move;
-	using				std::to_string;
-	using				std::initializer_list;
+	using							std::move;
+	using							std::to_string;
+	using							std::initializer_list;
 
-	using				glm::ivec2;
-	using				glm::vec2;
-	using				glm::vec3;
-	using				glm::vec4;
-	using				glm::mat3;
-	using				glm::mat4;
-	using				glm::quat;
+	using							glm::ivec2;
+	using							glm::vec2;
+	using							glm::vec3;
+	using							glm::vec4;
+	using							glm::mat3;
+	using							glm::mat4;
+	using							glm::quat;
 
-	using				common::float_range;
-	using				common::vec3_range;
+	using							common::float_range;
+	using							common::vec3_range;
 
-	using				common::random;
+	using							common::random;
 
-	struct				settings
-	{
-		ivec2			window_size;
-		string			window_name;
-		vec3			background = vec3(0.f, 0.f, 0.f);
-		int				number_of_samples = 0;
+	namespace						error = common::error;
+	namespace						warning = common::warning;
 
-		string			glsl_version;
-		path			glsl_path;
-
-		float			camera_movement_speed = 0.f;
-		float			camera_rotation_speed = 0.f;
-		vec3			camera_position = vec3(0.f, 0.f, 0.f);
-		float			camera_yaw = -90.f;
-		float			camera_pitch = 0.f;
-		float			camera_near_plane = 0.1f;
-		float			camera_far_plane = 100.f;
-	};
-
-	struct settings		&settings();
-
-	namespace			converter
+	namespace						converter
 	{}
 
-	class 				core;
+	class 							core;
 
-	namespace			interface
+	namespace						interface
 	{
-		class			function;
-		class			timer;
-		class			event;
-		class			callback;
-		enum class		key;
+		class						function;
+		class						timer;
+		class						event;
+		class						callback;
+		enum class					key;
 	}
 
-	namespace			abstract
+	namespace						abstract
 	{
-		template		<typename enum_type, typename underlying_type>
-		class			enum_wrap;
-		class			object_wrap;
+		template					<typename enum_type, typename underlying_type>
+		class						enum_wrap;
+		class						object_wrap;
 	}
 
-	namespace			program
+	namespace						program
 	{
-		template		<typename type>
-		class			uniform;
-		class 			shader;
-		class 			program;
+		template					<typename type>
+		class						uniform;
+		class 						shader;
+		class 						program;
 	}
 
-	namespace			model
+	namespace						model
 	{
-		class			bone;
-		class			skeleton;
-		class			animation;
-		class			texture;
-		class			material;
-		class			mesh;
-		class			manager;
-		class			model;
-		class			instance;
-		class			group;
+		class						bone;
+		class						skeleton;
+		class						animation;
+		class						texture;
+		class						material;
+		class						mesh;
+		class						manager;
+		class						model;
+		class						instance;
+		class						group;
 	}
 
-	namespace			scene
+	namespace						scene
 	{
-		class			camera;
-		class			light;
-		class			scene;
+		class						scene;
+		class						camera;
+		class						light;
 	}
 
-	class 				renderer;
+	class 							renderer;
+
+	struct							settings
+	{
+		ivec2						window_size;
+		string						window_name;
+		vec3						background = vec3(0.f, 0.f, 0.f);
+		int							number_of_samples = 0;
+
+		string						glsl_version;
+		path						glsl_path;
+
+		float						camera_movement_speed = 0.f;
+		float						camera_rotation_speed = 0.f;
+		vec3						camera_position = vec3(0.f, 0.f, 0.f);
+		float						camera_yaw = -90.f;
+		float						camera_pitch = 0.f;
+		float						camera_near_plane = 0.1f;
+		float						camera_far_plane = 100.f;
+	};
+
+	struct settings					&settings();
+
+	struct							global
+	{
+		friend class				core;
+		friend class				renderer;
+		friend class				scene::scene;
+
+	private :
+
+		void						revise();
+
+		shared_ptr<core>			core;
+		shared_ptr<renderer>		renderer;
+		shared_ptr<scene::scene>	scene;
+	};
+
+	struct global					&global();
 }

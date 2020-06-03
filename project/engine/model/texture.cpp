@@ -18,7 +18,7 @@ using namespace		engine;
 	auto			*data = stbi_load(source.c_str(), &width, &height, &number_of_components, 0);
 
 	if (not data)
-		common::error::raise(common::error::id::texture_creation_error);
+		error::raise(error::id::texture_creation_error);
 
 	GLenum			format = 0;
 
@@ -34,7 +34,7 @@ using namespace		engine;
 			format = GL_RGBA;
 			break ;
 		default :
-			common::error::raise(common::error::id::texture_bad_format);
+			error::raise(error::id::texture_bad_format);
 
 	}
 

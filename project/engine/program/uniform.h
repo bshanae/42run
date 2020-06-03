@@ -16,7 +16,7 @@ public :
 	void			upload(const type &data)
 	{
 		if (object == -1)
-			common::error::raise(common::error::id::uniform_bad_value);
+			error::raise(error::id::uniform_bad_value);
 		if constexpr (std::is_same<type, int>::value)
 			glUniform1i(object, data);
 		else if constexpr (std::is_same<type, float>::value)
@@ -28,7 +28,7 @@ public :
 		else if constexpr (std::is_same<type, glm::mat4>::value)
 			glUniformMatrix4fv(object, 1, GL_FALSE, value_ptr(data));
 		else
-			common::error::raise(common::error::id::uniform_bad_type);
+			error::raise(error::id::uniform_bad_type);
 	}
 
 private :

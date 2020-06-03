@@ -10,7 +10,7 @@ using namespace				engine::program;
 
 		file.open(path);
 		if (not file.is_open())
-			common::error::raise(common::error::id::shader_file_error);
+			class::raise(class::id::shader_file_error);
 
 //		std::cout << "<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
 //		std::cout << file.rdbuf() << std::endl;
@@ -35,7 +35,7 @@ using namespace				engine::program;
 
 		file.open(source);
 		if (not file.is_open())
-			common::error::raise(common::error::id::shader_file_error);
+			class::raise(class::id::shader_file_error);
 
 		stream << file.rdbuf();
 		file.close();
@@ -64,11 +64,11 @@ using namespace				engine::program;
 		std::cout << raw_string << std::endl << std::endl;
 		std::cout << "DEBUG // GLSL OUTPUT" << std::endl << std::endl;
 		std::cout << log << std::endl << std::endl;
-		common::error::raise(common::error::id::shader_compilation_error);
+		class::raise(class::id::shader_compilation_error);
 	}
 #else
 	if (not success)
-		common::error::raise(common::error::id::shader_compilation_error);
+		class::raise(class::id::shader_compilation_error);
 #endif
 }
 							shader::~shader()

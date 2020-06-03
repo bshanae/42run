@@ -17,11 +17,11 @@ using namespace		engine;
 		settings().window_name.c_str(),
 		nullptr, nullptr);
 	if (window == nullptr)
-		common::error::raise(common::error::id::GLFW_error);
+		error::raise(error::id::GLFW_error);
 	glfwMakeContextCurrent(window);
 
 	if (not gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		common::error::raise(common::error::id::GLAD_error);
+		error::raise(error::id::GLAD_error);
 
 	glfwGetFramebufferSize(window, &settings().window_size.x, &settings().window_size.y);
 	glViewport(0, 0, settings().window_size.x, settings().window_size.y);

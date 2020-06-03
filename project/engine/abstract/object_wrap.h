@@ -12,7 +12,7 @@ public :
 
 	virtual void	use(bool state) const
 	{
-		common::error::raise(common::error::id::unimplemented_virtual_method);
+		error::raise(error::id::unimplemented_virtual_method);
 	}
 
 protected :

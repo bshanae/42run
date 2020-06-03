@@ -28,11 +28,11 @@ using namespace		engine::program;
 		glGetProgramInfoLog(object, 1024, nullptr, log);
 		std::cout << "DEBUG // GLSL OUTPUT" << std::endl << std::endl;
 		std::cout << log << std::endl << std::endl;
-		common::error::raise(common::error::id::program_compilation_error);
+		error::raise(error::id::program_compilation_error);
 	}
 #else
 	if (not success)
-		common::error::raise(common::error::id::program_compilation_error);
+		error::raise(error::id::program_compilation_error);
 #endif
 }
 

@@ -23,7 +23,7 @@ void				model::model::analyze()
 void 				model::model::center()
 {
 	if (not is_analyzed)
-		common::warning::raise(common::warning::id::model_is_not_analyzed);
+		warning::raise(warning::id::model_is_not_analyzed);
 
 	offset = min + (max - min) / vec3(2.f);
 

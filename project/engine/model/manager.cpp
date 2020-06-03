@@ -32,11 +32,11 @@ model::model::ptr			model::manager::make_model_non_static(const path &source, fl
 	{
 		std::cout << "DEBUG // ASSIMP OUTPUT" << std::endl;
 		std::cout << importer.GetErrorString() << std::endl;
-		common::error::raise(common::error::id::ASSIMP_error);
+		error::raise(error::id::ASSIMP_error);
 	}
 #else
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
-		common::error::raise(common::error::id::ASSIMP_error);
+		error::raise(error::id::ASSIMP_error);
 #endif
 
 	nodes.clear();
@@ -87,7 +87,7 @@ void						model::manager::load_bones()
 			pointer->animation = find_animation(name);
 
 			if (not pointer->animation)
-				common::warning::raise(common::warning::id::model_animation_not_found);
+				warning::raise(warning::id::model_animation_not_found);
 
 			bones.push_back(move(pointer));
 
@@ -183,7 +183,7 @@ model::mesh::ptr			model::manager::process_mesh(aiMesh *mesh)
 				}
 
 				if (k == mesh::vertex::bones_limit - 1)
-					common::error::raise(common::error::id::model_too_many_bones);
+					error::raise(error::id::model_too_many_bones);
 			}
 		}
 	}
@@ -203,7 +203,7 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 
 #define GET_MATERIAL_PROPERTY(key, target)										\
 	if (source->Get(key, target) != AI_SUCCESS)									\
-		common::warning::raise(common::warning::id::model_animation_not_found);
+		warning::raise(warning::id::model_animation_not_found);
 
 	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_AMBIENT, ambient);
 	GET_MATERIAL_PROPERTY(AI_MATKEY_COLOR_DIFFUSE, diffuse);
@@ -256,7 +256,7 @@ pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 		if (bone->name == name)
 			return {bone, bone->id};
 
-	common::warning::raise(common::warning::id::model_bone_not_found);
+	warning::raise(warning::id::model_bone_not_found);
 	return {bone::ptr(), -1};
 }
 
@@ -266,6 +266,6 @@ aiNodeAnim					*model::manager::find_animation(const string &name)
 		if (animation->mNodeName.data == name)
 			return (animation);
 
-	common::warning::raise(common::warning::id::model_animation_not_found);
+	warning::raise(warning::id::model_animation_not_found);
 	return (nullptr);
 }

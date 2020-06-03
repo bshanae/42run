@@ -8,7 +8,8 @@ void				renderer::callback()
 {
 	const auto		&event = core::receive_event();
 	auto			key = event.read_key();
-	auto			&camera = scene.camera;
+	auto			scene = global().scene;
+	auto			&camera = scene->camera;
 
 	static bool		wireframe_mod = false;
 
@@ -65,7 +66,7 @@ void				renderer::callback()
 			break ;
 
 		case engine::interface::key::enter :
-			for (auto &instance : targets.instances)
+			for (auto &instance : scene->targets.instances)
 				if (instance->model->skeleton->animation)
 					instance->model->skeleton->update();
 			break ;

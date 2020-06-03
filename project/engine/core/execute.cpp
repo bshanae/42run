@@ -35,14 +35,14 @@ void 				calculate_fps()
 
 void 				core::execute()
 {
-	auto			background = settings().background;
 	auto			&instance = core::instance();
+	auto			background = settings().background;
+	auto			renderer = global().renderer;
 
-	if (not instance->renderer)
-		common::error::raise(common::error::id::core_renderer_not_connected);
+	global().revise();
 
-	instance->renderer->upload_camera_data();
-	instance->renderer->upload_light_data();
+	renderer->upload_camera_data();
+	renderer->upload_light_data();
 
 	while (not glfwWindowShouldClose(instance->window))
 	{
@@ -53,7 +53,7 @@ void 				core::execute()
 				callback();
 		instance->event.type_value = interface::event::type::none;
 
-		if (instance->renderer->request)
+		if (renderer->request)
 		{
 //			calculate_fps();
 
@@ -61,7 +61,7 @@ void 				core::execute()
 			glClear(GL_COLOR_BUFFER_BIT);
 			glClear(GL_DEPTH_BUFFER_BIT);
 
-			instance->renderer->render();
+			renderer->render();
 
 			glfwSwapBuffers(instance->window);
 		}

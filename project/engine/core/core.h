@@ -14,7 +14,6 @@ public :
 private :
 
 	GLFWwindow						*window = nullptr;
-	shared_ptr<renderer>			renderer;
 
 	interface::event				event;
 	list<interface::callback>		callbacks;
@@ -25,11 +24,13 @@ IMPLEMENT_GLOBAL_INSTANCER(core)
 
 public :
 
-IMPLEMENT_GLOBAL_INITIALIZER(core)
+START_GLOBAL_CUSTOM_INITIALIZER(core)
+	connect_with_global();
+FINISH_GLOBAL_CUSTOM_INITIALIZER
 
 	static void						execute();
 
-	static void						connect_renderer();
+	static void						connect_with_global();
 
 	template					<typename ...args_type>
 	static void						generate_callback(args_type ...args)

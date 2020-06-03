@@ -6,21 +6,24 @@ using namespace		engine;
 
 void				renderer::render()
 {
+	auto			scene = global().scene;
+
+	global().revise();
+
 	request = false;
 
-	program->use(true);
+	upload_camera_data();
 
-	uniforms.projection.upload(scene.camera.projection_matrix());
-	uniforms.view.upload(scene.camera.view_matrix());
+	program->use(true);
 
 	uniforms.group.scaling.upload(mat4(1.f));
 	uniforms.group.translation.upload(mat4(1.f));
 	uniforms.group.rotation.upload(mat4(1.f));
 
-	for (const auto &instance : targets.instances)
+	for (const auto &instance : scene->targets.instances)
 		render(instance);
 
-	for (const auto &group : targets.groups)
+	for (const auto &group : scene->targets.groups)
 		render(group);
 
 	program->use(false);

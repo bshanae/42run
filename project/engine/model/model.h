@@ -35,28 +35,28 @@ public:
 	[[nodiscard]] vec3			read_min() const
 	{
 		if (not is_analyzed)
-			common::warning::raise(common::warning::id::model_is_not_analyzed);
+			warning::raise(warning::id::model_is_not_analyzed);
 		return (min);
 	}
 
 	[[nodiscard]] vec3			read_max() const
 	{
 		if (not is_analyzed)
-			common::warning::raise(common::warning::id::model_is_not_analyzed);
+			warning::raise(warning::id::model_is_not_analyzed);
 		return (max);
 	}
 
 	[[nodiscard]] vec3			read_size() const
 	{
 		if (not is_analyzed)
-			common::warning::raise(common::warning::id::model_is_not_analyzed);
+			warning::raise(warning::id::model_is_not_analyzed);
 		return (size);
 	}
 
 	[[nodiscard]] vec3			read_offset() const
 	{
 		if (not is_centered)
-			common::warning::raise(common::warning::id::model_is_not_centered);
+			warning::raise(warning::id::model_is_not_centered);
 		return (offset);
 	}
 
