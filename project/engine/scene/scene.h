@@ -19,6 +19,7 @@ public :
 
 START_GLOBAL_CUSTOM_INITIALIZER(scene)
 	connect_to_global();
+	instance()->lights.reserve(SHARED_LIGHTS_CAPACITY);
 FINISH_GLOBAL_CUSTOM_INITIALIZER
 
 	static void			target(const model::model::ptr &target);
@@ -30,13 +31,13 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 	{
 		shared_ptr<scene>	instance = scene::instance();
 
-		if (instance->lights_size == SHARED_LIGHTS_CAPACITY)
+		if (instance->lights.size() == SHARED_LIGHTS_CAPACITY)
 		{
 			warning::raise(warning::id::renderer_no_space_for_light);
 			return ;
 		}
 		else
-			instance->lights[instance->lights_size++] = engine::scene::light(args...);
+			instance->lights.push_back(engine::scene::light::make_ptr(args...));
 	}
 
 private :
@@ -47,9 +48,8 @@ IMPLEMENT_GLOBAL_INSTANCER(scene)
 
 	camera				camera;
 
-	using				lights_type = array<engine::scene::light, SHARED_LIGHTS_CAPACITY>;
+	using				lights_type = vector<engine::scene::light::ptr>;
 	lights_type			lights;
-	int					lights_size = 0;
 
 	struct
 	{

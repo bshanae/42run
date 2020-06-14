@@ -47,6 +47,8 @@ namespace							engine
 	using							glm::mat3;
 	using							glm::mat4;
 	using							glm::quat;
+	using							glm::cos;
+	using							glm::radians;
 
 	using							common::float_range;
 	using							common::vec3_range;

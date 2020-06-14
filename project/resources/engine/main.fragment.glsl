@@ -40,7 +40,12 @@ uniform struct
 struct					light
 {
 	int					type;
-	vec3				data;
+
+	vec3				parameter_a;
+	vec3				parameter_b;
+	float				parameter_c;
+	float				parameter_d;
+
 	vec3				color;
 	float				power;
 };
@@ -97,7 +102,7 @@ vec3					calculate_specular(vec3 normal, vec3 direction_to_light)
 	return (material_factor * intensity);
 }
 
-float					calculate_attenuation(float distance)
+float					calculate_point_attenuation(float distance)
 {
 	return
 	(
@@ -110,6 +115,57 @@ float					calculate_attenuation(float distance)
 	);
 }
 
+float					calculate_projector_attenuation(int i, float theta)
+{
+	float				epsilon = uniform_scene.lights[i].parameter_c - uniform_scene.lights[i].parameter_d;
+	float				attenuation = (theta - uniform_scene.lights[i].parameter_c) / epsilon;
+
+	attenuation = clamp(attenuation, 0.f, 1.f);
+	return (attenuation);
+}
+
+vec3					process_light(vec3 normal, int i)
+{
+	vec3				direction_to_light;
+	float				distance_to_light;
+
+	float				attenuation = 1.f;
+
+	vec3				diffuse = vec3(0);
+	vec3				specular = vec3(0);
+
+	if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_DIRECTIONAL)
+	{
+		direction_to_light = normalize(-uniform_scene.lights[i].parameter_a);
+	}
+	else if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_POINT)
+	{
+		direction_to_light = normalize(uniform_scene.lights[i].parameter_a - pass_position);
+		distance_to_light = length(uniform_scene.lights[i].parameter_a - pass_position);
+		attenuation = calculate_point_attenuation(distance_to_light);
+	}
+	else if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_PROJECTOR)
+	{
+		float			theta;
+
+		direction_to_light = normalize(uniform_scene.lights[i].parameter_a - pass_position);
+		theta = dot(direction_to_light, normalize(-uniform_scene.lights[i].parameter_b));
+
+		if (theta <= uniform_scene.lights[i].parameter_c)
+			return (vec3(0));
+
+		attenuation = calculate_projector_attenuation(i, theta);
+	}
+
+	diffuse = calculate_diffuse(normal, direction_to_light);
+	specular = calculate_specular(normal, direction_to_light);
+
+	diffuse *= attenuation * uniform_scene.lights[i].color * uniform_scene.lights[i].power;
+	specular *= attenuation * uniform_scene.lights[i].color * uniform_scene.lights[i].power;
+
+	return (diffuse + specular);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //						MAIN
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,27 +176,9 @@ void					main()
 //	final_color.rgb += calculate_ambient();
 
 	vec3				normal = normalize(pass_normal);
-	vec3				direction_to_light;
-	float				distance_to_light;
-	float				attenuation;
 
 	for (int i = 0; i < uniform_scene.lights_size; i++)
-	{
-		if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_DIRECTIONAL)
-		{
-			direction_to_light = normalize(-uniform_scene.lights[i].data);
-			attenuation = 1.0f;
-		}
-		else if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_POINT)
-		{
-			direction_to_light = normalize(uniform_scene.lights[i].data - pass_position);
-			distance_to_light = length(uniform_scene.lights[i].data - pass_position);
-			attenuation = calculate_attenuation(distance_to_light);
-		}
-
-		final_color.rgb += attenuation * uniform_scene.lights[i].color * uniform_scene.lights[i].power * calculate_diffuse(normal, direction_to_light);
-		final_color.rgb += attenuation * uniform_scene.lights[i].color * uniform_scene.lights[i].power * calculate_specular(normal, direction_to_light);
-	}
+		final_color.rgb += process_light(normal, i);
 
 	final_color.rgb += uniform_material.unite.emission;
 }

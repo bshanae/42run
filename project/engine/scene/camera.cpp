@@ -65,7 +65,7 @@ void				scene::camera::rotate(enum rotation rotation)
 mat4				scene::camera::projection_matrix() const
 {
 	return (glm::perspective(
-		glm::radians(30.f),
+		radians(30.f),
 		(float)settings().window_size.x / (float)settings().window_size.y,
 		settings().camera_near_plane, settings().camera_far_plane));
 }
@@ -79,9 +79,9 @@ void				scene::camera::update()
 {
 	vec3			local_front;
 
-	local_front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	local_front.y = sin(glm::radians(pitch));
-	local_front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	local_front.x = cos(radians(yaw)) * cos(radians(pitch));
+	local_front.y = sin(radians(pitch));
+	local_front.z = sin(radians(yaw)) * cos(radians(pitch));
 	front = normalize(local_front);
 	right = normalize(cross(front, up_const));
 	up = normalize(cross(right, front));

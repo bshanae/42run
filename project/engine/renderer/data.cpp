@@ -42,7 +42,10 @@ void				renderer::initialize_data()
 	for (int i = 0; i < SHARED_LIGHTS_CAPACITY; i++)
 	{
 		uniforms.scene.lights[i].type = program->make_uniform<int>("uniform_scene.lights[" + to_string(i) + "].type");
-		uniforms.scene.lights[i].data = program->make_uniform<vec3>("uniform_scene.lights[" + to_string(i) + "].data");
+		uniforms.scene.lights[i].parameter_a = program->make_uniform<vec3>("uniform_scene.lights[" + to_string(i) + "].parameter_a");
+		uniforms.scene.lights[i].parameter_b = program->make_uniform<vec3>("uniform_scene.lights[" + to_string(i) + "].parameter_b");
+		uniforms.scene.lights[i].parameter_c = program->make_uniform<float>("uniform_scene.lights[" + to_string(i) + "].parameter_c");
+		uniforms.scene.lights[i].parameter_d = program->make_uniform<float>("uniform_scene.lights[" + to_string(i) + "].parameter_d");
 		uniforms.scene.lights[i].color = program->make_uniform<vec3>("uniform_scene.lights[" + to_string(i) + "].color");
 		uniforms.scene.lights[i].power = program->make_uniform<float>("uniform_scene.lights[" + to_string(i) + "].power");
 	}
@@ -92,13 +95,20 @@ void 				renderer::upload_light_data()
 
 	global().revise();
 	program->use(true);
-	uniforms.scene.lights_size.upload(scene->lights_size);
-	for (int i = 0; i < SHARED_LIGHTS_CAPACITY; i++)
+	uniforms.scene.lights_size.upload(scene->lights.size());
+
+	for (int i = 0; i < scene->lights.size(); i++)
 	{
-		uniforms.scene.lights[i].type.upload((int)scene->lights[i].type);
-		uniforms.scene.lights[i].data.upload(scene->lights[i].data);
-		uniforms.scene.lights[i].color.upload(scene->lights[i].color);
-		uniforms.scene.lights[i].power.upload(scene->lights[i].power);
+		uniforms.scene.lights[i].type.upload((int)scene->lights[i]->type);
+		uniforms.scene.lights[i].parameter_a.upload(scene->lights[i]->parameter_a);
+		uniforms.scene.lights[i].parameter_b.upload(scene->lights[i]->parameter_b);
+		uniforms.scene.lights[i].parameter_c.upload(scene->lights[i]->parameter_c);
+		uniforms.scene.lights[i].parameter_d.upload(scene->lights[i]->parameter_d);
+
+		std::cerr << scene->lights[i]->parameter_c << " : " << scene->lights[i]->parameter_d << std::endl;
+
+		uniforms.scene.lights[i].color.upload(scene->lights[i]->color);
+		uniforms.scene.lights[i].power.upload(scene->lights[i]->power);
 	}
 	program->use(false);
 }

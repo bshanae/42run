@@ -32,32 +32,32 @@ public:
 		skeleton->animate(animation);
 	}
 
-	[[nodiscard]] vec3			read_min() const
+	[[nodiscard]] vec3			min() const
 	{
 		if (not is_analyzed)
 			warning::raise(warning::id::model_is_not_analyzed);
-		return (min);
+		return (analyzed.min);
 	}
 
-	[[nodiscard]] vec3			read_max() const
+	[[nodiscard]] vec3			max() const
 	{
 		if (not is_analyzed)
 			warning::raise(warning::id::model_is_not_analyzed);
-		return (max);
+		return (analyzed.max);
 	}
 
-	[[nodiscard]] vec3			read_size() const
+	[[nodiscard]] vec3			size() const
 	{
 		if (not is_analyzed)
 			warning::raise(warning::id::model_is_not_analyzed);
-		return (size);
+		return (analyzed.size);
 	}
 
-	[[nodiscard]] vec3			read_offset() const
+	[[nodiscard]] vec3			offset() const
 	{
-		if (not is_centered)
-			warning::raise(warning::id::model_is_not_centered);
-		return (offset);
+		if (not is_analyzed)
+			warning::raise(warning::id::model_is_not_analyzed);
+		return (analyzed.offset);
 	}
 
 private:
@@ -71,9 +71,12 @@ private:
 	bool						is_analyzed = false;
 	bool						is_centered = false;
 
-	vec3						min;
-	vec3						max;
-	vec3						size;
-	vec3						offset;
+	struct
+	{
+		vec3					min;
+		vec3					max;
+		vec3					size;
+		vec3					offset;
+	}							analyzed;
 };
 

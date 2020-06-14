@@ -27,7 +27,8 @@ namespace 									common::error
 		texture_creation_error,
 		texture_bad_format,
 		event_bad_type,
-		model_too_many_bones
+		model_too_many_bones,
+		light_bad_input
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
@@ -47,7 +48,8 @@ namespace 									common::error
 		{id::texture_creation_error,		"Engine, Texture : Can't create texture"},
 		{id::texture_bad_format,			"Engine, Texture : Bad format"},
 		{id::event_bad_type,				"Engine, Event : Bad type"},
-		{id::model_too_many_bones,			"Engine, Model, Loader : Mesh has too many bones"}
+		{id::model_too_many_bones,			"Engine, Model, Loader : Mesh has too many bones"},
+		{id::light_bad_input,				"Engine, Scene, Light : Bad input arguments for constructor"}
 	};
 
 	inline void								raise(id id)

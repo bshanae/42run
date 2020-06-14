@@ -42,9 +42,9 @@ void							room::build_main_instances()
 	for (int i = 0; i < number_of_accessories; i++)
 	{
 //								Interval between each mac
-		main_instances.chair[i]->translate(models.chair->read_offset() + intervals.little * vec3(i));
-		main_instances.mac[i]->translate(models.mac->read_offset() + intervals.little * vec3(i));
-		main_instances.keyboard[i]->translate(models.keyboard->read_offset() + intervals.little * vec3(i));
+		main_instances.chair[i]->translate(models.chair->offset() + intervals.little * vec3(i));
+		main_instances.mac[i]->translate(models.mac->offset() + intervals.little * vec3(i));
+		main_instances.keyboard[i]->translate(models.keyboard->offset() + intervals.little * vec3(i));
 
 		if (i % 2)
 		{
@@ -137,7 +137,7 @@ void							room::build_unique_groups()
 
 void							room::offset_groups()
 {
-	const auto					offset = (vec3){0, 0, -1.f * models.room->read_size().z};
+	const auto					offset = (vec3){0, 0, -1.f * models.room->size().z};
 
 	for (int i = 1; i < number_of_groups; i++)
 		groups[i]->translate(offset * vec3(i));

@@ -6,17 +6,19 @@ using namespace		engine;
 
 void				model::model::analyze()
 {
-	min = vec3(+1.f * std::numeric_limits<float>::infinity());
-	max = vec3(-1.f * std::numeric_limits<float>::infinity());
+	analyzed.min = vec3(+1.f * std::numeric_limits<float>::infinity());
+	analyzed.max = vec3(-1.f * std::numeric_limits<float>::infinity());
 
 	for (const auto &mesh : meshes)
 		for (const auto &vertex : mesh->vertices)
 		{
-			min = glm::min(min, vertex.position);
-			max = glm::max(max, vertex.position);
+			analyzed.min = glm::min(analyzed.min, vertex.position);
+			analyzed.max = glm::max(analyzed.max, vertex.position);
 		}
 
-	size = max - min;
+	analyzed.size = analyzed.max - analyzed.min;
+	analyzed.offset = analyzed.min + (analyzed.max - analyzed.min) / vec3(2.f);
+
 	is_analyzed = true;
 }
 
@@ -25,12 +27,10 @@ void 				model::model::center()
 	if (not is_analyzed)
 		warning::raise(warning::id::model_is_not_analyzed);
 
-	offset = min + (max - min) / vec3(2.f);
-
 	for (auto &mesh : meshes)
 	{
 		for (auto &vertex : mesh->vertices)
-			vertex.position -= offset;
+			vertex.position -= analyzed.offset;
 
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);
 		glBufferData(GL_ARRAY_BUFFER, mesh->vertices.size() * sizeof(mesh::vertex), mesh->vertices.data(), GL_STATIC_DRAW);

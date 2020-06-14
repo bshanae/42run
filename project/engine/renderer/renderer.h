@@ -69,7 +69,10 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 	struct 							light_glsl
 	{
 		uniform_int					type;
-		uniform_vec3				data;
+		uniform_vec3				parameter_a;
+		uniform_vec3				parameter_b;
+		uniform_float				parameter_c;
+		uniform_float				parameter_d;
 		uniform_vec3				color;
 		uniform_float				power;
 	};

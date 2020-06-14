@@ -20,9 +20,9 @@ void				model::instance::translate(vec3 value, bool reset)
 
 void				model::instance::rotate(vec3 angles, bool reset)
 {
-	angles.x = glm::radians(angles.x);
-	angles.y = glm::radians(angles.y);
-	angles.z = glm::radians(angles.z);
+	angles.x = radians(angles.x);
+	angles.y = radians(angles.y);
+	angles.z = radians(angles.z);
 
 	if (reset)
 		rotation = glm::eulerAngleYXZ(angles.y, angles.x, angles.z);
