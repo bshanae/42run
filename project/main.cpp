@@ -3,7 +3,7 @@
 
 int									main()
 {
-	common::seed = 123;
+	common::seed = 42;
 
 	engine::settings().window_size = engine::ivec2(1280, 720);
 	engine::settings().window_name = "42run";
@@ -17,7 +17,7 @@ int									main()
 	engine::settings().camera_movement_speed = 2.f;
 	engine::settings().camera_rotation_speed = 2.f;
 	engine::settings().camera_near_plane = 10.f;
-	engine::settings().camera_far_plane = 1000.f;
+	engine::settings().camera_far_plane = 250.f;
 
 	game::sources().room = "/Users/belchenkovova/Desktop/42run Workspace/Models/Room.obj";
 	game::sources().chair = "/Users/belchenkovova/Desktop/42run Workspace/Models/Chair.obj";

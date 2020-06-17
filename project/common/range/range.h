@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <iostream>
 
 #include "common/external/glm.h"
 
@@ -26,7 +27,7 @@ namespace 				range_implementation
 
 	struct				vec3_min
 	{
-		glm::vec3	operator() (const glm::vec3 &left, const glm::vec3 &right) const
+		glm::vec3		operator() (const glm::vec3 &left, const glm::vec3 &right) const
 		{
 			return
 			{
@@ -39,7 +40,7 @@ namespace 				range_implementation
 
 	struct				vec3_max
 	{
-		glm::vec3	operator() (const glm::vec3 &left, const glm::vec3 &right) const
+		glm::vec3		operator() (const glm::vec3 &left, const glm::vec3 &right) const
 		{
 			return
 			{
@@ -82,6 +83,12 @@ namespace 				range_implementation
 			return (*this);
 		}
 
+		friend
+		std::ostream	&operator << (std::ostream &out, const range &range)
+		{
+			return (out << "{" << range.lower << ", " << range.higher << "}");
+		}
+
 		type			lower;
 		type			higher;
 
@@ -89,10 +96,11 @@ namespace 				range_implementation
 
 		void			update()
 		{
-			const type	copy[2] = {lower, higher};
+			const type	lower_copy = lower;
+			const type	higher_copy = higher;
 
-			lower = min()(lower, higher);
-			higher = max()(lower, higher);
+			lower = min()(lower_copy, higher_copy);
+			higher = max()(lower_copy, higher_copy);
 		}
 	};
 

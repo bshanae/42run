@@ -1,14 +1,22 @@
 #include "random.h"
 
-float										common::random(const float_range &range)
+float				common::random(const float_range &range)
 {
-	static std::default_random_engine		twister;
-	std::uniform_real_distribution<float>	distribution(range.lower, range.higher);
+	static bool 	first_call = true;
+	static auto		engine = std::default_random_engine();
 
-	return distribution(twister);
+	if (first_call)
+	{
+		engine.seed(seed);
+		first_call = false;
+	}
+
+	auto			distribution = std::uniform_real_distribution<float>(range.lower, range.higher);
+
+	return (distribution(engine));
 }
 
-glm::vec3									common::random(const vec3_range &range)
+glm::vec3			common::random(const vec3_range &range)
 {
 	return
 		{

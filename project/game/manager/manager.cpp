@@ -4,7 +4,7 @@ using namespace		game;
 
 					manager::manager()
 {
-	engine::scene::scene::light(engine::scene::light::type::ambient, vec3(1.f), 0.15f);
+	engine::scene::scene::light(engine::scene::light::type::ambient, vec3(1.f), 0.2f);
 
 	engine::scene::scene::light(
 		engine::scene::light::type::point,
