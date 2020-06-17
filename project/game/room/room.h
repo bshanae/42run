@@ -2,13 +2,16 @@
 
 #include "game/namespace.h"
 
-class							game::room
+class							game::room : public engine::game_object
 {
 	friend class				manager;
 
 public :
 								room();
-								~room() = default;
+								~room() override = default;
+
+IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(room)
+
 private :
 
 	void						build_models();

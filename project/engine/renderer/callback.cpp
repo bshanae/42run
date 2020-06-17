@@ -66,9 +66,9 @@ void				renderer::callback()
 			break ;
 
 		case engine::interface::key::enter :
-			for (auto &instance : scene->targets.instances)
-				if (instance->model->skeleton->animation)
-					instance->model->skeleton->update();
+//			for (auto &instance : scene->targets.instances)
+//				if (instance->model->skeleton->animation)
+//					instance->model->skeleton->update();
 			break ;
 
 		case engine::interface::key::letter_p :

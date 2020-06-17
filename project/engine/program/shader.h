@@ -2,9 +2,9 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/object_wrap.h"
+#include "engine/abstract/OpenGL_object.h"
 
-class								engine::program::shader : public engine::abstract::object_wrap
+class								engine::program::shader : public engine::abstract::OpenGL_object
 {
 	friend class					engine::program::program;
 

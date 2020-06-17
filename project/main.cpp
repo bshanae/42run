@@ -1,7 +1,14 @@
 #include "engine/engine.h"
 #include "game/game.h"
 
-int									main()
+class				test : public engine::game_object
+{
+public :
+
+IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(test)
+};
+
+int					main()
 {
 	common::seed = 42;
 
@@ -17,7 +24,7 @@ int									main()
 	engine::settings().camera_movement_speed = 2.f;
 	engine::settings().camera_rotation_speed = 2.f;
 	engine::settings().camera_near_plane = 10.f;
-	engine::settings().camera_far_plane = 250.f;
+	engine::settings().camera_far_plane = 350.f;
 
 	game::sources().room = "/Users/belchenkovova/Desktop/42run Workspace/Models/Room.obj";
 	game::sources().chair = "/Users/belchenkovova/Desktop/42run Workspace/Models/Chair.obj";

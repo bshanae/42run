@@ -19,5 +19,5 @@ using namespace					game;
 
 	model->animate(engine::model::animation(1, 19, 1));
 
-	engine::scene::scene::target(instance);
+	game_object::target(instance);
 }

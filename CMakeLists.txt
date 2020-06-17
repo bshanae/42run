@@ -45,7 +45,6 @@ set(SOURCE_ENGINE
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
 
-	project/engine/scene/scene.cpp
 	project/engine/scene/camera.cpp
 
 	project/engine/model/bone.cpp

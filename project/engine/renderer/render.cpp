@@ -16,15 +16,18 @@ void				renderer::render()
 
 	program->use(true);
 
-	uniforms.group.scaling.upload(mat4(1.f));
-	uniforms.group.translation.upload(mat4(1.f));
-	uniforms.group.rotation.upload(mat4(1.f));
+	for (const auto &object : scene->objects)
+	{
+		uniforms.group.scaling.upload(mat4(1.f));
+		uniforms.group.translation.upload(mat4(1.f));
+		uniforms.group.rotation.upload(mat4(1.f));
 
-	for (const auto &instance : scene->targets.instances)
-		render(instance);
+		for (const auto &instance : object->targets.instances)
+			render(instance);
 
-	for (const auto &group : scene->targets.groups)
-		render(group);
+		for (const auto &group : object->targets.groups)
+			render(group);
+	}
 
 	program->use(false);
 }

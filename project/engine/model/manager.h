@@ -2,7 +2,7 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/enum_wrap.h"
+#include "engine/abstract/bitflags.h"
 #include "engine/model/bone.h"
 #include "engine/model/model.h"
 #include "engine/model/instance.h"
@@ -26,7 +26,7 @@ IMPLEMENT_GLOBAL_INITIALIZER(manager)
 		center = 1u << 3u
 	};
 
-	using						flags_wrap = engine::abstract::enum_wrap<flags>;
+	using						flags_wrap = engine::abstract::bitflags<flags>;
 
 	static model::ptr			make_model(const path &source, flags_wrap wrap = flags_wrap());
 

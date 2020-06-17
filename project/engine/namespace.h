@@ -35,6 +35,8 @@ namespace							engine
 	using							std::shared_ptr;
 	using							std::make_unique;
 	using							std::make_shared;
+	using							std::static_pointer_cast;
+	using							std::dynamic_pointer_cast;
 
 	using							std::move;
 	using							std::to_string;
@@ -75,8 +77,8 @@ namespace							engine
 	namespace						abstract
 	{
 		template					<typename enum_type, typename underlying_type>
-		class						enum_wrap;
-		class						object_wrap;
+		class						bitflags;
+		class						OpenGL_object;
 	}
 
 	namespace						program
@@ -100,6 +102,8 @@ namespace							engine
 		class						instance;
 		class						group;
 	}
+
+	class							game_object;
 
 	namespace						scene
 	{

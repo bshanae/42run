@@ -145,6 +145,6 @@ void							room::offset_groups()
 
 void							room::target()
 {
-	for (int i = 0; i < number_of_groups; i++)
-		engine::scene::scene::target(groups[i]);
+	for (const auto &group : groups)
+		game_object::target(group);
 }

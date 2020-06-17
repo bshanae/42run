@@ -2,9 +2,9 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/object_wrap.h"
+#include "engine/abstract/OpenGL_object.h"
 
-class				engine::model::texture : public engine::abstract::object_wrap
+class				engine::model::texture : public engine::abstract::OpenGL_object
 {
 	friend class	engine::renderer;
 

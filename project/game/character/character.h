@@ -2,13 +2,16 @@
 
 #include "game/namespace.h"
 
-class						game::character
+class						game::character : public engine::game_object
 {
 	friend class			manager;
 
 public :
 							character();
-							~character() = default;
+							~character() override = default;
+
+IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(character)
+
 private :
 
 	model::model::ptr		model;

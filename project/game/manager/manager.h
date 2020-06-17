@@ -18,6 +18,6 @@ private :
 
 IMPLEMENT_GLOBAL_INSTANCER(manager)
 
-	room			room;
-	character		character;
+	room::ptr		room;
+	character::ptr	character;
 };
