@@ -12,6 +12,7 @@ public :
 	enum class		type : int
 	{
 		empty = SHARED_LIGHT_TYPE_EMPTY,
+		ambient = SHARED_LIGHT_TYPE_AMBIENT,
 		directional = SHARED_LIGHT_TYPE_DIRECTIONAL,
 		point = SHARED_LIGHT_TYPE_POINT,
 		projector = SHARED_LIGHT_TYPE_PROJECTOR
@@ -21,17 +22,45 @@ public :
 private :
 					light(
 					enum type type,
-					const vec3 &data,
 					const vec3 &color,
 					float power) :
 					type(type),
 					color(color),
 					power(power)
 	{
-		if (type != type::directional and type != type::point)
+		if (type != type::ambient)
+			error::raise(error::id::light_bad_input);
+	}
+					light(
+					enum type type,
+					const vec3 &direction,
+					const vec3 &color,
+					float power) :
+					type(type),
+					color(color),
+					power(power)
+	{
+		if (type != type::directional)
 			error::raise(error::id::light_bad_input);
 
-		parameter_a = data;
+		parameter_a = direction;
+	}
+
+					light(
+					enum type type,
+					const vec3 &position,
+					bool use_attenuation,
+					const vec3 &color,
+					float power) :
+					type(type),
+					color(color),
+					power(power)
+	{
+		if (type != type::point)
+			error::raise(error::id::light_bad_input);
+
+		parameter_a = position;
+		parameter_c = use_attenuation ? 1.f : 0.f;
 	}
 
 					light(

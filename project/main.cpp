@@ -8,7 +8,7 @@ int									main()
 	engine::settings().window_size = engine::ivec2(1280, 720);
 	engine::settings().window_name = "42run";
 	engine::settings().background = engine::vec3(0.7f, 0.7f, 0.7f);
-	engine::settings().number_of_samples = 2;
+	engine::settings().number_of_samples = 1;
 
 	engine::settings().glsl_version = "330 core";
 	engine::settings().glsl_path = "project/resources/engine";

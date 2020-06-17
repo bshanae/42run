@@ -14,7 +14,7 @@ using namespace					game;
 
 	instance = engine::model::manager::make_instance(model);
 
-	instance->scale(0.1f);
+	instance->scale(0.095f);
 	instance->rotate(engine::vec3(0, 180, 0));
 
 	model->animate(engine::model::animation(1, 19, 1));

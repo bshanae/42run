@@ -104,9 +104,6 @@ void 				renderer::upload_light_data()
 		uniforms.scene.lights[i].parameter_b.upload(scene->lights[i]->parameter_b);
 		uniforms.scene.lights[i].parameter_c.upload(scene->lights[i]->parameter_c);
 		uniforms.scene.lights[i].parameter_d.upload(scene->lights[i]->parameter_d);
-
-		std::cerr << scene->lights[i]->parameter_c << " : " << scene->lights[i]->parameter_d << std::endl;
-
 		uniforms.scene.lights[i].color.upload(scene->lights[i]->color);
 		uniforms.scene.lights[i].power.upload(scene->lights[i]->power);
 	}

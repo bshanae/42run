@@ -62,17 +62,16 @@ uniform struct
 //						FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
-vec3					calculate_ambient()
+vec3					clamp_vec3(vec3 value, vec3 min, vec3 max)
 {
-	vec3				material_color;
-
-	if (uniform_material.textures.ambient.is_valid)
-		return (texture(uniform_material.textures.ambient.value, pass_UV).rgb);
-	else
-		return (uniform_material.unite.ambient);
+	return (vec3(
+		clamp(value.x, min.x, max.x),
+		clamp(value.y, min.y, max.y),
+		clamp(value.z, min.z, max.z)
+	));
 }
 
-vec3					calculate_diffuse(vec3 normal, vec3 direction_to_light)
+vec3					calculate_ambient()
 {
 	vec3				material_color;
 
@@ -80,8 +79,20 @@ vec3					calculate_diffuse(vec3 normal, vec3 direction_to_light)
 	if (uniform_material.textures.diffuse.is_valid)
 		material_color *= texture(uniform_material.textures.diffuse.value, pass_UV).rgb;
 
-	float				intensity = dot(normal, direction_to_light);
+	return (material_color);
+}
 
+vec3					calculate_diffuse(vec3 normal, vec3 direction_to_light)
+{
+	vec3				material_color;
+	float				intensity;
+
+	material_color = uniform_material.unite.diffuse;
+	if (uniform_material.textures.diffuse.is_valid)
+		material_color *= texture(uniform_material.textures.diffuse.value, pass_UV).rgb;
+
+	intensity = dot(normal, direction_to_light);
+	intensity = clamp(intensity, 0, 1);
 	return (material_color * intensity);
 }
 
@@ -134,15 +145,16 @@ vec3					process_light(vec3 normal, int i)
 	vec3				diffuse = vec3(0);
 	vec3				specular = vec3(0);
 
-	if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_DIRECTIONAL)
-	{
+	if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_AMBIENT)
+		return (calculate_ambient() * uniform_scene.lights[i].color * uniform_scene.lights[i].power);
+	else if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_DIRECTIONAL)
 		direction_to_light = normalize(-uniform_scene.lights[i].parameter_a);
-	}
 	else if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_POINT)
 	{
 		direction_to_light = normalize(uniform_scene.lights[i].parameter_a - pass_position);
 		distance_to_light = length(uniform_scene.lights[i].parameter_a - pass_position);
-		attenuation = calculate_point_attenuation(distance_to_light);
+		if (uniform_scene.lights[i].parameter_c == 1.f)
+			attenuation = calculate_point_attenuation(distance_to_light);
 	}
 	else if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_PROJECTOR)
 	{
@@ -173,7 +185,6 @@ vec3					process_light(vec3 normal, int i)
 void					main()
 {
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
-//	final_color.rgb += calculate_ambient();
 
 	vec3				normal = normalize(pass_normal);
 
