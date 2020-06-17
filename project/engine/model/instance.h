@@ -11,9 +11,8 @@ class						engine::model::instance
 
 private :
 
-	explicit 				instance(model::ptr model) :
-							model(model)
-							{}
+	explicit 				instance(model::ptr model);
+
 public :
 							~instance() = default;
 
@@ -23,16 +22,34 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(instance)
 	{
 		auto				result = make_ptr(model);
 
-		result->scaling = scaling;
-		result->translation = translation;
-		result->rotation = rotation;
+		result->data = data;
+		result->transformations = transformations;
 
 		return (result);
 	}
 
-	void 					scale(float value, bool reset = false);
-	void 					translate(vec3 value, bool reset = false);
-	void 					rotate(vec3 angles, bool reset = false);
+	vec3					scaling() const
+	{
+		return (data.scaling);
+	}
+
+	vec3					translation() const
+	{
+		return (data.translation);
+	}
+
+	vec3					rotation() const
+	{
+		return (data.rotation);
+	}
+
+	void 					scale(float value);
+	void 					translate(vec3 value);
+	void 					rotate(vec3 angles);
+
+	void 					reset_scaling();
+	void 					reset_translation();
+	void 					reset_rotation();
 
 	void 					randomize_scaling(const float_range &range);
 	void 					randomize_translation(const vec3_range &range);
@@ -42,7 +59,17 @@ private :
 
 	model::ptr 				model;
 
-	mat4					scaling = mat4(1.0f);
-	mat4					translation = mat4(1.0f);
-	mat4					rotation = mat4(1.0f);
+	struct
+	{
+		vec3				scaling;
+		vec3				translation;
+		vec3				rotation;
+	}						data;
+
+	struct
+	{
+		mat4				scaling;
+		mat4				translation;
+		mat4				rotation;
+	}						transformations;
 };

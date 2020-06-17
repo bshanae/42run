@@ -32,10 +32,13 @@ int					main()
 	game::sources().keyboard = "/Users/belchenkovova/Desktop/42run Workspace/Models/Keyboard.obj";
 	game::sources().character = "/Users/belchenkovova/Desktop/42run Workspace/Models/Character.fbx";
 
+	game::settings().room_speed = 0.2f;
+
 	engine::core::initialize();
 	engine::renderer::initialize();
 	engine::scene::scene::initialize();
 	engine::model::manager::initialize();
+
 	game::manager::initialize();
 
 	engine::core::execute();

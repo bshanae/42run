@@ -22,6 +22,13 @@ namespace				game
 
 	struct sources		&sources();
 
+	struct				settings
+	{
+		float			room_speed = 0.f;
+	};
+
+	struct settings		&settings();
+
 	namespace			model
 	{
 		using			engine::model::model;

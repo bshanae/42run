@@ -10,8 +10,6 @@ void				renderer::render()
 
 	global().revise();
 
-	request = false;
-
 	upload_camera_data();
 
 	program->use(true);
@@ -61,9 +59,9 @@ void				renderer::render(const model::instance::ptr &instance)
 		}
 	}
 
-	uniforms.instance.scaling.upload(instance->scaling);
-	uniforms.instance.translation.upload(instance->translation);
-	uniforms.instance.rotation.upload(instance->rotation);
+	uniforms.instance.scaling.upload(instance->transformations.scaling);
+	uniforms.instance.translation.upload(instance->transformations.translation);
+	uniforms.instance.rotation.upload(instance->transformations.rotation);
 
 	for (auto &mesh : instance->model->meshes)
 	{
@@ -106,10 +104,10 @@ void				renderer::render(const model::instance::ptr &instance)
 
 void				renderer::render(const model::group::ptr &group)
 {
-	uniforms.group.scaling.upload(group->scaling);
-	uniforms.group.translation.upload(group->translation);
-	uniforms.group.rotation.upload(group->rotation);
+	uniforms.group.scaling.upload(group->transformations.scaling);
+	uniforms.group.translation.upload(group->transformations.translation);
+	uniforms.group.rotation.upload(group->transformations.rotation);
 
-	for (const auto &instance : group->data)
+	for (const auto &instance : group->instances)
 		render(instance);
 }

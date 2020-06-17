@@ -21,3 +21,8 @@ using namespace					game;
 
 	game_object::target(instance);
 }
+
+void							character::update()
+{
+
+}

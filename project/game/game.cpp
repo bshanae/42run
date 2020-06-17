@@ -8,3 +8,10 @@ struct sources				&game::sources()
 
 	return (value);
 }
+
+struct settings				&game::settings()
+{
+	static struct settings	value;
+
+	return (value);
+}

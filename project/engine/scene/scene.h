@@ -8,6 +8,7 @@
 
 class						engine::scene::scene
 {
+	friend class			engine::core;
 	friend class			engine::renderer;
 
 private :

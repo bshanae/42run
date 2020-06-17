@@ -82,6 +82,4 @@ void				renderer::callback()
 		default :
 			return ;
 	}
-
-	request = true;
 }

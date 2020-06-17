@@ -14,6 +14,8 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(character)
 
 private :
 
+	void					update() override;
+
 	model::model::ptr		model;
 	model::instance::ptr	instance;
 };

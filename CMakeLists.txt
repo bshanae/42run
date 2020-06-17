@@ -37,6 +37,7 @@ set(SOURCE_ENGINE
 
 	project/engine/core/core.cpp
 	project/engine/core/execute.cpp
+	project/engine/core/process_x.cpp
 	project/engine/core/callback.cpp
 	project/engine/core/connect_with_global.cpp
 
@@ -65,7 +66,13 @@ set(SOURCE_GAME
 	project/game/game.cpp
 
 	project/game/manager/manager.cpp
+
 	project/game/room/room.cpp
+	project/game/room/update.cpp
+	project/game/room/build_x.cpp
+	project/game/room/offset_groups.cpp
+	project/game/room/set_targets.cpp
+
 	project/game/character/character.cpp)
 
 set(SOURCE_MAIN

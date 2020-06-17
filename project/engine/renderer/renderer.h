@@ -33,8 +33,6 @@ START_GLOBAL_CUSTOM_INITIALIZER(renderer)
 	connect_with_global();
 FINISH_GLOBAL_CUSTOM_INITIALIZER
 
-	bool							request = true;
-
 private :
 
 IMPLEMENT_GLOBAL_INSTANCER(renderer)

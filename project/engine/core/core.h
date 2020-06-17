@@ -28,8 +28,6 @@ START_GLOBAL_CUSTOM_INITIALIZER(core)
 	connect_with_global();
 FINISH_GLOBAL_CUSTOM_INITIALIZER
 
-	static void						execute();
-
 	static void						connect_with_global();
 
 	template					<typename ...args_type>
@@ -42,6 +40,14 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 	{
 		return (core::instance()->event);
 	}
+
+	static void						execute();
+
+private :
+
+	void							process_callbacks();
+	void							process_rendering();
+	void							process_updating();
 };
 
 

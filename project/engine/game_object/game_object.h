@@ -8,8 +8,9 @@
 
 class 					engine::game_object
 {
-	friend class		engine::scene::scene;
+	friend class		engine::core;
 	friend class		engine::renderer;
+	friend class		engine::scene::scene;
 
 public :
 

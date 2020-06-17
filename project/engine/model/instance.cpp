@@ -2,33 +2,54 @@
 
 using namespace		engine;
 
-void				model::instance::scale(float value, bool reset)
+					model::instance::instance(model::ptr model) :
+					model(model)
 {
-	if (reset)
-		scaling = glm::scale(vec3(value));
-	else
-		scaling *= glm::scale(vec3(value));
+	reset_scaling();
+	reset_translation();
+	reset_rotation();
 }
 
-void				model::instance::translate(vec3 value, bool reset)
+void				model::instance::scale(float value)
 {
-	if (reset)
-		translation = glm::translate(value);
-	else
-		translation *= glm::translate(value);
+	data.scaling *= vec3(value);
+	transformations.scaling = glm::scale(data.scaling);
 }
 
-void				model::instance::rotate(vec3 angles, bool reset)
+void				model::instance::translate(vec3 value)
+{
+	data.translation += value;
+	transformations.translation = glm::translate(data.translation);
+}
+
+void				model::instance::rotate(vec3 angles)
 {
 	angles.x = radians(angles.x);
 	angles.y = radians(angles.y);
 	angles.z = radians(angles.z);
 
-	if (reset)
-		rotation = glm::eulerAngleYXZ(angles.y, angles.x, angles.z);
-	else
-		rotation *= glm::eulerAngleYXZ(angles.y, angles.x, angles.z);
+	data.rotation += angles;
+	transformations.rotation = glm::eulerAngleYXZ(data.rotation.y, data.rotation.x, data.rotation.z);
 }
+
+void 				model::instance::reset_scaling()
+{
+	data.scaling = vec3(1.f);
+	transformations.scaling = mat4(1.0f);
+}
+
+void 				model::instance::reset_translation()
+{
+	data.translation = vec3(0.f);
+	transformations.translation = mat4(1.0f);
+}
+
+void 				model::instance::reset_rotation()
+{
+	data.rotation = vec3(0.f);
+	transformations.rotation = mat4(1.0f);
+}
+
 
 void 				model::instance::randomize_scaling(const float_range &range)
 {
