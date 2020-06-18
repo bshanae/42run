@@ -42,6 +42,7 @@ enum class			engine::interface::key
 	number_0 = GLFW_KEY_0,
 	escape = GLFW_KEY_ESCAPE,
 	enter = GLFW_KEY_ENTER,
+	space = GLFW_KEY_SPACE,
 	left = GLFW_KEY_LEFT,
 	up = GLFW_KEY_UP,
 	right = GLFW_KEY_RIGHT,

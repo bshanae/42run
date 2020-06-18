@@ -2,25 +2,14 @@
 
 using namespace		engine;
 
-void				model::skeleton::animate(const class animation &new_animation)
+void				model::skeleton::animate(const class animation &animation)
 {
-	if (animation and new_animation.priority >= animation->priority)
-		animation.emplace(new_animation);
-	else if (not animation)
-		animation.emplace(new_animation);
-
-	time = this->animation->timestamps.begin;
-}
-
-void				model::skeleton::reset()
-{
-	time = 0.f;
-	animation.reset();
+	this->animation.emplace(animation);
 }
 
 void 				model::skeleton::update()
 {
-	if (not animation)
+	if (not is_animation_playing())
 		return ;
 
 	time += animation->speed;
@@ -30,10 +19,8 @@ void 				model::skeleton::update()
 
 	if (time > animation->timestamps.end)
 	{
-		if (animation->loop)
-			time = animation->timestamps.begin;
-		else
-			reset();
+		animation.reset();
+		time = 0.f;
 	}
 
 	for (auto &bone : bones)

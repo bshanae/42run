@@ -1,13 +1,6 @@
 #include "engine/engine.h"
 #include "game/game.h"
 
-class				test : public engine::game_object
-{
-public :
-
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(test)
-};
-
 int					main()
 {
 	common::seed = 42;
@@ -35,7 +28,7 @@ int					main()
 	game::sources().keyboard = "/Users/belchenkovova/Desktop/42run Workspace/Models/Keyboard.obj";
 	game::sources().character = "/Users/belchenkovova/Desktop/42run Workspace/Models/Character.fbx";
 
-	game::settings().room_speed = 0.2f;
+	game::settings().room_speed = 1.f;
 
 	engine::core::initialize();
 	engine::renderer::initialize();

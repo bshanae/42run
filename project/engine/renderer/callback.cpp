@@ -6,10 +6,8 @@ using namespace		engine;
 
 void				renderer::callback()
 {
-	const auto		&event = core::receive_event();
-	auto			key = event.read_key();
-	auto			scene = global().scene;
-	auto			&camera = scene->camera;
+	auto			key = core::receive_event().read_key();
+	auto			&camera = global().scene->camera;
 
 	static bool		wireframe_mod = false;
 
@@ -63,12 +61,6 @@ void				renderer::callback()
 		case engine::interface::key::down :
 			camera.rotate(scene::camera::rotation::down);
 			upload_camera_data();
-			break ;
-
-		case engine::interface::key::enter :
-//			for (auto &instance : scene->targets.instances)
-//				if (instance->model->skeleton->animation)
-//					instance->model->skeleton->update();
 			break ;
 
 		case engine::interface::key::letter_p :

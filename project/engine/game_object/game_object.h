@@ -24,24 +24,32 @@ protected :
 	virtual void		update()
 	{}
 
-	void				target(const model::instance::ptr &target)
+	void				render_target(const model::instance::ptr &target)
 	{
-		targets.instances.push_back(target);
+		render_targets.instances.push_back(target);
 	}
 
-	void				target(const model::group::ptr &target)
+	void				render_target(const model::group::ptr &target)
 	{
-		targets.groups.push_back(target);
+		render_targets.groups.push_back(target);
+	}
+
+	void				animation_target(const model::model::ptr &target)
+	{
+		animation_targets.push_back(target);
 	}
 
 private :
 
+	using				models_type = vector<model::model::ptr>;
+	using				instances_type = vector<model::instance::ptr>;
+	using				groups_type = vector<model::group::ptr>;
+
 	struct
 	{
-		using			instances_type = vector<model::instance::ptr>;
-		using			groups_type = vector<model::group::ptr>;
-
 		instances_type	instances;
 		groups_type		groups;
-	}					targets;
+	}					render_targets;
+
+	models_type			animation_targets;
 };

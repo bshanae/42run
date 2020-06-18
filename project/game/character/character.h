@@ -14,10 +14,24 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(character)
 
 private :
 
-	void					update() override;
+	void					update() override
+	{
+		if (not model->is_animation_playing())
+			model->animate(animations.run);
+	}
+
+	void					callback_functor();
+	interface::callback		callback;
 
 	model::model::ptr		model;
 	model::instance::ptr	instance;
+
+	struct
+	{
+		model::animation	run;
+		model::animation	jump;
+	}						animations;
+
 };
 
 

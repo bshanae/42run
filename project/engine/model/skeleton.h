@@ -23,8 +23,13 @@ public:
 							{}
 							~skeleton() = default;
 
-	void					animate(const class animation &new_animation);
-	void					reset();
+	void					animate(const class animation &animation);
+
+	bool					is_animation_playing() const
+	{
+		return (animation != nullopt);
+	}
+
 private :
 
 	void 					update();

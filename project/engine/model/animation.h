@@ -4,29 +4,30 @@
 
 class				engine::model::animation
 {
+	friend class	animation_queue;
+	friend class	skeleton;
+
 public :
+					animation() = default;
+					~animation() = default;
+
+	explicit		animation(
+					float begin_timestamp,
+					float end_timestamp,
+					float speed = 0.25,
+					bool loop = true) :
+					timestamps{begin_timestamp, end_timestamp},
+					loop(loop),
+					speed(speed)
+					{}
+private :
 
 	struct
 	{
-		float		begin;
-		float		end;
+		float		begin = 0.f;
+		float		end = 0.f;
 	}				timestamps;
 
-	float 			speed;
-
-	int				priority;
-	bool 			loop;
-
-	explicit		animation(
-					float begin_timestamp = 0,
-					float end_timestamp = 250,
-					float speed = 0.25,
-					int priority = 10,
-					bool loop = true) :
-					timestamps{begin_timestamp, end_timestamp},
-					speed(speed),
-					priority(priority),
-					loop(loop)
-					{}
-					~animation() = default;
+	float 			speed = 0.f;
+	bool 			loop = true;
 };

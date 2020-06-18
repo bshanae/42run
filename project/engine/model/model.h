@@ -32,6 +32,11 @@ public:
 		skeleton->animate(animation);
 	}
 
+	bool						is_animation_playing() const
+	{
+		return (skeleton->is_animation_playing());
+	}
+
 	[[nodiscard]] vec3			min() const
 	{
 		if (not is_analyzed)

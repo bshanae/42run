@@ -35,8 +35,16 @@ namespace				game
 		using			engine::model::instance;
 		using			engine::model::group;
 		using			engine::model::manager;
+		using			engine::model::animation;
 		using			flags = engine::model::manager::flags;
 		using			flags_wrap = engine::model::manager::flags_wrap;
+	}
+
+	namespace			interface
+	{
+		using			engine::interface::event;
+		using			engine::interface::callback;
+		using			engine::interface::timer;
 	}
 
 	class				model_wrap;

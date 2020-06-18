@@ -58,6 +58,7 @@ set(SOURCE_ENGINE
 	project/engine/model/manager.cpp
 
 	project/engine/renderer/render.cpp
+	project/engine/renderer/animate.cpp
 	project/engine/renderer/connect_with_global.cpp
 	project/engine/renderer/callback.cpp
 	project/engine/renderer/data.cpp)

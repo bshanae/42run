@@ -44,9 +44,17 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 	void 							upload_camera_data();
 	void 							upload_light_data();
 
+	inline void						process()
+	{
+		render();
+		animate();
+	}
+
 	void							render();
 	void							render(const model::instance::ptr &instance);
 	void							render(const model::group::ptr &group);
+
+	void							animate();
 
 	void							callback();
 

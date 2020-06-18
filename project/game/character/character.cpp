@@ -17,12 +17,30 @@ using namespace					game;
 	instance->scale(0.095f);
 	instance->rotate(engine::vec3(0, 180, 0));
 
-	model->animate(engine::model::animation(1, 19, 1));
+	animations.run = model::animation(1, 19, 1.2, true);
+	animations.jump = model::animation(20, 63, 1.2, false);
 
-	game_object::target(instance);
+	model->animate(animations.run);
+
+	game_object::render_target(instance);
+	game_object::animation_target(model);
+
+	callback = interface::callback(interface::event::type::key_press, &character::callback_functor, this);
+
+	engine::core::use_callback(callback);
 }
 
-void							character::update()
+void							character::callback_functor()
 {
+	auto						key = engine::core::receive_event().read_key();
 
+	switch (key)
+	{
+		case engine::interface::key::space :
+			model->animate(animations.jump);
+			break;
+
+		default :
+			break ;
+	}
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 #include <list>
+#include <queue>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -24,6 +25,7 @@ namespace							engine
 	using							std::list;
 	using							std::array;
 	using							std::optional;
+	using							std::nullopt;
 	using							std::pair;
 	using							std::string;
 	using							std::ifstream;
@@ -96,6 +98,7 @@ namespace							engine
 		class						bone;
 		class						skeleton;
 		class						animation;
+		class						animation_queue;
 		class						texture;
 		class						material;
 		class						mesh;
