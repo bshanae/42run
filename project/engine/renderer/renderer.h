@@ -50,6 +50,9 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 
 	void							callback();
 
+	interface::callback				on_press;
+	interface::callback				on_hold;
+
 	program::program::ptr			program;
 
 	using 							uniform_int = program::uniform<int>;

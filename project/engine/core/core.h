@@ -4,6 +4,7 @@
 
 #include "engine/interface/event.h"
 #include "engine/interface/callback.h"
+#include "engine/interface/timer.h"
 
 class								engine::core
 {
@@ -15,10 +16,19 @@ private :
 
 	GLFWwindow						*window = nullptr;
 
+	using 							callbacks_type = list<reference_wrapper<interface::callback>>;
+	using 							timers_type = list<reference_wrapper<interface::timer>>;
+
 	interface::event				event;
-	list<interface::callback>		callbacks;
+	callbacks_type					callbacks;
+	timers_type						timers;
+
+	float							last_time_delta = 0.f;
 
 	static void 					callback(GLFWwindow *window, int key, int code, int action, int mode);
+
+	interface::timer				timer_for_rendering;
+	interface::timer				timer_for_updating;
 
 IMPLEMENT_GLOBAL_INSTANCER(core)
 
@@ -30,10 +40,24 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 
 	static void						connect_with_global();
 
-	template					<typename ...args_type>
-	static void						generate_callback(args_type ...args)
+	static inline float				time()
 	{
-		instance()->callbacks.emplace_back(args...);
+		return (glfwGetTime());
+	}
+
+	static inline float				time_delta()
+	{
+		return (instance()->last_time_delta);
+	}
+
+	static void						use_callback(interface::callback &callback)
+	{
+		instance()->callbacks.push_back(callback);
+	}
+
+	static void						use_timer(interface::timer &timer)
+	{
+		instance()->timers.push_back(timer);
 	}
 
 	static const interface::event	&receive_event()
@@ -46,6 +70,7 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 private :
 
 	void							process_callbacks();
+	void							process_timers();
 	void							process_rendering();
 	void							process_updating();
 };

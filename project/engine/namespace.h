@@ -8,6 +8,7 @@
 #include <iostream>
 #include <initializer_list>
 #include <type_traits>
+#include <limits>
 
 #include "common/external/glad.h"
 #include "common/external/glfw.h"
@@ -31,6 +32,7 @@ namespace							engine
 	using							std::filesystem::path;
 	using							std::filesystem::exists;
 
+	using							std::reference_wrapper;
 	using							std::unique_ptr;
 	using							std::shared_ptr;
 	using							std::make_unique;
@@ -120,6 +122,9 @@ namespace							engine
 		string						window_name;
 		vec3						background = vec3(0.f, 0.f, 0.f);
 		int							number_of_samples = 0;
+
+		float						rendering_frequency = 1.f;
+		float						updating_frequency = 1.f;
 
 		string						glsl_version;
 		path						glsl_path;

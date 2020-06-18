@@ -12,10 +12,17 @@ void				core::process_callbacks()
 	glfwPollEvents();
 
 	for (auto &callback : instance->callbacks)
-		if (instance->event.type_value == callback.type)
+		if (instance->event.type_value != interface::event::type::none and
+			instance->event.type_value == callback.get().type)
 			callback();
 
 	instance->event.type_value = interface::event::type::none;
+}
+
+void				core::process_timers()
+{
+	for (auto &timer : instance()->timers)
+		timer.get().update();
 }
 
 void				core::process_rendering()
