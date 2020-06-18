@@ -22,13 +22,11 @@ int					main()
 	engine::settings().camera_near_plane = 10.f;
 	engine::settings().camera_far_plane = 350.f;
 
-	game::sources().room = "/Users/belchenkovova/Desktop/42run Workspace/Models/Room.obj";
-	game::sources().chair = "/Users/belchenkovova/Desktop/42run Workspace/Models/Chair.obj";
-	game::sources().mac = "/Users/belchenkovova/Desktop/42run Workspace/Models/iMac.obj";
-	game::sources().keyboard = "/Users/belchenkovova/Desktop/42run Workspace/Models/Keyboard.obj";
-	game::sources().character = "/Users/belchenkovova/Desktop/42run Workspace/Models/Character.fbx";
-
-	game::settings().room_speed = 1.f;
+	game::sources().room = "project/resources/game/models/Room.obj";
+	game::sources().chair = "project/resources/game/models/Chair.obj";
+	game::sources().mac = "project/resources/game/models/iMac.obj";
+	game::sources().keyboard = "project/resources/game/models/Keyboard.obj";
+	game::sources().character = "project/resources/game/models/Character.fbx";
 
 	engine::core::initialize();
 	engine::renderer::initialize();

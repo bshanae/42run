@@ -55,6 +55,7 @@ namespace							engine
 	using							glm::quat;
 	using							glm::cos;
 	using							glm::radians;
+	using							glm::lerp;
 
 	using							common::float_range;
 	using							common::vec3_range;

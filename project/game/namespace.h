@@ -24,7 +24,6 @@ namespace				game
 
 	struct				settings
 	{
-		float			room_speed = 0.f;
 	};
 
 	struct settings		&settings();

@@ -47,6 +47,9 @@ private :
 //								Distance between neighbor rows
 	vec3						row_offset;
 
+//								Movement speed
+	static constexpr float		speed = 1.2f;
+
 	struct
 	{
 //								Distance between neighbor accessories

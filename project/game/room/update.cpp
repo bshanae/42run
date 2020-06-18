@@ -6,7 +6,7 @@ using namespace							game;
 
 void									room::update()
 {
-	static const vec3					movement = vec3(0, 0, settings().room_speed);
+	static const vec3					movement = vec3(0, 0, speed);
 	static const vec3					size = models.room->size();
 
 	static int							nearest_index = 0;

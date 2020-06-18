@@ -29,13 +29,12 @@ void				core::process_rendering()
 {
 	auto			&instance = core::instance();
 	auto			background = settings().background;
-	auto			renderer = global().renderer;
 
 	glClearColor(background.x, background.y, background.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	renderer->process();
+	global().renderer->render();
 
 	glfwSwapBuffers(instance->window);
 }
@@ -44,6 +43,8 @@ void				core::process_updating()
 {
 	auto			&instance = core::instance();
 	auto			&scene = global().scene;
+
+	global().renderer->animate();
 
 	for (auto &object : scene->objects)
 		object->update();
