@@ -6,7 +6,7 @@
 using				ptr = std::shared_ptr<class_name>;							\
 																				\
 template			<typename ...args_type>										\
-static inline auto	make_ptr(args_type ...args)									\
+static inline auto	make_ptr(args_type &&...args)								\
 {																				\
 	auto			*raw = new class_name(args...);								\
 	return (std::shared_ptr<class_name>(raw));									\
@@ -16,7 +16,7 @@ static inline auto	make_ptr(args_type ...args)									\
 using				ptr = std::unique_ptr<class_name>;							\
 																				\
 template			<typename ...args_type>										\
-static inline auto	make_ptr(args_type ...args)									\
+static inline auto	make_ptr(args_type &&...args)								\
 {																				\
 	auto			*raw = new class_name(args...);								\
 	return (std::unique_ptr<class_name>(raw));									\

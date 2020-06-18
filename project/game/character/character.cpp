@@ -1,12 +1,12 @@
 #include "character.h"
 
-using namespace					game;
+using namespace						game;
 
-								character::character()
+									character::character()
 {
-	model::manager::flags_wrap	flags;
+	model::manager::flags_wrapper	flags;
 
-	flags = model::manager::flags::triangulate;
+	flags = model::manager::flag::triangulate;
 
 	common::warning::ignore = true;
 	model = model::manager::make_model(sources().character, flags);
@@ -30,10 +30,10 @@ using namespace					game;
 	engine::core::use_callback(callback);
 }
 
-void							character::update()
+void								character::update()
 {
 	if (not model->is_animation_playing())
-	model->animate(animations.run);
+		model->animate(animations.run);
 
 	if (current_position != target_position)
 	{
@@ -44,9 +44,9 @@ void							character::update()
 	}
 }
 
-void							character::callback_functor()
+void								character::callback_functor()
 {
-	auto						key = engine::core::receive_event().read_key();
+	auto							key = engine::core::receive_event().read_key();
 
 	switch (key)
 	{

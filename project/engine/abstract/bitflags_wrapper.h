@@ -6,48 +6,47 @@ template				<
     						typename enum_type,
     						typename underlying_type = typename std::underlying_type<enum_type>::type
     					>
-class					engine::abstract::bitflags
+class					engine::abstract::bitflags_wrapper
 {
 public:
+						bitflags_wrapper() : data(0)
+						{}
+						bitflags_wrapper(enum_type flag) : data(static_cast<underlying_type>(flag))
+						{}
+						bitflags_wrapper(const bitflags_wrapper &original) : data(original.data)
+						{}
 
-						bitflags() : data(0)
-						{}
-						bitflags(enum_type flag) : data(static_cast<underlying_type>(flag))
-						{}
-						bitflags(const bitflags &original) : data(original.data)
-						{}
-
-	bitflags			&operator |= (enum_type value)
+	bitflags_wrapper			&operator |= (enum_type value)
 	{
 		data |= static_cast<underlying_type>(value);
 		return (*this);
 	}
 
-	bitflags			operator | (enum_type value)
+	bitflags_wrapper			operator | (enum_type value)
 	{
-		bitflags	result(*this);
+		bitflags_wrapper	result(*this);
 
 		result |= value;
 		return (result);
 	}
 
-	bitflags			&operator &= (enum_type mask)
+	bitflags_wrapper			&operator &= (enum_type mask)
 	{
 		data &= static_cast<underlying_type>(mask);
 		return (*this);
 	}
 
-	bitflags			operator & (enum_type mask)
+	bitflags_wrapper			operator & (enum_type mask)
 	{
-		bitflags		result(*this);
+		bitflags_wrapper		result(*this);
 
 		result &= mask;
 		return (result);
 	}
 
-	bitflags			operator ~ ()
+	bitflags_wrapper			operator ~ ()
 	{
-		bitflags		result(*this);
+		bitflags_wrapper		result(*this);
 
 		result.data = ~result.data;
 		return (result);
@@ -59,5 +58,6 @@ public:
 	}
 
 protected:
+
 	underlying_type		data;
 };

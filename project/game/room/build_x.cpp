@@ -4,8 +4,8 @@ using namespace					game;
 
 void							room::build_models()
 {
-	model::flags_wrap			analyze_flag = model::flags::analyze;
-	model::flags_wrap			center_flag = model::flags::center;
+	model::flags_wrapper		analyze_flag = model::flags::analyze;
+	model::flags_wrapper		center_flag = model::flags::center;
 
 	models.room = model::manager::make_model(sources().room, analyze_flag);
 	models.chair = model::manager::make_model(sources().chair, center_flag);

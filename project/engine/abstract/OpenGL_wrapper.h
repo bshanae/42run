@@ -2,13 +2,13 @@
 
 #include "engine/namespace.h"
 
-class 				engine::abstract::OpenGL_object
+class 				engine::abstract::OpenGL_wrapper
 {
 protected :
-					OpenGL_object() = default;
+					OpenGL_wrapper() = default;
 public :
 
-	virtual			~OpenGL_object() = default;
+	virtual			~OpenGL_wrapper() = default;
 
 	virtual void	use(bool state) const
 	{

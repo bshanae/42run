@@ -1,10 +1,10 @@
 #pragma once
 
 #include "engine/namespace.h"
-#include "engine/abstract/OpenGL_object.h"
+#include "engine/abstract/OpenGL_wrapper.h"
 #include "engine/program/uniform.h"
 
-class					engine::program::program : public engine::abstract::OpenGL_object
+class					engine::program::program : public engine::abstract::OpenGL_wrapper
 {
 private :
 						program(const path &vertex_source, const path &fragment_source);

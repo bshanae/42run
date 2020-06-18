@@ -35,8 +35,8 @@ namespace				game
 		using			engine::model::group;
 		using			engine::model::manager;
 		using			engine::model::animation;
-		using			flags = engine::model::manager::flags;
-		using			flags_wrap = engine::model::manager::flags_wrap;
+		using			flags = engine::model::manager::flag;
+		using			flags_wrapper = engine::model::manager::flags_wrapper;
 	}
 
 	namespace			interface
@@ -46,11 +46,15 @@ namespace				game
 		using			engine::interface::timer;
 	}
 
-	class				model_wrap;
-
 	class 				room;
 	class 				character;
-	class				obstacle;
+
+	namespace			obstacle
+	{
+		class			obstacle;
+		class			chair;
+		class			column;
+	}
 
 	class 				manager;
 }

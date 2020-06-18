@@ -10,8 +10,8 @@ int					main()
 	engine::settings().background = engine::vec3(0.7f, 0.7f, 0.7f);
 	engine::settings().number_of_samples = 1;
 
-	engine::settings().rendering_frequency = 1 / 100.f;
-	engine::settings().updating_frequency = 1 / 50.f;
+	engine::settings().rendering_frequency = 1 / 60.f;
+	engine::settings().updating_frequency = 1 / 40.f;
 
 	engine::settings().glsl_version = "330 core";
 	engine::settings().glsl_path = "project/resources/engine";

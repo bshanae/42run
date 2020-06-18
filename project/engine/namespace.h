@@ -82,8 +82,8 @@ namespace							engine
 	namespace						abstract
 	{
 		template					<typename enum_type, typename underlying_type>
-		class						bitflags;
-		class						OpenGL_object;
+		class						bitflags_wrapper;
+		class						OpenGL_wrapper;
 	}
 
 	namespace						program

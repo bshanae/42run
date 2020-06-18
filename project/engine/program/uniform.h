@@ -2,10 +2,10 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/OpenGL_object.h"
+#include "engine/abstract/OpenGL_wrapper.h"
 
 template 			<typename type>
-class 				engine::program::uniform : public engine::abstract::OpenGL_object
+class 				engine::program::uniform : public engine::abstract::OpenGL_wrapper
 {
 	friend class	engine::program::program;
 

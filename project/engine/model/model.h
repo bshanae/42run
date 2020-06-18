@@ -18,8 +18,10 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(model)
 
 private :
 								model(
+								const shared_ptr<const aiScene> &assimp_scene,
 								vector<mesh::ptr> &meshes,
 								skeleton::ptr &skeleton) :
+								assimp_scene(assimp_scene),
 								meshes(move(meshes)),
 								skeleton(move(skeleton))
 								{}
@@ -65,7 +67,9 @@ public:
 		return (analyzed.offset);
 	}
 
-private:
+private :
+
+	shared_ptr<const aiScene>	assimp_scene;
 
 	void						analyze();
 	void						center();

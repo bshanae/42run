@@ -7,6 +7,8 @@ using namespace		game;
 	room = engine::scene::scene::game_object<game::room>();
 	character = engine::scene::scene::game_object<game::character>();
 
+	chair = engine::scene::scene::game_object<game::obstacle::chair>(character::line::middle);
+
 	engine::scene::scene::light(engine::scene::light::type::ambient, vec3(1.f), 0.2f);
 
 	engine::scene::scene::light(

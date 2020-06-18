@@ -6,26 +6,28 @@
 
 using namespace				engine;
 
-model::model::ptr			model::manager::make_model(const path &source, flags_wrap wrap)
+model::model::ptr			model::manager::make_model(const path &source, flags_wrapper wrap)
 {
 	auto					&instance = manager::instance();
 	auto					model = instance->make_model_non_static(source, wrap);
 
-	if (wrap & flags::analyze or wrap & flags::center)
+	if (wrap & flag::analyze or wrap & flag::center)
 		model->analyze();
-	if (wrap & flags::center)
+	if (wrap & flag::center)
 		model->center();
 	return (model);
 }
 
-model::model::ptr			model::manager::make_model_non_static(const path &source, flags_wrap wrap)
+model::model::ptr			model::manager::make_model_non_static(const path &source, flags_wrapper wrap)
 {
 	uint 					assimp_flags;
 
-	if (wrap & flags::triangulate)
+	if (wrap & flag::triangulate)
 		assimp_flags |= aiProcess_Triangulate;
 
-	scene = importer.ReadFile(source, assimp_flags);
+	importer.ReadFile(source, assimp_flags);
+
+	scene = importer.GetOrphanedScene();
 
 #if DEBUG_STATE
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
@@ -40,7 +42,10 @@ model::model::ptr			model::manager::make_model_non_static(const path &source, fl
 #endif
 
 	nodes.clear();
+	animations.clear();
+
 	meshes.clear();
+	bones.clear();
 
 	directory = source.parent_path();
 
@@ -51,7 +56,18 @@ model::model::ptr			model::manager::make_model_non_static(const path &source, fl
 
 	skeleton = engine::model::skeleton::make_ptr(bones);
 
-	return (model::ptr(new model(meshes, skeleton)));
+	return (model::make_ptr(
+							   shared_ptr<const aiScene>(scene),
+							   meshes,
+							   skeleton
+						   ));
+
+	return (model::ptr(new model
+	(
+		shared_ptr<const aiScene>(scene),
+		meshes,
+		skeleton
+	)));
 }
 
 
@@ -257,6 +273,12 @@ pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 			return {bone, bone->id};
 
 	warning::raise(warning::id::model_bone_not_found);
+
+#if DEBUG_STATE
+	if (not warning::ignore)
+		std::cerr << "Name = " << name << std::endl;
+#endif
+
 	return {bone::ptr(), -1};
 }
 

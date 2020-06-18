@@ -2,7 +2,7 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/bitflags.h"
+#include "engine/abstract/bitflags_wrapper.h"
 #include "engine/model/bone.h"
 #include "engine/model/model.h"
 #include "engine/model/instance.h"
@@ -19,16 +19,16 @@ public :
 
 IMPLEMENT_GLOBAL_INITIALIZER(manager)
 
-	enum class					flags : uint
+	enum class					flag : uint
 	{
 		triangulate = 1u << 1u,
 		analyze = 1u << 2u,
 		center = 1u << 3u
 	};
 
-	using						flags_wrap = engine::abstract::bitflags<flags>;
+	using						flags_wrapper = engine::abstract::bitflags_wrapper<flag>;
 
-	static model::ptr			make_model(const path &source, flags_wrap wrap = flags_wrap());
+	static model::ptr			make_model(const path &source, flags_wrapper wrap = flags_wrapper());
 
 	template					<typename ...args_type>
 	static instance::ptr		make_instance(args_type ...args)
@@ -58,7 +58,7 @@ IMPLEMENT_GLOBAL_INSTANCER(manager)
 
 	path						directory;
 
-	model::ptr					make_model_non_static(const path &source, flags_wrap wrap);
+	model::ptr					make_model_non_static(const path &source, flags_wrapper wrap);
 
 	void						load_nodes();
 	void						load_meshes();

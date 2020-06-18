@@ -12,6 +12,23 @@ public :
 
 IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(character)
 
+
+	enum class 				line : unsigned int
+	{
+		left = 0x001,
+		middle = 0x010,
+		right = 0x100
+	};
+
+	enum class				state : unsigned int
+	{
+		running = 0x01,
+		jumping = 0x10
+	};
+
+	using					line_wrapper = engine::abstract::bitflags_wrapper<line>;
+	using					state_wrapper = engine::abstract::bitflags_wrapper<state>;
+
 private :
 
 	void					update() override;
@@ -33,12 +50,7 @@ private :
 //							Speed of changing row action
 	static constexpr float	speed = 0.55f;
 
-	enum class 				line : int
-	{
-		left,
-		middle,
-		right
-	}						current_line = line::middle;
+	line					current_line = line::middle;
 
 	const vec3				middle_position = vec3(0.f);
 	const vec3				left_position = middle_position - vec3(offset, 0, 0);
@@ -61,24 +73,36 @@ private :
 
 	bool					try_go_left(character::line &line)
 	{
-		if (line != line::left)
+		switch (line)
 		{
-			line = static_cast<character::line>(static_cast<int>(line) - 1);
-			return (true);
-		}
+			case line::left :
+				return (false);
 
-		return (false);
+			case line::middle :
+				line = line::left;
+				return (true);
+
+			case line::right :
+				line = line::middle;
+				return (true);
+		}
 	}
 
 	bool					try_go_right(character::line &line)
 	{
-		if (line != line::right)
+		switch (line)
 		{
-			line = static_cast<character::line>(static_cast<int>(line) + 1);
-			return (true);
-		}
+			case line::left :
+				line = line::middle;
+				return (true);
 
-		return (false);
+			case line::middle :
+				line = line::right;
+				return (true);
+
+			case line::right :
+				return (false);
+		}
 	}
 
 	vec3 					current_position = middle_position;
