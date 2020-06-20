@@ -49,7 +49,7 @@ private :
 	vec3						row_offset = vec3(0.f);
 
 //								Movement speed
-	static constexpr float		speed = 1.4f;
+	static constexpr float		speed = 1.8f;
 
 	struct
 	{

@@ -17,8 +17,8 @@ using namespace						game;
 	instance->scale(0.085f);
 	instance->rotate(engine::vec3(0, 180, 0));
 
-	animations.run = model::animation(1, 19, 1, true);
-	animations.jump = model::animation(20, 63, 1, false);
+	animations.run = model::animation(1, 19, 1.1, true);
+	animations.jump = model::animation(20, 63, 0.7, false);
 
 	model->animate(animations.run);
 
