@@ -29,6 +29,8 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(character)
 	using					line_wrapper = engine::abstract::bitflags_wrapper<line>;
 	using					state_wrapper = engine::abstract::bitflags_wrapper<state>;
 
+	bool					check_collision(obstacle::obstacle &obstacle);
+
 private :
 
 	void					update() override;
@@ -51,6 +53,7 @@ private :
 	static constexpr float	speed = 0.55f;
 
 	line					current_line = line::middle;
+	state					current_state = state::running;
 
 	const vec3				middle_position = vec3(0.f);
 	const vec3				left_position = middle_position - vec3(offset, 0, 0);

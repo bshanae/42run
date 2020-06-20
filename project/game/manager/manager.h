@@ -20,6 +20,4 @@ IMPLEMENT_GLOBAL_INSTANCER(manager)
 
 	room::ptr				room;
 	character::ptr			character;
-
-	obstacle::chair::ptr	chair;
 };

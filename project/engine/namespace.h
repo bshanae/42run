@@ -45,6 +45,8 @@ namespace							engine
 	using							std::move;
 	using							std::to_string;
 	using							std::initializer_list;
+	using							std::remove;
+	using							std::find;
 
 	using							glm::ivec2;
 	using							glm::vec2;

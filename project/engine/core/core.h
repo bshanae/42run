@@ -23,6 +23,7 @@ private :
 	callbacks_type					callbacks;
 	timers_type						timers;
 
+	constexpr static float			time_delta_normal = 0.03f;
 	float							last_time_delta = 0.f;
 
 	static void 					callback(GLFWwindow *window, int key, int code, int action, int mode);
@@ -45,9 +46,9 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 		return (glfwGetTime());
 	}
 
-	static inline float				time_delta()
+	static inline float				time_delta(bool normalize = false)
 	{
-		return (instance()->last_time_delta);
+		return (instance()->last_time_delta / (normalize ? time_delta_normal : 1.f));
 	}
 
 	static void						use_callback(interface::callback &callback)

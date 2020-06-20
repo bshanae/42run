@@ -1,5 +1,7 @@
 #include "character.h"
 
+#include "game/obstacle/obstacle.h"
+
 using namespace						game;
 
 									character::character()
@@ -14,11 +16,11 @@ using namespace						game;
 
 	instance = engine::model::manager::make_instance(model);
 
-	instance->scale(0.095f);
+	instance->scale(0.085f);
 	instance->rotate(engine::vec3(0, 180, 0));
 
-	animations.run = model::animation(1, 19, 1.25, true);
-	animations.jump = model::animation(20, 63, 1.25, false);
+	animations.run = model::animation(1, 19, 1, true);
+	animations.jump = model::animation(20, 63, 1, false);
 
 	model->animate(animations.run);
 
@@ -28,6 +30,24 @@ using namespace						game;
 	callback = interface::callback(interface::event::type::key_press, &character::callback_functor, this);
 
 	engine::core::use_callback(callback);
+}
+
+bool								character::check_collision(obstacle::obstacle &obstacle)
+{
+	if (not obstacle.blocked_lines.has(current_line))
+		return (false);
+	if (not obstacle.blocked_states.has(current_state))
+		return (false);
+
+	float							character_far_point;
+	float							obstacle_near_point;
+	float							obstacle_far_point;
+
+	character_far_point = current_position.z - model->size().z  / 2.f;
+//	obstacle_far_point = obstacle.instance->translation().z - obstacle.model->size().z / 2.f;
+//	obstacle_near_point = obstacle.instance->translation().z + obstacle.model->size().z / 2.f;
+
+	return (obstacle_far_point < character_far_point and character_far_point < obstacle_near_point);
 }
 
 void								character::update()

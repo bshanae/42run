@@ -4,7 +4,13 @@
 
 namespace				game
 {
+	using				std::vector;
+	using				std::list;
+	using				std::reference_wrapper;
+
 	using				engine::path;
+
+	using				std::remove_if;
 
 	using				engine::vec3;
 	using				engine::vec4;

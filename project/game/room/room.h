@@ -2,6 +2,8 @@
 
 #include "game/namespace.h"
 
+#include "game/obstacle/chair.h"
+
 class							game::room : public engine::game_object
 {
 	friend class				manager;
@@ -20,7 +22,6 @@ private :
 	void						build_main_instances();
 	void						build_unique_groups();
 	void						offset_groups();
-	void						set_targets();
 
 	struct
 	{
@@ -45,10 +46,10 @@ private :
 	model::group::ptr			groups[number_of_rows];
 
 //								Distance between neighbor rows
-	vec3						row_offset;
+	vec3						row_offset = vec3(0.f);
 
 //								Movement speed
-	static constexpr float		speed = 1.2f;
+	static constexpr float		speed = 1.4f;
 
 	struct
 	{
@@ -79,6 +80,68 @@ private :
 		const vec3_range		chair = {vec3(0, -30, 0), vec3(0, 30, 0)};
 		const vec3_range		keyboard = {vec3(0, -5, 0), vec3(0, 5, 0)};
 	}							rotation_ranges;
+
+//								Obstacles
+	struct
+	{
+		obstacle::chair::ptr	chair;
+	}							obstacles;
+
+	class						obstacle_link : public engine::game_object
+	{
+	public :
+								obstacle_link
+								(
+									const obstacle::obstacle::ptr &obstacle,
+									int row_index
+								) :
+									obstacle(obstacle),
+									row_index(row_index)
+		{
+			instance = model::manager::make_instance(obstacle->model);
+			instance->translate(vec3(0, obstacle->model->size().y / 2.f, 0));
+
+			game_object::render_target(instance);
+			enable(false);
+		}
+
+								~obstacle_link() override
+		{
+			obstacle.reset();
+#warning "delete game object?"
+		}
+
+	IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(obstacle_link)
+
+		void					move_to(const vec3 &row_position)
+		{
+			vec3				position;
+
+			position = instance->translation();
+			position.z = row_position.z;
+
+			instance->reset_translation();
+			instance->translate(position);
+
+			enable(true);
+		}
+
+		[[nodiscard]] int		read_row_index() const
+		{
+			return (row_index);
+		}
+
+	private :
+
+		obstacle::obstacle::ptr	obstacle;
+		int						row_index;
+
+		model::instance::ptr	instance;
+	};
+
+	list<obstacle_link::ptr>	obstacle_links;
+
+	void						link_obstacle_to_row(const obstacle::obstacle::ptr &obstacle, int row_index);
 };
 
 

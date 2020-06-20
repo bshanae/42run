@@ -42,5 +42,6 @@ void				core::process_updating()
 	global().renderer->animate();
 
 	for (auto &object : scene->objects)
-		object->update();
+		if (object->is_enabled)
+			object->update();
 }

@@ -1,5 +1,7 @@
 #include "skeleton.h"
 
+#include "engine/core/core.h"
+
 using namespace		engine;
 
 void				model::skeleton::animate(const class animation &animation)
@@ -12,7 +14,7 @@ void 				model::skeleton::update()
 	if (not is_animation_playing())
 		return ;
 
-	time += animation->speed;
+	time += animation->speed * engine::core::time_delta(true);
 
 	if (time < animation->timestamps.begin)
 		time = animation->timestamps.begin;

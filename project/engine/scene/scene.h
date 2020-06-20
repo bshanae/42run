@@ -27,10 +27,7 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 		shared_ptr<scene>	instance = scene::instance();
 
 		if (instance->lights.size() == SHARED_LIGHTS_CAPACITY)
-		{
 			warning::raise(warning::id::renderer_no_space_for_light);
-			return ;
-		}
 		else
 			instance->lights.push_back(engine::scene::light::make_ptr(args...));
 	}
@@ -46,6 +43,20 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 
 		instance->objects.push_back(static_pointer_cast<engine::game_object>(pointer));
 		return (pointer);
+	}
+
+	template				<typename type>
+	static void				forget(const type &child)
+	{
+		if constexpr (not std::is_base_of<engine::game_object, type>::value)
+			error::raise(error::id::scene_bad_game_object_parent);
+
+		shared_ptr<scene>	instance = scene::instance();
+
+		auto				parent = static_pointer_cast<engine::game_object>(child);
+		auto				iterator = find(instance->objects.begin(), instance->objects.end(), parent);
+
+		instance->objects.erase(iterator);
 	}
 
 private :

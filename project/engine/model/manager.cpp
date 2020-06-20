@@ -56,18 +56,7 @@ model::model::ptr			model::manager::make_model_non_static(const path &source, fl
 
 	skeleton = engine::model::skeleton::make_ptr(bones);
 
-	return (model::make_ptr(
-							   shared_ptr<const aiScene>(scene),
-							   meshes,
-							   skeleton
-						   ));
-
-	return (model::ptr(new model
-	(
-		shared_ptr<const aiScene>(scene),
-		meshes,
-		skeleton
-	)));
+	return (model::make_ptr(shared_ptr<const aiScene>(scene), meshes, skeleton));
 }
 
 

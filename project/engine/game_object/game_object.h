@@ -39,6 +39,12 @@ protected :
 		animation_targets.push_back(target);
 	}
 
+//						Controls rendering and updating
+	void				enable(bool state)
+	{
+		is_enabled = state;
+	}
+
 private :
 
 	using				models_type = vector<model::model::ptr>;
@@ -52,4 +58,6 @@ private :
 	}					render_targets;
 
 	models_type			animation_targets;
+
+	bool				is_enabled = true;
 };

@@ -14,6 +14,9 @@ void				renderer::render()
 
 	for (const auto &object : global().scene->objects)
 	{
+		if (not object->is_enabled)
+			continue ;
+
 		uniforms.group.scaling.upload(mat4(1.f));
 		uniforms.group.translation.upload(mat4(1.f));
 		uniforms.group.rotation.upload(mat4(1.f));
