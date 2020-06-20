@@ -113,15 +113,15 @@ vec3					calculate_specular(vec3 normal, vec3 direction_to_light)
 	return (material_factor * intensity);
 }
 
-float					calculate_point_attenuation(float distance)
+float					calculate_point_attenuation(int i, float distance)
 {
 	return
 	(
 		1.0f /
 		(
 			SHARED_ATTENUATION_CONSTANT +
-			SHARED_ATTENUATION_LINEAR * distance +
-			SHARED_ATTENUATION_QUADRATIC * (distance * distance)
+			uniform_scene.lights[i].parameter_c * distance +
+			uniform_scene.lights[i].parameter_d * (distance * distance)
 		)
 	);
 }
@@ -153,8 +153,7 @@ vec3					process_light(vec3 normal, int i)
 	{
 		direction_to_light = normalize(uniform_scene.lights[i].parameter_a - pass_position);
 		distance_to_light = length(uniform_scene.lights[i].parameter_a - pass_position);
-		if (uniform_scene.lights[i].parameter_c == 1.f)
-			attenuation = calculate_point_attenuation(distance_to_light);
+		attenuation = calculate_point_attenuation(i, distance_to_light);
 	}
 	else if (uniform_scene.lights[i].type == SHARED_LIGHT_TYPE_PROJECTOR)
 	{

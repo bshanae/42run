@@ -16,7 +16,9 @@ int					main()
 	engine::settings().glsl_version = "330 core";
 	engine::settings().glsl_path = "project/resources/engine";
 
-	engine::settings().camera_position = engine::vec3(0.f, 10.f, 100.f);
+	engine::settings().camera_position = engine::vec3(0.f, 22.f, 50.f);
+	engine::settings().camera_yaw = -90;
+	engine::settings().camera_pitch = -12;
 	engine::settings().camera_movement_speed = 2.f;
 	engine::settings().camera_rotation_speed = 2.f;
 	engine::settings().camera_near_plane = 10.f;

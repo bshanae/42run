@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 #include <list>
+#include <map>
 #include <queue>
 #include <fstream>
 #include <sstream>
@@ -24,6 +25,7 @@ namespace							engine
 	using							std::vector;
 	using							std::list;
 	using							std::array;
+	using							std::map;
 	using							std::optional;
 	using							std::nullopt;
 	using							std::pair;
@@ -47,6 +49,8 @@ namespace							engine
 	using							std::initializer_list;
 	using							std::remove;
 	using							std::find;
+
+	using							std::abs;
 
 	using							glm::ivec2;
 	using							glm::vec2;

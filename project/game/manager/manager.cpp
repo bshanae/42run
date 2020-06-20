@@ -11,8 +11,16 @@ using namespace		game;
 
 	engine::scene::scene::light(
 		engine::scene::light::type::point,
-		vec3(0, room->models.room->size().y * 0.65f, 15),
-		false,
+		vec3(0, room->models.room->size().y * 0.8f, 15),
+		0.0f,
 		vec3(1.0f),
-		1.f);
+		1.0f);
+
+	for (int i = 1; i < 5; i++)
+		engine::scene::scene::light(
+			engine::scene::light::type::point,
+			vec3(0, room->models.room->size().y * 0.65f, i * -35),
+			0.1f,
+			vec3(1.0f),
+			0.3f);
 }

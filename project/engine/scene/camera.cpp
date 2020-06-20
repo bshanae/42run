@@ -79,6 +79,14 @@ void				scene::camera::update()
 {
 	vec3			local_front;
 
+#if DEBUG_STATE
+	std::cerr <<
+		"Camera : position = " <<
+		glm::to_string(position) <<
+		", yaw = " << yaw <<
+		", pitch = " << pitch << std::endl;
+#endif
+
 	local_front.x = cos(radians(yaw)) * cos(radians(pitch));
 	local_front.y = sin(radians(pitch));
 	local_front.z = sin(radians(yaw)) * cos(radians(pitch));
