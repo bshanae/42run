@@ -87,7 +87,7 @@ private :
 		obstacle::chair::ptr	chair;
 	}							obstacles;
 
-	class						obstacle_link : public engine::game_object
+	class						obstacle_link
 	{
 	public :
 								obstacle_link
@@ -98,14 +98,10 @@ private :
 									obstacle(obstacle),
 									row_index(row_index)
 		{
-			instance = model::manager::make_instance(obstacle->model);
-			instance->translate(vec3(0, obstacle->model->size().y / 2.f, 0));
-
-			game_object::render_target(instance);
-			enable(false);
+			obstacle->enable(false);
 		}
 
-								~obstacle_link() override
+								~obstacle_link()
 		{
 			obstacle.reset();
 #warning "delete game object?"
@@ -117,16 +113,21 @@ private :
 		{
 			vec3				position;
 
-			position = instance->translation();
+			position = obstacle->instance->translation();
 			position.z = row_position.z;
 
-			instance->reset_translation();
-			instance->translate(position);
+			obstacle->instance->reset_translation();
+			obstacle->instance->translate(position);
 
-			enable(true);
+			obstacle->enable(true);
 		}
 
-		[[nodiscard]] int		read_row_index() const
+		[[nodiscard]] auto		read_obstacle() const
+		{
+			return (obstacle);
+		}
+
+		[[nodiscard]] auto		read_row_index() const
 		{
 			return (row_index);
 		}
@@ -135,13 +136,12 @@ private :
 
 		obstacle::obstacle::ptr	obstacle;
 		int						row_index;
-
-		model::instance::ptr	instance;
 	};
 
-	list<obstacle_link::ptr>	obstacle_links;
+	list<obstacle_link>			obstacle_links;
 
 	void						link_obstacle_to_row(const obstacle::obstacle::ptr &obstacle, int row_index);
+	void						delete_link(int row_index);
 };
 
 

@@ -9,16 +9,19 @@ class				game::obstacle::chair : public game::obstacle::obstacle
 	friend class	game::manager;
 
 public :
-					chair(character::line line) :
+					chair(line line) :
 					obstacle
 					(
 						line,
-						character::state::running,
+						state::running,
 						3.f,
 						sources().chair,
 						model::flags::center
 					)
-					{}
+	{
+		instance->translate(vec3(0, model->size().y / 2.f, 0));
+		instance->rotate(vec3(0, 180, 0));
+	}
 					~chair() override = default;
 
 IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(chair)

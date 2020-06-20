@@ -30,6 +30,7 @@ public :
 	virtual							~renderer() = default;
 
 START_GLOBAL_CUSTOM_INITIALIZER(renderer)
+	instance(false) = shared_ptr<renderer>(new renderer());
 	connect_with_global();
 FINISH_GLOBAL_CUSTOM_INITIALIZER
 

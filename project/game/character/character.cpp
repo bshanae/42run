@@ -6,9 +6,7 @@ using namespace						game;
 
 									character::character()
 {
-	model::manager::flags_wrapper	flags;
-
-	flags = model::manager::flag::triangulate;
+	model::manager::flags_wrapper	flags = model::manager::flag::triangulate;
 
 	common::warning::ignore = true;
 	model = model::manager::make_model(sources().character, flags);
@@ -32,20 +30,20 @@ using namespace						game;
 	engine::core::use_callback(callback);
 }
 
-bool								character::check_collision(obstacle::obstacle &obstacle)
+bool								character::check_collision(const obstacle::obstacle::ptr &obstacle)
 {
-	if (not obstacle.blocked_lines.has(current_line))
+	if (not obstacle->blocked_lines.has(current_line))
 		return (false);
-	if (not obstacle.blocked_states.has(current_state))
+	if (not obstacle->blocked_states.has(current_state))
 		return (false);
 
 	float							character_far_point;
 	float							obstacle_near_point;
 	float							obstacle_far_point;
 
-	character_far_point = current_position.z - model->size().z  / 2.f;
-//	obstacle_far_point = obstacle.instance->translation().z - obstacle.model->size().z / 2.f;
-//	obstacle_near_point = obstacle.instance->translation().z + obstacle.model->size().z / 2.f;
+	character_far_point = current_position.z - this->size / 2.f;
+	obstacle_far_point = obstacle->instance->translation().z - obstacle->size / 2.f;
+	obstacle_near_point = obstacle->instance->translation().z + obstacle->size / 2.f;
 
 	return (obstacle_far_point < character_far_point and character_far_point < obstacle_near_point);
 }

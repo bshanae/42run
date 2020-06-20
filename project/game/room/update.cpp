@@ -20,7 +20,7 @@ void									room::update()
 		group->translate(movement);
 
 	for (auto &obstacle_link : obstacle_links)
-		obstacle_link->move_to(groups[obstacle_link->read_row_index()]->translation());
+		obstacle_link.move_to(groups[obstacle_link.read_row_index()]->translation());
 
 	if (nearest_ptr->translation().z > size.z)
 	{

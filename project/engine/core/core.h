@@ -36,6 +36,7 @@ IMPLEMENT_GLOBAL_INSTANCER(core)
 public :
 
 START_GLOBAL_CUSTOM_INITIALIZER(core)
+	instance(false) = shared_ptr<core>(new core());
 	connect_with_global();
 FINISH_GLOBAL_CUSTOM_INITIALIZER
 

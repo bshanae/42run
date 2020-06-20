@@ -2,6 +2,8 @@
 
 #include "game/namespace.h"
 
+#include "game/obstacle/obstacle.h"
+
 class						game::character : public engine::game_object
 {
 	friend class			manager;
@@ -12,24 +14,7 @@ public :
 
 IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(character)
 
-
-	enum class 				line : unsigned int
-	{
-		left = 0x001,
-		middle = 0x010,
-		right = 0x100
-	};
-
-	enum class				state : unsigned int
-	{
-		running = 0x01,
-		jumping = 0x10
-	};
-
-	using					line_wrapper = engine::abstract::bitflags_wrapper<line>;
-	using					state_wrapper = engine::abstract::bitflags_wrapper<state>;
-
-	bool					check_collision(obstacle::obstacle &obstacle);
+	bool					check_collision(const obstacle::obstacle::ptr &obstacle);
 
 private :
 
@@ -40,6 +25,8 @@ private :
 
 	model::model::ptr		model;
 	model::instance::ptr	instance;
+
+	static constexpr float	size = 3.f;
 
 	struct
 	{
@@ -59,7 +46,7 @@ private :
 	const vec3				left_position = middle_position - vec3(offset, 0, 0);
 	const vec3				right_position = middle_position + vec3(offset, 0, 0);
 
-	const vec3				&position_for_line(character::line line)
+	const vec3				&position_for_line(enum line line)
 	{
 		switch (line)
 		{
@@ -74,7 +61,7 @@ private :
 		}
 	}
 
-	bool					try_go_left(character::line &line)
+	bool					try_go_left(enum line &line)
 	{
 		switch (line)
 		{
@@ -91,7 +78,7 @@ private :
 		}
 	}
 
-	bool					try_go_right(character::line &line)
+	bool					try_go_right(enum line &line)
 	{
 		switch (line)
 		{

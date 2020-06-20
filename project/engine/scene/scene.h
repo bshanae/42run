@@ -17,6 +17,7 @@ public :
 							~scene() = default;
 
 START_GLOBAL_CUSTOM_INITIALIZER(scene)
+	instance(false) = shared_ptr<scene>(new scene());
 	connect_to_global();
 	instance()->lights.reserve(SHARED_LIGHTS_CAPACITY);
 FINISH_GLOBAL_CUSTOM_INITIALIZER
