@@ -105,6 +105,7 @@ private :
 		void					move_to(const vec3 &row_position)
 		{
 			obstacle->instance->edit_translation(2, row_position.z);
+			obstacle->does_trigger_collision = true;
 			obstacle->enable(true);
 		}
 

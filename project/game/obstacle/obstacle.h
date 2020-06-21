@@ -34,6 +34,8 @@ protected :
 
 private :
 
+	bool					does_trigger_collision = false;
+
 	const line_wrapper		blocked_lines;
 	const state_wrapper		blocked_states;
 

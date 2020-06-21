@@ -32,6 +32,8 @@ using namespace						game;
 
 bool								character::check_collision(const obstacle::obstacle::ptr &obstacle)
 {
+	if (not obstacle->does_trigger_collision)
+		return (false);
 	if (not obstacle->blocked_lines.has(current_line))
 		return (false);
 	if (not obstacle->blocked_states.has(current_state))
