@@ -25,11 +25,6 @@ public:
 
 	void					animate(const class animation &animation);
 
-	[[nodiscard]] bool		is_animation_playing() const
-	{
-		return (animation != nullopt);
-	}
-
 private :
 
 	void 					update();

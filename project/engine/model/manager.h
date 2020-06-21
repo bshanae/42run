@@ -26,9 +26,9 @@ IMPLEMENT_GLOBAL_INITIALIZER(manager)
 		center = 1u << 3u
 	};
 
-	using						flags_wrapper = engine::abstract::bitflags_wrapper<flag>;
+	using						flag_wrapper = engine::abstract::bitflags_wrapper<flag>;
 
-	static model::ptr			make_model(const path &source, flags_wrapper wrap = flags_wrapper());
+	static model::ptr			make_model(const path &source, flag_wrapper wrap = flag_wrapper());
 
 	template					<typename ...args_type>
 	static instance::ptr		make_instance(args_type ...args)
@@ -58,7 +58,7 @@ IMPLEMENT_GLOBAL_INSTANCER(manager)
 
 	path						directory;
 
-	model::ptr					make_model_non_static(const path &source, flags_wrapper wrap);
+	model::ptr					make_model_non_static(const path &source, flag_wrapper wrap);
 
 	void						load_nodes();
 	void						load_meshes();

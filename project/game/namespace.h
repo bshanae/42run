@@ -7,6 +7,9 @@ namespace				game
 	using				std::vector;
 	using				std::list;
 	using				std::reference_wrapper;
+	using				std::cerr;
+	using				std::cout;
+	using				std::endl;
 
 	using				engine::path;
 
@@ -31,8 +34,8 @@ namespace				game
 		using			engine::model::group;
 		using			engine::model::manager;
 		using			engine::model::animation;
-		using			flags = engine::model::manager::flag;
-		using			flags_wrapper = engine::model::manager::flags_wrapper;
+		using			flag = engine::model::manager::flag;
+		using			flag_wrapper = engine::model::manager::flag_wrapper;
 	}
 
 	namespace			interface

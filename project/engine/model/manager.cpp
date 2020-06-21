@@ -6,23 +6,23 @@
 
 using namespace				engine;
 
-model::model::ptr			model::manager::make_model(const path &source, flags_wrapper wrap)
+model::model::ptr			model::manager::make_model(const path &source, flag_wrapper flags)
 {
 	auto					&instance = manager::instance();
-	auto					model = instance->make_model_non_static(source, wrap);
+	auto					model = instance->make_model_non_static(source, flags);
 
-	if (wrap & flag::analyze or wrap & flag::center)
+	if (flags & flag::analyze or flags & flag::center)
 		model->analyze();
-	if (wrap & flag::center)
+	if (flags & flag::center)
 		model->center();
 	return (model);
 }
 
-model::model::ptr			model::manager::make_model_non_static(const path &source, flags_wrapper wrap)
+model::model::ptr			model::manager::make_model_non_static(const path &source, flag_wrapper flags)
 {
 	uint 					assimp_flags;
 
-	if (wrap & flag::triangulate)
+	if (flags & flag::triangulate)
 		assimp_flags |= aiProcess_Triangulate;
 
 	importer.ReadFile(source, assimp_flags);
@@ -32,8 +32,8 @@ model::model::ptr			model::manager::make_model_non_static(const path &source, fl
 #if DEBUG_STATE
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
 	{
-		std::cout << "DEBUG // ASSIMP OUTPUT" << std::endl;
-		std::cout << importer.GetErrorString() << std::endl;
+		cout << "DEBUG // ASSIMP OUTPUT" << endl;
+		cout << importer.GetErrorString() << endl;
 		error::raise(error::id::ASSIMP_error);
 	}
 #else
@@ -265,7 +265,7 @@ pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 
 #if DEBUG_STATE
 	if (not warning::ignore)
-		std::cerr << "Name = " << name << std::endl;
+		cout << "Name = " << name << endl;
 #endif
 
 	return {bone::ptr(), -1};

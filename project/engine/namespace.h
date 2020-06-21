@@ -32,6 +32,9 @@ namespace							engine
 	using							std::string;
 	using							std::ifstream;
 	using							std::stringstream;
+	using							std::cerr;
+	using							std::cout;
+	using							std::endl;
 
 	using							std::filesystem::path;
 	using							std::filesystem::exists;

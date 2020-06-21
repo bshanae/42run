@@ -6,7 +6,7 @@ using namespace						game;
 
 									character::character()
 {
-	model::manager::flags_wrapper	flags = model::manager::flag::triangulate;
+	model::manager::flag_wrapper	flags = model::manager::flag::triangulate;
 
 	common::warning::ignore = true;
 	model = model::manager::make_model(sources().character, flags);
@@ -38,20 +38,33 @@ bool								character::check_collision(const obstacle::obstacle::ptr &obstacle)
 		return (false);
 
 	float							character_far_point;
+	float							character_near_point;
+
 	float							obstacle_near_point;
 	float							obstacle_far_point;
 
 	character_far_point = current_position.z - this->size / 2.f;
+	character_near_point = current_position.z + this->size / 2.f;
+
 	obstacle_far_point = obstacle->instance->translation().z - obstacle->size / 2.f;
 	obstacle_near_point = obstacle->instance->translation().z + obstacle->size / 2.f;
 
-	return (obstacle_far_point < character_far_point and character_far_point < obstacle_near_point);
+	auto							is_inside_obstacle_range =
+									[obstacle_far_point, obstacle_near_point]
+									(const float &point)
+	{
+		return (obstacle_far_point < point and point < obstacle_near_point);
+	};
+
+	return (is_inside_obstacle_range(character_near_point) or is_inside_obstacle_range(character_far_point));
 }
 
 void								character::update()
 {
 	if (not model->is_animation_playing())
 		model->animate(animations.run);
+
+	update_state();
 
 	if (current_position != target_position)
 	{

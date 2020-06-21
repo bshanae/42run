@@ -15,7 +15,7 @@ public :
 								const state_wrapper &blocked_states,
 								const float size,
 								const path &source,
-								const model::flags_wrapper &flags
+								const model::flag_wrapper &flags
 							) :
 								size(size),
 								blocked_lines(blocked_lines),

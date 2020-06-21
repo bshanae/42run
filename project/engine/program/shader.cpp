@@ -41,10 +41,10 @@ shader::shader(type type, const path &source)
 	if (not success)
 	{
 		glGetShaderInfoLog(object, 1024, nullptr, log);
-		std::cout << "DEBUG // GLSL SHADER" << std::endl << std::endl;
-		std::cout << raw_string << std::endl << std::endl;
-		std::cout << "DEBUG // GLSL OUTPUT" << std::endl << std::endl;
-		std::cout << log << std::endl << std::endl;
+		cout << "DEBUG // GLSL SHADER" << endl << endl;
+		cout << raw_string << endl << endl;
+		cout << "DEBUG // GLSL OUTPUT" << endl << endl;
+		cout << log << endl << endl;
 		error::raise(error::id::shader_compilation_error);
 	}
 #else

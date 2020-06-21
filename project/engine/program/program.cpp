@@ -26,8 +26,8 @@ using namespace		engine::program;
 	if (not success)
 	{
 		glGetProgramInfoLog(object, 1024, nullptr, log);
-		std::cout << "DEBUG // GLSL OUTPUT" << std::endl << std::endl;
-		std::cout << log << std::endl << std::endl;
+		cout << "DEBUG // GLSL OUTPUT" << endl << endl;
+		cout << log << endl << endl;
 		error::raise(error::id::program_compilation_error);
 	}
 #else

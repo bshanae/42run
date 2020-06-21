@@ -34,9 +34,14 @@ public:
 		skeleton->animate(animation);
 	}
 
-	bool						is_animation_playing() const
+	[[nodiscard]] bool			is_animation_playing() const
 	{
-		return (skeleton->is_animation_playing());
+		return (skeleton->animation != nullopt);
+	}
+
+	[[nodiscard]] float			current_animation_timestamp() const
+	{
+		return (skeleton->time);
 	}
 
 	[[nodiscard]] vec3			min() const

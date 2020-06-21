@@ -14,9 +14,9 @@ public :
 					(
 						line,
 						state::running,
-						3.f,
+						8.f,
 						sources().chair,
-						model::flags::center
+						model::flag::center
 					)
 	{
 		instance->translate(vec3(0, model->size().y / 2.f, 0));

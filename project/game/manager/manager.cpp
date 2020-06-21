@@ -31,5 +31,5 @@ void				manager::update()
 
 	for (auto &obstacle : room->obstacle_links)
 		if (character->check_collision(obstacle.read_obstacle()))
-			std::cerr << "COLLISION" << i++ << std::endl;
+			cerr << "COLLISION" << i++ << endl;
 }

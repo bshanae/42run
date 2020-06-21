@@ -26,7 +26,7 @@ private :
 	model::model::ptr		model;
 	model::instance::ptr	instance;
 
-	static constexpr float	size = 3.f;
+	static constexpr float	size = 5.f;
 
 	struct
 	{
@@ -41,6 +41,21 @@ private :
 
 	line					current_line = line::middle;
 	state					current_state = state::running;
+
+	void					update_state()
+	{
+		const float			time = model->current_animation_timestamp();
+
+		auto				is_time_in_range = [time](float min, float max)
+		{
+			return (time >= min and time <= max);
+		};
+
+		if (is_time_in_range(28, 44))
+			current_state = state::jumping;
+		else
+			current_state = state::running;
+	}
 
 	const vec3				middle_position = vec3(0.f);
 	const vec3				left_position = middle_position - vec3(offset, 0, 0);

@@ -11,7 +11,7 @@ void				model::skeleton::animate(const class animation &animation)
 
 void 				model::skeleton::update()
 {
-	if (not is_animation_playing())
+	if (not animation)
 		return ;
 
 	time += animation->speed * engine::core::time_delta(true);
