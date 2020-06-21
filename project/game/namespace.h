@@ -10,6 +10,8 @@ namespace				game
 	using				std::cerr;
 	using				std::cout;
 	using				std::endl;
+	using				std::static_pointer_cast;
+	using				std::dynamic_pointer_cast;
 
 	using				engine::path;
 
@@ -17,10 +19,17 @@ namespace				game
 
 	using				engine::vec3;
 	using				engine::vec4;
-	using				engine::float_range;
-	using				engine::vec3_range;
+
+	namespace			error = common::error;
+	namespace			warning = common::warning;
+
+	using				common::int_range;
+	using				common::float_range;
+	using				common::vec3_range;
+	using				common::random;
 
 	using				engine::game_object;
+
 	namespace			scene
 	{
 		using			engine::scene::scene;
@@ -45,6 +54,13 @@ namespace				game
 		using			engine::interface::timer;
 	}
 
+	struct				constants
+	{
+		static
+		constexpr
+		float			distance_between_lines = 6.f;
+	};
+
 	struct				sources
 	{
 		path			room;
@@ -58,6 +74,8 @@ namespace				game
 
 	struct				settings
 	{
+		int				chair_spawning_wait;
+		int_range		chair_spawning_frequency;
 	};
 
 	struct settings		&settings();
@@ -85,7 +103,6 @@ namespace				game
 	{
 		class			obstacle;
 		class			chair;
-		class			column;
 	}
 
 	class 				manager;

@@ -5,7 +5,7 @@ int					main()
 {
 	common::seed = 42;
 
-	engine::settings().window_size = engine::ivec2(720, 480);
+	engine::settings().window_size = engine::ivec2(1280, 720);
 	engine::settings().window_name = "42run";
 	engine::settings().background = engine::vec3(0.7f, 0.7f, 0.7f);
 	engine::settings().number_of_samples = 1;
@@ -29,6 +29,9 @@ int					main()
 	game::sources().mac = "project/resources/game/models/iMac.obj";
 	game::sources().keyboard = "project/resources/game/models/Keyboard.obj";
 	game::sources().character = "project/resources/game/models/Character.fbx";
+
+	game::settings().chair_spawning_wait = 5;
+	game::settings().chair_spawning_frequency = common::int_range(4, 12);
 
 	engine::core::initialize();
 	engine::renderer::initialize();

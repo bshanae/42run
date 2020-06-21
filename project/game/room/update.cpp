@@ -8,35 +8,27 @@ void									room::update()
 {
 	static const vec3					size = models.room->size();
 
-	static int							nearest_index = 0;
-	static int							furthest_index = number_of_rows - 1;
+	bool								rows_was_swapped = false;
 
 	auto								movement = vec3(0, 0, speed * engine::core::time_delta(true));
 
 	auto								nearest_ptr = groups[nearest_index];
 	auto								furthest_ptr = groups[furthest_index];
 
+//										Rows movement
 	for (auto &group : groups)
 		group->translate(movement);
 
+//										Obstacles movement
 	for (auto &obstacle_link : obstacle_links)
 		obstacle_link.move_to(groups[obstacle_link.read_row_index()]->translation());
 
+//										Replacing first row with last
 	if (nearest_ptr->translation().z > size.z)
 	{
-//		obstacle_links.erase
-//		(
-//			remove_if
-//			(
-//				obstacle_links.begin(),
-//				obstacle_links.end(),
-//				[&](const obstacle_link::ptr &link)
-//				{
-//					return (nearest_index == link->read_row_index());
-//				}
-//			),
-//			obstacle_links.end()
-//		);
+		rows_was_swapped = true;
+
+		delete_obstacle(nearest_index);
 
 		nearest_ptr->reset_translation();
 		nearest_ptr->translate(furthest_ptr->translation());
@@ -45,4 +37,18 @@ void									room::update()
 		furthest_index = nearest_index;
 		nearest_index = INCREMENT_TILL(nearest_index, number_of_rows);
 	}
+
+//										Obstacles spawning
+	static int							chair_spawn_countdown = settings().chair_spawning_wait;
+
+	if (not rows_was_swapped)
+		return ;
+
+	if (chair_spawn_countdown == 0)
+	{
+		spawn_chair();
+		chair_spawn_countdown = random(settings().chair_spawning_frequency);
+	}
+	else
+		chair_spawn_countdown--;
 }

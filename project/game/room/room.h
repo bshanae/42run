@@ -18,6 +18,10 @@ private :
 
 	void						update() override;
 
+//								Used for updating
+	int							nearest_index = 0;
+	int							furthest_index = number_of_rows - 1;
+
 	void						build_models();
 	void						build_main_instances();
 	void						build_unique_groups();
@@ -81,12 +85,7 @@ private :
 		const vec3_range		keyboard = {vec3(0, -5, 0), vec3(0, 5, 0)};
 	}							rotation_ranges;
 
-//								Obstacles
-	struct
-	{
-		obstacle::chair::ptr	chair;
-	}							obstacles;
-
+//								Obstacle
 	class						obstacle_link
 	{
 	public :
@@ -101,24 +100,11 @@ private :
 			obstacle->enable(false);
 		}
 
-								~obstacle_link()
-		{
-			obstacle.reset();
-#warning "delete game object?"
-		}
-
 	IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(obstacle_link)
 
 		void					move_to(const vec3 &row_position)
 		{
-			vec3				position;
-
-			position = obstacle->instance->translation();
-			position.z = row_position.z;
-
-			obstacle->instance->reset_translation();
-			obstacle->instance->translate(position);
-
+			obstacle->instance->edit_translation(2, row_position.z);
 			obstacle->enable(true);
 		}
 
@@ -140,8 +126,32 @@ private :
 
 	list<obstacle_link>			obstacle_links;
 
-	void						link_obstacle_to_row(const obstacle::obstacle::ptr &obstacle, int row_index);
-	void						delete_link(int row_index);
+	void						spawn_chair()
+	{
+		auto 					random_int = random(int_range(0, 2));
+		enum line				random_line;
+
+		switch (random_int)
+		{
+			case 0 :
+				random_line = line::left;
+				break ;
+
+			case 1 :
+				random_line = line::middle;
+				break ;
+
+			default :
+				random_line = line::right;
+				break ;
+		}
+
+		auto					chair = scene::scene::game_object<obstacle::chair>(random_line);
+		generate_obstacle(static_pointer_cast<obstacle::obstacle>(chair), furthest_index);
+	}
+
+	void						generate_obstacle(const obstacle::obstacle::ptr &obstacle, int row_index);
+	void						delete_obstacle(int row_index);
 };
 
 

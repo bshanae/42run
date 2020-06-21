@@ -72,7 +72,7 @@ set(SOURCE_GAME
 	project/game/room/update.cpp
 	project/game/room/build_x.cpp
 	project/game/room/offset_groups.cpp
-	project/game/room/x_obstacle_x.cpp
+	project/game/room/x_obstacle.cpp
 
 	project/game/character/character.cpp)
 

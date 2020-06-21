@@ -14,16 +14,13 @@ public :
 								const line_wrapper &blocked_lines,
 								const state_wrapper &blocked_states,
 								const float size,
-								const path &source,
-								const model::flag_wrapper &flags
+								const model::model::ptr &source
 							) :
 								size(size),
 								blocked_lines(blocked_lines),
 								blocked_states(blocked_states)
 	{
-		model = model::manager::make_model(source, flags);
-		instance = model::manager::make_instance(model);
-
+		instance = model::manager::make_instance(source);
 		game_object::render_target(instance);
 	}
 
@@ -33,7 +30,6 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(obstacle)
 
 protected :
 
-	model::model::ptr		model;
 	model::instance::ptr	instance;
 
 private :

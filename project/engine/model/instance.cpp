@@ -32,6 +32,12 @@ void				model::instance::rotate(vec3 angles)
 	transformations.rotation = glm::eulerAngleYXZ(data.rotation.y, data.rotation.x, data.rotation.z);
 }
 
+void				model::instance::edit_translation(int component_index, float value)
+{
+	data.translation[component_index] = value;
+	transformations.translation = glm::translate(data.translation);
+}
+
 void 				model::instance::reset_scaling()
 {
 	data.scaling = vec3(1.f);

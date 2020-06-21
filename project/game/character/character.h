@@ -34,8 +34,6 @@ private :
 		model::animation	jump;
 	}						animations;
 
-//							Distance to neighbor line
-	static constexpr float	offset = 6.f;
 //							Speed of changing row action
 	static constexpr float	speed = 0.55f;
 
@@ -58,8 +56,8 @@ private :
 	}
 
 	const vec3				middle_position = vec3(0.f);
-	const vec3				left_position = middle_position - vec3(offset, 0, 0);
-	const vec3				right_position = middle_position + vec3(offset, 0, 0);
+	const vec3				left_position = middle_position - vec3(constants::distance_between_lines, 0, 0);
+	const vec3				right_position = middle_position + vec3(constants::distance_between_lines, 0, 0);
 
 	const vec3				&position_for_line(enum line line)
 	{

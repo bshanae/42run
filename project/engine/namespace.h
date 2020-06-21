@@ -108,7 +108,6 @@ namespace							engine
 		class						bone;
 		class						skeleton;
 		class						animation;
-		class						animation_queue;
 		class						texture;
 		class						material;
 		class						mesh;

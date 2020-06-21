@@ -21,6 +21,8 @@ void 				core::execute()
 	{
 		time_before = time();
 
+		global().scene->process_game_objects();
+
 		instance->process_callbacks();
 		instance->process_timers();
 		instance->process_rendering();

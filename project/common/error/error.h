@@ -29,7 +29,9 @@ namespace 									common::error
 		event_bad_type,
 		model_too_many_bones,
 		light_bad_input,
-		scene_bad_game_object_parent
+		scene_bad_game_object_parent,
+		scene_game_object_not_found,
+		room_bad_obstacle_type
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
@@ -51,7 +53,9 @@ namespace 									common::error
 		{id::event_bad_type,				"Engine, Event : Bad type"},
 		{id::model_too_many_bones,			"Engine, Model, Loader : Mesh has too many bones"},
 		{id::light_bad_input,				"Engine, Scene, Light : Bad input arguments for constructor"},
-		{id::scene_bad_game_object_parent,	"Engine, Scene, Scene : Given type is not derived from game_object"}
+		{id::scene_bad_game_object_parent,	"Engine, Scene, Scene : Given type is not derived from game_object"},
+		{id::scene_game_object_not_found,	"Engine, Scene, Scene : game_object not found"},
+		{id::room_bad_obstacle_type,		"Game, Room : Given type is not derived from obstacle"}
 	};
 
 	inline void								raise(id id)

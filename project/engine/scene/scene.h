@@ -42,22 +42,17 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 		shared_ptr<scene>	instance = scene::instance();
 		auto				pointer = type::make_ptr(args...);
 
-		instance->objects.push_back(static_pointer_cast<engine::game_object>(pointer));
+		instance->objects_to_add.push_back(static_pointer_cast<engine::game_object>(pointer));
 		return (pointer);
 	}
 
 	template				<typename type>
-	static void				forget(const type &child)
+	static void				forget(const shared_ptr<type> &child)
 	{
 		if constexpr (not std::is_base_of<engine::game_object, type>::value)
 			error::raise(error::id::scene_bad_game_object_parent);
 
-		shared_ptr<scene>	instance = scene::instance();
-
-		auto				parent = static_pointer_cast<engine::game_object>(child);
-		auto				iterator = find(instance->objects.begin(), instance->objects.end(), parent);
-
-		instance->objects.erase(iterator);
+		instance()->objects_to_delete.push_back(static_pointer_cast<engine::game_object>(child));
 	}
 
 private :
@@ -69,11 +64,34 @@ IMPLEMENT_GLOBAL_INSTANCER(scene)
 		global().scene = instance();
 	}
 
+	void					process_game_objects()
+	{
+		for (auto &object_to_add : objects_to_add)
+			objects.push_back(object_to_add);
+
+		objects_iterator	iterator;
+
+		for (auto &object_to_delete : objects_to_delete)
+		{
+			iterator = find(objects.begin(), objects.end(), object_to_delete);
+
+			if (iterator != objects_to_delete.end())
+				objects.erase(iterator);
+		}
+
+		objects_to_add.clear();
+		objects_to_delete.clear();
+	}
+
 	camera					camera;
 
 	using					lights_type = vector<engine::scene::light::ptr>;
 	lights_type				lights;
 
 	using					objects_type = vector<engine::game_object::ptr>;
+	using					objects_iterator = objects_type::iterator;
+
 	objects_type			objects;
+	objects_type			objects_to_add;
+	objects_type			objects_to_delete;
 };

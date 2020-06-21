@@ -47,6 +47,8 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(instance)
 	void 					translate(vec3 value);
 	void 					rotate(vec3 angles);
 
+	void					edit_translation(int component_index, float value);
+
 	void 					reset_scaling();
 	void 					reset_translation();
 	void 					reset_rotation();

@@ -104,12 +104,14 @@ namespace 				range_implementation
 		}
 	};
 
+	using				int_range = range<int>;
 	using				float_range = range<float>;
 	using				vec3_range = range<glm::vec3, vec3_min, vec3_max>;
 }
 
 namespace				common
 {
+	using				range_implementation::int_range;
 	using				range_implementation::float_range;
 	using				range_implementation::vec3_range;
 }
