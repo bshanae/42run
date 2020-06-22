@@ -7,7 +7,7 @@ using namespace		game;
 	room = scene::scene::game_object<game::room>();
 	character = scene::scene::game_object<game::character>();
 
-	scene::scene::light(scene::light::type::ambient, vec3(1.f), 0.2f);
+	scene::scene::light(scene::light::type::ambient, vec3(1.f), 0.25f);
 
 	scene::scene::light(
 		scene::light::type::point,
@@ -30,6 +30,6 @@ void				manager::update()
 	static int		i;
 
 	for (auto &obstacle : room->obstacle_links)
-		if (character->check_collision(obstacle.read_obstacle()))
+		if (character->check_collision(obstacle.obstacle))
 			cerr << "COLLISION" << i++ << endl;
 }

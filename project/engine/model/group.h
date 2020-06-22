@@ -61,6 +61,12 @@ public :
 	void 					reset_translation();
 	void 					reset_rotation();
 
+	void					use_special_shading(bool state)
+	{
+		for (auto &instance : instances)
+			instance->use_special_shading(state);
+	}
+
 private :
 
 	list<instance::ptr>		instances;

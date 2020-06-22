@@ -129,5 +129,11 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 			uniform_mat4			translation;
 			uniform_mat4			rotation;
 		}							group;
+
+		struct
+		{
+			uniform_int				use;
+			uniform_vec3 			color;
+		}							special_shading;
 	}								uniforms;
 };

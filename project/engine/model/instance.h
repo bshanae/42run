@@ -57,6 +57,11 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(instance)
 	void 					randomize_translation(const vec3_range &range);
 	void 					randomize_rotation(const vec3_range &range);
 
+	void					use_special_shading(bool state)
+	{
+		is_special_shading_used = state;
+	}
+
 private :
 
 	model::ptr 				model;
@@ -74,4 +79,6 @@ private :
 		mat4				translation;
 		mat4				rotation;
 	}						transformations;
+
+	bool					is_special_shading_used = false;
 };

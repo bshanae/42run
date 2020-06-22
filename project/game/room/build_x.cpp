@@ -123,4 +123,7 @@ void							room::build_unique_groups()
 			instances[group_i].keyboard[6],
 			instances[group_i].keyboard[7]
 		});
+
+	for (auto &group : groups)
+		groups_in_order.push(group);
 }

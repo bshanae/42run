@@ -2,26 +2,13 @@
 
 using namespace		game;
 
-void				room::generate_obstacle(const obstacle::obstacle::ptr &obstacle, int row_index)
+void				room::push_obstacle(const obstacle::obstacle::ptr &obstacle)
 {
-	obstacle_links.emplace_back(obstacle, row_index);
+	obstacle_links.emplace_back(obstacle, groups_in_order.back());
 }
 
-void 				room::delete_obstacle(int row_index)
+void 				room::pop_obstacle(const model::group::ptr &row)
 {
-	auto			iterator = find_if
-	(
-		obstacle_links.begin(),
-		obstacle_links.end(),
-		[&](const obstacle_link &link)
-		{
-			return (row_index == link.read_row_index());
-		}
-	);
-
-	if (iterator == obstacle_links.end())
-		return ;
-
-	scene::scene::forget(iterator->read_obstacle());
-	obstacle_links.erase(iterator);
+	if (not obstacle_links.empty() and obstacle_links.front().row == row)
+		obstacle_links.pop_front();
 }

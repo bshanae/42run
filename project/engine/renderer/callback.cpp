@@ -63,7 +63,7 @@ void				renderer::callback()
 			upload_camera_data();
 			break ;
 
-		case engine::interface::key::letter_p :
+		case engine::interface::key::enter :
 			wireframe_mod = not wireframe_mod;
 			if (wireframe_mod)
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

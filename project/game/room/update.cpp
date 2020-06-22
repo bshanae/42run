@@ -2,8 +2,6 @@
 
 using namespace							game;
 
-#define INCREMENT_TILL(value, limit)	(value + 1) >= limit ? 0 : (value + 1)
-
 void									room::update()
 {
 	static const vec3					size = models.room->size();
@@ -12,8 +10,8 @@ void									room::update()
 
 	auto								movement = vec3(0, 0, speed * engine::core::time_delta(true));
 
-	auto								nearest_ptr = groups[nearest_index];
-	auto								furthest_ptr = groups[furthest_index];
+	auto								nearest_group = groups_in_order.front();
+	auto								furthest_group = groups_in_order.back();
 
 //										Rows movement
 	for (auto &group : groups)
@@ -21,21 +19,24 @@ void									room::update()
 
 //										Obstacles movement
 	for (auto &obstacle_link : obstacle_links)
-		obstacle_link.move_to(groups[obstacle_link.read_row_index()]->translation());
+		obstacle_link.move_to(obstacle_link.row->translation());
 
 //										Replacing first row with last
-	if (nearest_ptr->translation().z > size.z)
+	if (nearest_group->translation().z > size.z)
 	{
 		rows_was_swapped = true;
 
-		delete_obstacle(nearest_index);
+		nearest_group->reset_translation();
+		nearest_group->translate(furthest_group->translation());
+		nearest_group->translate(row_offset);
 
-		nearest_ptr->reset_translation();
-		nearest_ptr->translate(furthest_ptr->translation());
-		nearest_ptr->translate(row_offset);
+		pop_obstacle(nearest_group);
 
-		furthest_index = nearest_index;
-		nearest_index = INCREMENT_TILL(nearest_index, number_of_rows);
+		groups_in_order.push(nearest_group);
+		groups_in_order.pop();
+
+//		groups[furthest_index]->use_special_shading(false);
+//		groups[furthest_index]->use_special_shading(true);
 	}
 
 //										Obstacles spawning

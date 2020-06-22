@@ -1,11 +1,15 @@
 #pragma once
 
+#include <deque>
+
 #include "engine/engine.h"
 
 namespace				game
 {
 	using				std::vector;
 	using				std::list;
+	using				std::queue;
+	using				std::deque;
 	using				std::reference_wrapper;
 	using				std::cerr;
 	using				std::cout;
@@ -15,6 +19,7 @@ namespace				game
 
 	using				engine::path;
 
+	using				std::find_if;
 	using				std::remove_if;
 
 	using				engine::vec3;

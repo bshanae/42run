@@ -58,17 +58,27 @@ uniform struct
 	light				lights[SHARED_LIGHTS_CAPACITY];
 }						uniform_scene;
 
+uniform struct
+{
+	int					use;
+	vec3				color;
+}						uniform_special_shading;
+
 ///////////////////////////////////////////////////////////////////////////////
 //						FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
 vec3					clamp_vec3(vec3 value, vec3 min, vec3 max)
 {
-	return (vec3(
-		clamp(value.x, min.x, max.x),
-		clamp(value.y, min.y, max.y),
-		clamp(value.z, min.z, max.z)
-	));
+	return
+	(
+		vec3
+		(
+			clamp(value.x, min.x, max.x),
+			clamp(value.y, min.y, max.y),
+			clamp(value.z, min.z, max.z)
+		)
+	);
 }
 
 vec3					calculate_ambient()
@@ -185,10 +195,15 @@ void					main()
 {
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
 
-	vec3				normal = normalize(pass_normal);
+	if (uniform_special_shading.use == 1)
+		final_color = vec4(uniform_special_shading.color, 1);
+	else
+	{
+		vec3			normal = normalize(pass_normal);
 
-	for (int i = 0; i < uniform_scene.lights_size; i++)
-		final_color.rgb += process_light(normal, i);
+		for (int i = 0; i < uniform_scene.lights_size; i++)
+			final_color.rgb += process_light(normal, i);
 
-	final_color.rgb += uniform_material.unite.emission;
+		final_color.rgb += uniform_material.unite.emission;
+	}
 }

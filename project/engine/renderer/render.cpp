@@ -64,6 +64,8 @@ void				renderer::render(const model::instance::ptr &instance)
 	uniforms.instance.translation.upload(instance->transformations.translation);
 	uniforms.instance.rotation.upload(instance->transformations.rotation);
 
+	uniforms.special_shading.use.upload(instance->is_special_shading_used);
+
 	for (auto &mesh : instance->model->meshes)
 	{
 		uniforms.material.unite.ambient.upload(mesh->material->unite.ambient);
