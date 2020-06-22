@@ -61,8 +61,8 @@ void				renderer::initialize_data()
 	uniforms.group.rotation = program->make_uniform<mat4>("uniform_group.rotation");
 
 //					Special shading
-	uniforms.special_shading.use = program->make_uniform<int>("uniform_special_shading.use");
-	uniforms.special_shading.color = program->make_uniform<vec3>("uniform_special_shading.color");
+	uniforms.use_fading.use = program->make_uniform<int>("uniform_fading.use");
+	uniforms.use_fading.color = program->make_uniform<vec3>("uniform_fading.color");
 
 //					Initial upload
 	program->use(true);
@@ -71,7 +71,7 @@ void				renderer::initialize_data()
 	uniforms.material.textures.diffuse.value.upload(1);
 	uniforms.material.textures.specular.value.upload(2);
 
-	uniforms.special_shading.color.upload(settings().special_shading_color);
+	uniforms.use_fading.color.upload(settings().special_shading_color);
 
 	program->use(false);
 }

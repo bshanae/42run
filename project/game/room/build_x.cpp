@@ -125,5 +125,5 @@ void							room::build_unique_groups()
 		});
 
 	for (auto &group : groups)
-		groups_in_order.push(group);
+		groups_in_order.push_back(group);
 }

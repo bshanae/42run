@@ -32,11 +32,14 @@ void									room::update()
 
 		pop_obstacle(nearest_group);
 
-		groups_in_order.push(nearest_group);
-		groups_in_order.pop();
+		groups_in_order.push_back(nearest_group);
+		groups_in_order.pop_front();
 
-//		groups[furthest_index]->use_special_shading(false);
-//		groups[furthest_index]->use_special_shading(true);
+//										Resets special shading
+		int								count = settings().number_of_faded_rows;
+
+		for (auto iterator = groups_in_order.rbegin(); iterator != groups_in_order.rend(); iterator++)
+			(*iterator)->use_fading(count-- > 0);
 	}
 
 //										Obstacles spawning

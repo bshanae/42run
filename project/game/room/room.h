@@ -44,7 +44,7 @@ private :
 	}									instances[number_of_rows];
 
 	model::group::ptr					groups[number_of_rows];
-	queue<model::group::ptr>			groups_in_order;
+	deque<model::group::ptr>			groups_in_order;
 
 //										Distance between neighbor rows
 	vec3								row_offset = vec3(0.f);

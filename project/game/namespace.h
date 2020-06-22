@@ -8,7 +8,6 @@ namespace				game
 {
 	using				std::vector;
 	using				std::list;
-	using				std::queue;
 	using				std::deque;
 	using				std::reference_wrapper;
 	using				std::cerr;
@@ -79,6 +78,7 @@ namespace				game
 
 	struct				settings
 	{
+		int				number_of_faded_rows;
 		int				chair_spawning_wait;
 		int_range		chair_spawning_frequency;
 	};

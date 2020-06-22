@@ -62,7 +62,7 @@ uniform struct
 {
 	int					use;
 	vec3				color;
-}						uniform_special_shading;
+}						uniform_fading;
 
 ///////////////////////////////////////////////////////////////////////////////
 //						FUNCTIONS
@@ -195,8 +195,8 @@ void					main()
 {
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
 
-	if (uniform_special_shading.use == 1)
-		final_color = vec4(uniform_special_shading.color, 1);
+	if (uniform_fading.use == 1)
+		final_color = vec4(uniform_fading.color, 1);
 	else
 	{
 		vec3			normal = normalize(pass_normal);

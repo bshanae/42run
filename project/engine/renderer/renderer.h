@@ -134,6 +134,6 @@ IMPLEMENT_GLOBAL_INSTANCER(renderer)
 		{
 			uniform_int				use;
 			uniform_vec3 			color;
-		}							special_shading;
+		}							use_fading;
 	}								uniforms;
 };
