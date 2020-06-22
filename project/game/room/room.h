@@ -97,14 +97,9 @@ private :
 			obstacle->enable(false);
 		}
 
-										~obstacle_link()
-		{
-			scene::scene::forget(obstacle);
-		}
-
 	IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(obstacle_link)
 
-		void					move_to(const vec3 &row_position)
+		void							move_to(const vec3 &row_position)
 		{
 			obstacle->instance->edit_translation(2, row_position.z);
 			obstacle->does_trigger_collision = true;

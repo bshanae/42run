@@ -10,5 +10,8 @@ void				room::push_obstacle(const obstacle::obstacle::ptr &obstacle)
 void 				room::pop_obstacle(const model::group::ptr &row)
 {
 	if (not obstacle_links.empty() and obstacle_links.front().row == row)
+	{
+		scene::scene::forget(obstacle_links.front().obstacle);
 		obstacle_links.pop_front();
+	}
 }
