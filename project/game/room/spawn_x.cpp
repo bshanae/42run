@@ -30,3 +30,8 @@ void				room::spawn_chair()
 		)
 	);
 }
+
+void				room::spawn_hollow_row()
+{
+	rows.back().make_hollow(true);
+}

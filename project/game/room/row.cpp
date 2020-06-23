@@ -14,6 +14,17 @@ void				room::row::move(const vec3 &value)
 	}
 }
 
+void				room::row::make_hollow(bool state)
+{
+	group->hollow(state);
+	is_hollow = state;
+}
+
+void 				room::row::make_hollow_temporarily(bool state)
+{
+	group->hollow(is_hollow or state);
+}
+
 void				room::row::link_obstacle(const obstacle::obstacle::ptr &obstacle)
 {
 	this->obstacle = obstacle;
@@ -32,10 +43,7 @@ bool				room::row::does_intersects(const float_range &character_range) const
 {
 	float_range		my_range = room::row_range + group->translation().z;
 
-	if (obstacle)
-		return (my_range or character_range);
-	else
-		return (false);
+	return (my_range or character_range);
 }
 
 model::group::ptr	room::row::read_group() const

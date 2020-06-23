@@ -54,6 +54,9 @@ private :
 
 		void							move(const vec3 &value);
 
+		void							make_hollow(bool state);
+		void 							make_hollow_temporarily(bool state);
+
 		void							link_obstacle(const obstacle::obstacle::ptr &obstacle);
 		void							unlink_obstacle();
 
@@ -64,7 +67,7 @@ private :
 		[[nodiscard]] line_wrapper		blocked_lines() const;
 		[[nodiscard]] state_wrapper		blocked_states() const;
 
-	private :
+//	private :
 
 		model::group::ptr				group;
 		obstacle::obstacle::ptr			obstacle;
@@ -114,6 +117,7 @@ private :
 
 //										Obstacles
 	void								spawn_chair();
+	void								spawn_hollow_row();
 
 	static inline int_range				dangerous_rows_for_character = int_range(0, 2);
 };

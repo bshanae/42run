@@ -73,7 +73,7 @@ set(SOURCE_GAME
 	project/game/room/update.cpp
 	project/game/room/build_x.cpp
 	project/game/room/x_offset_x.cpp
-	project/game/room/spawn_chair.cpp
+	project/game/room/spawn_x.cpp
 
 	project/game/character/character.cpp)
 
