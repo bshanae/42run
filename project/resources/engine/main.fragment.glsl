@@ -195,15 +195,10 @@ void					main()
 {
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
 
-	if (uniform_fading.use == 1)
-		final_color = vec4(uniform_fading.color, 1);
-	else
-	{
-		vec3			normal = normalize(pass_normal);
+	vec3				normal = normalize(pass_normal);
 
-		for (int i = 0; i < uniform_scene.lights_size; i++)
-			final_color.rgb += process_light(normal, i);
+	for (int i = 0; i < uniform_scene.lights_size; i++)
+		final_color.rgb += process_light(normal, i);
 
-		final_color.rgb += uniform_material.unite.emission;
-	}
+	final_color.rgb += uniform_material.unite.emission;
 }

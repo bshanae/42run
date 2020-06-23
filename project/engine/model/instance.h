@@ -57,9 +57,9 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(instance)
 	void 					randomize_translation(const vec3_range &range);
 	void 					randomize_rotation(const vec3_range &range);
 
-	void					use_fading(bool state)
+	void					hollow(bool state)
 	{
-		is_fading_used = state;
+		is_hollow = state;
 	}
 
 private :
@@ -80,5 +80,5 @@ private :
 		mat4				rotation;
 	}						transformations;
 
-	bool					is_fading_used = false;
+	bool					is_hollow = false;
 };

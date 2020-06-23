@@ -30,37 +30,6 @@ using namespace						game;
 	engine::core::use_callback(callback);
 }
 
-bool								character::check_collision(const obstacle::obstacle::ptr &obstacle)
-{
-	if (not obstacle->does_trigger_collision)
-		return (false);
-	if (not obstacle->blocked_lines.has(current_line))
-		return (false);
-	if (not obstacle->blocked_states.has(current_state))
-		return (false);
-
-	float							character_far_point;
-	float							character_near_point;
-
-	float							obstacle_near_point;
-	float							obstacle_far_point;
-
-	character_far_point = current_position.z - this->size / 2.f;
-	character_near_point = current_position.z + this->size / 2.f;
-
-	obstacle_far_point = obstacle->instance->translation().z - obstacle->size / 2.f;
-	obstacle_near_point = obstacle->instance->translation().z + obstacle->size / 2.f;
-
-	auto							is_inside_obstacle_range =
-									[obstacle_far_point, obstacle_near_point]
-									(const float &point)
-	{
-		return (obstacle_far_point < point and point < obstacle_near_point);
-	};
-
-	return (is_inside_obstacle_range(character_near_point) or is_inside_obstacle_range(character_far_point));
-}
-
 void								character::update()
 {
 	if (not model->is_animation_playing())
@@ -75,6 +44,11 @@ void								character::update()
 		instance->reset_translation();
 		instance->translate(current_position);
 	}
+}
+
+float_range 						character::calculate_range() const
+{
+	return {current_position.z - this->size / 2.f, current_position.z + this->size / 2.f};
 }
 
 void								character::callback_functor()

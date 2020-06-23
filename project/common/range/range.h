@@ -61,16 +61,34 @@ namespace 				range_implementation
 						~range() = default;
 
 						range(type lower, type higher) :
-						lower(lower),
-						higher(higher)
+							lower(lower),
+							higher(higher)
 		{
 			update();
+		}
+
+		template		<class numeric_type>
+		own_type		operator + (numeric_type value) const
+		{
+			return {lower + value, higher + value};
+		}
+
+		template		<class numeric_type>
+		own_type		operator - (numeric_type value) const
+		{
+			return {lower - value, higher - value};
 		}
 
 		template		<class numeric_type>
 		own_type		operator * (numeric_type value) const
 		{
 			return {lower * value, higher * value};
+		}
+
+		template		<class numeric_type>
+		own_type		operator / (numeric_type value) const
+		{
+			return {lower / value, higher / value};
 		}
 
 		template		<class numeric_type>
@@ -81,6 +99,27 @@ namespace 				range_implementation
 			update();
 
 			return (*this);
+		}
+
+		template		<class numeric_type>
+		[[nodiscard]]
+		bool			is_inside(const numeric_type &value) const
+		{
+			return (lower < value and value < higher);
+		}
+
+		template		<class range_type>
+		[[nodiscard]]
+		bool			operator || (const range_type &that) const
+		{
+			return (that.is_inside(lower) || that.is_inside(higher));
+		}
+
+		template		<class range_type>
+		[[nodiscard]]
+		bool			operator && (const range_type &that) const
+		{
+			return (that.is_inside(lower) && that.is_inside(higher));
 		}
 
 		friend

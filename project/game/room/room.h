@@ -3,6 +3,7 @@
 #include "game/namespace.h"
 
 #include "game/obstacle/chair.h"
+#include "game/character/character.h"
 
 class									game::room : public engine::game_object
 {
@@ -21,6 +22,8 @@ private :
 	void								build_models();
 	void								build_main_instances();
 	void								build_unique_groups();
+
+	void								prepare_offset();
 	void								offset_groups();
 
 	struct
@@ -43,11 +46,38 @@ private :
 		model::instance::ptr			keyboard[number_of_accessories];
 	}									instances[number_of_rows];
 
-	model::group::ptr					groups[number_of_rows];
-	deque<model::group::ptr>			groups_in_order;
+	struct								row
+	{
+										row(const model::group::ptr &group) :
+											group(group)
+										{}
 
-//										Distance between neighbor rows
-	vec3								row_offset = vec3(0.f);
+		void							move(const vec3 &value);
+
+		void							link_obstacle(const obstacle::obstacle::ptr &obstacle);
+		void							unlink_obstacle();
+
+		bool							does_intersects(const float_range &character_range) const;
+
+		[[nodiscard]] model::group::ptr	read_group() const;
+
+		[[nodiscard]] line_wrapper		blocked_lines() const;
+		[[nodiscard]] state_wrapper		blocked_states() const;
+
+	private :
+
+		model::group::ptr				group;
+		obstacle::obstacle::ptr			obstacle;
+
+		bool							is_hollow = false;
+	};
+
+	deque<row>							rows;
+
+//										Distance between neighbor rows, set in prepare_offset method
+	static inline vec3					row_offset = vec3(0.f);
+//										Length of one row, described in common::range, used for collision detection
+	static inline float_range			row_range = {0.f, 0.f};
 
 //										Movement speed
 	static constexpr float				speed = 1.8f;
@@ -82,64 +112,10 @@ private :
 		const vec3_range				keyboard = {vec3(0, -5, 0), vec3(0, 5, 0)};
 	}									rotation_ranges;
 
-//										Obstacle
-	class								obstacle_link
-	{
-	public :
-										obstacle_link
-										(
-											const obstacle::obstacle::ptr &obstacle,
-											const model::group::ptr &row
-										) :
-											obstacle(obstacle),
-											row(row)
-		{
-			obstacle->enable(false);
-		}
+//										Obstacles
+	void								spawn_chair();
 
-	IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(obstacle_link)
-
-		void							move_to(const vec3 &row_position)
-		{
-			obstacle->instance->edit_translation(2, row_position.z);
-			obstacle->does_trigger_collision = true;
-			obstacle->enable(true);
-		}
-
-		const obstacle::obstacle::ptr	obstacle;
-		const model::group::ptr			row;
-	};
-
-	deque<obstacle_link>				obstacle_links;
-
-	void								spawn_chair()
-	{
-		auto 							random_int = random(int_range(0, 2));
-		enum line						random_line;
-
-		switch (random_int)
-		{
-			case 0 :
-				random_line = line::left;
-				break ;
-
-			case 1 :
-				random_line = line::middle;
-				break ;
-
-			default :
-				random_line = line::right;
-				break ;
-		}
-
-		obstacle::chair::ptr 			chair;
-
-		chair = scene::scene::game_object<obstacle::chair>(random_line);
-		push_obstacle(static_pointer_cast<obstacle::obstacle>(chair));
-	}
-
-	void								push_obstacle(const obstacle::obstacle::ptr &obstacle);
-	void								pop_obstacle(const model::group::ptr &row);
+	static inline int_range				dangerous_rows_for_character = int_range(0, 2);
 };
 
 

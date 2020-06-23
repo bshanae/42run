@@ -30,6 +30,14 @@ public:
 		return (result);
 	}
 
+	bitflags_wrapper		operator | (const bitflags_wrapper &that) const
+	{
+		bitflags_wrapper	result;
+
+		result.data = this->data | that.data;
+		return (result);
+	}
+
 	bitflags_wrapper		&operator &= (enum_type mask)
 	{
 		data &= static_cast<underlying_type>(mask);

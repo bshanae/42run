@@ -27,9 +27,18 @@ using namespace		game;
 
 void				manager::update()
 {
-	static int		i;
+	static int		collision_i;
+	const auto		character_range = character->calculate_range();
 
-	for (auto &obstacle : room->obstacle_links)
-		if (character->check_collision(obstacle.obstacle))
-			cerr << "COLLISION" << i++ << endl;
+	for (int i = room::dangerous_rows_for_character.lower; i <= room::dangerous_rows_for_character.higher; i++)
+	{
+		if (not (room->rows[i].blocked_lines() & character->current_line))
+			continue ;
+		if (not (room->rows[i].blocked_states() & character->current_state))
+			continue ;
+		if (not room->rows[i].does_intersects(character_range))
+			continue ;
+
+		cerr << "COLLISION" << collision_i++ << endl;
+	}
 }

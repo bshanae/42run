@@ -60,18 +60,12 @@ void				renderer::initialize_data()
 	uniforms.group.translation = program->make_uniform<mat4>("uniform_group.translation");
 	uniforms.group.rotation = program->make_uniform<mat4>("uniform_group.rotation");
 
-//					Special shading
-	uniforms.use_fading.use = program->make_uniform<int>("uniform_fading.use");
-	uniforms.use_fading.color = program->make_uniform<vec3>("uniform_fading.color");
-
 //					Initial upload
 	program->use(true);
 
 	uniforms.material.textures.ambient.value.upload(0);
 	uniforms.material.textures.diffuse.value.upload(1);
 	uniforms.material.textures.specular.value.upload(2);
-
-	uniforms.use_fading.color.upload(settings().special_shading_color);
 
 	program->use(false);
 }

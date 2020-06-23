@@ -94,36 +94,41 @@ void							room::build_unique_groups()
 			}
 
 //								Build groups
-	for (int group_i = 0; group_i < number_of_rows; group_i++)
-		groups[group_i] = model::manager::make_group(
-		{
-			instances[group_i].room,
-			instances[group_i].chair[0],
-			instances[group_i].chair[1],
-			instances[group_i].chair[2],
-			instances[group_i].chair[3],
-			instances[group_i].chair[4],
-			instances[group_i].chair[5],
-			instances[group_i].chair[6],
-			instances[group_i].chair[7],
-			instances[group_i].mac[0],
-			instances[group_i].mac[1],
-			instances[group_i].mac[2],
-			instances[group_i].mac[3],
-			instances[group_i].mac[4],
-			instances[group_i].mac[5],
-			instances[group_i].mac[6],
-			instances[group_i].mac[7],
-			instances[group_i].keyboard[0],
-			instances[group_i].keyboard[1],
-			instances[group_i].keyboard[2],
-			instances[group_i].keyboard[3],
-			instances[group_i].keyboard[4],
-			instances[group_i].keyboard[5],
-			instances[group_i].keyboard[6],
-			instances[group_i].keyboard[7]
+	model::group::ptr			groups[number_of_rows];
+
+	for (int i = 0; i < number_of_rows; i++)
+		groups[i] = model::manager::make_group
+		({
+			instances[i].room,
+			instances[i].chair[0],
+			instances[i].chair[1],
+			instances[i].chair[2],
+			instances[i].chair[3],
+			instances[i].chair[4],
+			instances[i].chair[5],
+			instances[i].chair[6],
+			instances[i].chair[7],
+			instances[i].mac[0],
+			instances[i].mac[1],
+			instances[i].mac[2],
+			instances[i].mac[3],
+			instances[i].mac[4],
+			instances[i].mac[5],
+			instances[i].mac[6],
+			instances[i].mac[7],
+			instances[i].keyboard[0],
+			instances[i].keyboard[1],
+			instances[i].keyboard[2],
+			instances[i].keyboard[3],
+			instances[i].keyboard[4],
+			instances[i].keyboard[5],
+			instances[i].keyboard[6],
+			instances[i].keyboard[7]
 		});
 
 	for (auto &group : groups)
-		groups_in_order.push_back(group);
+	{
+		game_object::render_target(group);
+		rows.emplace_back(group);
+	}
 }

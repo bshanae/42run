@@ -61,10 +61,10 @@ public :
 	void 					reset_translation();
 	void 					reset_rotation();
 
-	void					use_fading(bool state)
+	void					hollow(bool state)
 	{
 		for (auto &instance : instances)
-			instance->use_fading(state);
+			instance->hollow(state);
 	}
 
 private :

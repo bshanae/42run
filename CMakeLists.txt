@@ -69,10 +69,11 @@ set(SOURCE_GAME
 	project/game/manager/manager.cpp
 
 	project/game/room/room.cpp
+	project/game/room/row.cpp
 	project/game/room/update.cpp
 	project/game/room/build_x.cpp
-	project/game/room/offset_groups.cpp
-	project/game/room/x_obstacle.cpp
+	project/game/room/x_offset_x.cpp
+	project/game/room/spawn_chair.cpp
 
 	project/game/character/character.cpp)
 

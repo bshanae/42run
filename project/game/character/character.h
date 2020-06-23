@@ -14,11 +14,11 @@ public :
 
 IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(character)
 
-	bool					check_collision(const obstacle::obstacle::ptr &obstacle);
-
 private :
 
 	void					update() override;
+
+	float_range				calculate_range() const;
 
 	void					callback_functor();
 	interface::callback		callback;

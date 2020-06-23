@@ -141,8 +141,6 @@ namespace							engine
 		string						glsl_version;
 		path						glsl_path;
 
-		vec3						special_shading_color = vec3(0.f);
-
 		float						camera_movement_speed = 0.f;
 		float						camera_rotation_speed = 0.f;
 		vec3						camera_position = vec3(0.f, 0.f, 0.f);

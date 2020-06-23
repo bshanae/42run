@@ -10,16 +10,15 @@ void									room::update()
 
 	auto								movement = vec3(0, 0, speed * engine::core::time_delta(true));
 
-	auto								nearest_group = groups_in_order.front();
-	auto								furthest_group = groups_in_order.back();
+	auto								nearest_row = rows.front();
+	auto								furthest_row = rows.back();
 
-//										Rows movement
-	for (auto &group : groups)
-		group->translate(movement);
+	auto								nearest_group = nearest_row.read_group();
+	auto								furthest_group = furthest_row.read_group();
 
-//										Obstacles movement
-	for (auto &obstacle_link : obstacle_links)
-		obstacle_link.move_to(obstacle_link.row->translation());
+//										Rows and obstacles movement
+	for (auto &row : rows)
+		row.move(movement);
 
 //										Replacing first row with last
 	if (nearest_group->translation().z > size.z)
@@ -30,16 +29,16 @@ void									room::update()
 		nearest_group->translate(furthest_group->translation());
 		nearest_group->translate(row_offset);
 
-		pop_obstacle(nearest_group);
+		nearest_row.unlink_obstacle();
 
-		groups_in_order.push_back(nearest_group);
-		groups_in_order.pop_front();
+		rows.push_back(nearest_row);
+		rows.pop_front();
 
 //										Resets special shading
 		int								count = settings().number_of_faded_rows;
 
-		for (auto iterator = groups_in_order.rbegin(); iterator != groups_in_order.rend(); iterator++)
-			(*iterator)->use_fading(count-- > 0);
+		for (auto iterator = rows.rbegin(); iterator != rows.rend(); iterator++)
+			(*iterator).read_group()->hollow(count-- > 0);
 	}
 
 //										Obstacles spawning

@@ -10,7 +10,7 @@ class								game::obstacle::chair : public game::obstacle::obstacle
 
 public :
 									chair(line line) :
-										obstacle(line, state::running, 8.f, receive_model())
+										obstacle(line, state::running, receive_model())
 	{
 		vec3						position = vec3(0.f);
 		vec3						rotation = vec3(0.f);

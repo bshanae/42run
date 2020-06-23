@@ -64,9 +64,7 @@ void				renderer::render(const model::instance::ptr &instance)
 	uniforms.instance.translation.upload(instance->transformations.translation);
 	uniforms.instance.rotation.upload(instance->transformations.rotation);
 
-	uniforms.use_fading.use.upload(instance->is_fading_used);
-
-	glPolygonMode(GL_FRONT_AND_BACK, instance->is_fading_used ? GL_LINE : GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, instance->is_hollow ? GL_LINE : GL_FILL);
 
 	for (auto &mesh : instance->model->meshes)
 	{

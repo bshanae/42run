@@ -13,10 +13,8 @@ public :
 							(
 								const line_wrapper &blocked_lines,
 								const state_wrapper &blocked_states,
-								const float size,
 								const model::model::ptr &source
 							) :
-								size(size),
 								blocked_lines(blocked_lines),
 								blocked_states(blocked_states)
 	{
@@ -38,6 +36,4 @@ private :
 
 	const line_wrapper		blocked_lines;
 	const state_wrapper		blocked_states;
-
-	const float				size;
 };
