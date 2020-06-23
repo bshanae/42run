@@ -14,15 +14,24 @@ void				room::row::move(const vec3 &value)
 	}
 }
 
+
+
 void				room::row::make_hollow(bool state)
 {
-	group->hollow(state);
+	make_hollow_internal(state);
 	is_hollow = state;
 }
 
 void 				room::row::make_hollow_temporarily(bool state)
 {
-	group->hollow(is_hollow or state);
+	make_hollow_internal(is_hollow or state);
+}
+
+void				room::row::make_hollow_internal(bool state)
+{
+	group->hollow(state);
+	if (obstacle)
+		obstacle->instance->hollow(state);
 }
 
 void				room::row::link_obstacle(const obstacle::obstacle::ptr &obstacle)

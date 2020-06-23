@@ -67,10 +67,12 @@ private :
 		[[nodiscard]] line_wrapper		blocked_lines() const;
 		[[nodiscard]] state_wrapper		blocked_states() const;
 
-//	private :
+	private :
 
 		model::group::ptr				group;
 		obstacle::obstacle::ptr			obstacle;
+
+		void							make_hollow_internal(bool state);
 
 		bool							is_hollow = false;
 	};

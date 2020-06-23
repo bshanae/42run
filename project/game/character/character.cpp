@@ -64,14 +64,14 @@ void								character::callback_functor()
 		case engine::interface::key::number_1 :
 		case engine::interface::key::left :
 		case engine::interface::key::letter_a :
-			if (try_go_left(current_line))
+			if (current_state == state::running and try_go_left(current_line))
 				target_position = position_for_line(current_line);
 			break ;
 
 		case engine::interface::key::number_2 :
 		case engine::interface::key::right :
 		case engine::interface::key::letter_d :
-			if (try_go_right(current_line))
+			if (current_state == state::running and try_go_right(current_line))
 				target_position = position_for_line(current_line);
 			break ;
 
