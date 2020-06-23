@@ -32,8 +32,8 @@ int					main()
 
 	game::settings().number_of_faded_rows = 2;
 	game::settings().obstacle_generation_wait = 5;
-	game::settings().chair_spawning_frequency = common::int_range(4, 12);
 	game::settings().hollow_row_spawning_frequency = common::int_range(8, 20);
+	game::settings().chair_spawning_frequency = common::int_range(4, 12);
 
 	engine::core::initialize();
 	engine::renderer::initialize();

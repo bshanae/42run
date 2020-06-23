@@ -80,8 +80,8 @@ namespace				game
 	{
 		int				number_of_faded_rows;
 		int				obstacle_generation_wait;
-		int_range		chair_spawning_frequency;
 		int_range		hollow_row_spawning_frequency;
+		int_range		chair_spawning_frequency;
 	};
 
 	struct settings		&settings();

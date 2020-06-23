@@ -52,7 +52,10 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 		if constexpr (not std::is_base_of<engine::game_object, type>::value)
 			error::raise(error::id::scene_bad_game_object_parent);
 
-		instance()->objects_to_delete.push_back(static_pointer_cast<engine::game_object>(child));
+		auto				parent = static_pointer_cast<engine::game_object>(child);
+
+		parent->enable(false);
+		instance()->objects_to_delete.push_back(parent);
 	}
 
 private :

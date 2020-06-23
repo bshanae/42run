@@ -43,21 +43,35 @@ void					room::update()
 	}
 
 //						Obstacles spawning
-	static int			chair_spawn_countdown = settings().obstacle_generation_wait;
+	auto				should_spawn_obstacle = [](int &counter, const int_range &range_for_generation)
+	{
+		bool			result = false;
+
+		if (counter == 0)
+		{
+			result = true;
+			counter = random(range_for_generation);
+		}
+		else
+			counter--;
+
+		return (result);
+	};
+
 	static int			hollow_row_spawn_countdown = settings().obstacle_generation_wait;
+	static int			chair_spawn_countdown = settings().obstacle_generation_wait;
 
 	if (not rows_was_swapped)
 		return ;
 
-#define PROCESS_OBSTACLE(counter, spawner, value_generator)						\
-	if (counter == 0)															\
-	{																			\
-		spawner();																\
-		counter = value_generator;												\
-	}																			\
-	else																		\
-		counter--;
+	bool				should_spawn_hollow_row;
+	bool				should_spawn_chair;
 
-PROCESS_OBSTACLE(chair_spawn_countdown, spawn_chair, random(settings().chair_spawning_frequency));
-PROCESS_OBSTACLE(hollow_row_spawn_countdown, spawn_hollow_row, random(settings().hollow_row_spawning_frequency));
+	should_spawn_hollow_row = should_spawn_obstacle(hollow_row_spawn_countdown, settings().hollow_row_spawning_frequency);
+	should_spawn_chair = should_spawn_obstacle(chair_spawn_countdown, settings().chair_spawning_frequency);
+
+	if (should_spawn_hollow_row)
+		spawn_hollow_row();
+	else if (should_spawn_chair)
+		spawn_chair();
 }

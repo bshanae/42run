@@ -20,6 +20,7 @@ public :
 	{
 		instance = model::manager::make_instance(source);
 		game_object::render_target(instance);
+		enable(false);
 	}
 
 							~obstacle() override = default;
