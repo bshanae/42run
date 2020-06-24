@@ -31,6 +31,9 @@ namespace 									common::error
 		light_bad_input,
 		scene_bad_game_object_parent,
 		scene_game_object_not_found,
+		freetype_library_error,
+		freetype_face_error,
+		freetype_symbol_error,
 		room_bad_obstacle_type
 	};
 
@@ -55,6 +58,9 @@ namespace 									common::error
 		{id::light_bad_input,				"Engine, Scene, Light : Bad input arguments for constructor"},
 		{id::scene_bad_game_object_parent,	"Engine, Scene, Scene : Given type is not derived from game_object"},
 		{id::scene_game_object_not_found,	"Engine, Scene, Scene : game_object not found"},
+		{id::freetype_library_error,		"UI, Font, FreeType controller : Can't initialize FreeType library"},
+		{id::freetype_face_error,			"UI, Font, Font : Can't initialize FreeType face"},
+		{id::freetype_symbol_error,			"UI, Font, Font : Can't initialize FreeType symbol"},
 		{id::room_bad_obstacle_type,		"Game, Room : Given type is not derived from obstacle"}
 	};
 

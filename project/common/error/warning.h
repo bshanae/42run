@@ -17,7 +17,8 @@ namespace									common::warning
 		model_animation_not_found,
 		model_bone_without_animation,
 		model_is_not_analyzed,
-		renderer_no_space_for_light
+		renderer_no_space_for_light,
+		font_symbol_not_found
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
@@ -27,7 +28,8 @@ namespace									common::warning
 		{id::model_animation_not_found,		"Engine, Model, Loader : Animation not found"},
 		{id::model_bone_without_animation,	"Engine, Model, Loader : Bone does't have animation"},
 		{id::model_is_not_analyzed,			"Engine, Model, Model : Object is not analyzed"},
-		{id::renderer_no_space_for_light,	"Engine, Renderer : Lights data is full"}
+		{id::renderer_no_space_for_light,	"Engine, Renderer : Lights data is full"},
+		{id::font_symbol_not_found,			"UI, Font, Font : Can;t find symbol"}
 	};
 
 	inline bool								ignore = false;

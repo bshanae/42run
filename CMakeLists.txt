@@ -4,6 +4,7 @@ project(42run)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(OpenGL REQUIRED)
+find_package(Freetype REQUIRED)
 
 set(ZLIB_LIBRARIES zlibstatic)
 set(ENABLE_BOOST_WORKAROUND ON)
@@ -77,6 +78,10 @@ set(SOURCE_GAME
 
 	project/game/character/character.cpp)
 
+set(SOURCE_UI
+	project/UI/font/font.cpp
+	project/UI/font/symbol.cpp)
+
 set(SOURCE_MAIN
 	project/main.cpp)
 
@@ -84,7 +89,9 @@ add_executable(42run
 	${SOURCE_EXTERNAL}
 	${SOURCE_COMMON}
 	${SOURCE_ENGINE}
+	${SOURCE_UI}
 	${SOURCE_GAME}
 	${SOURCE_MAIN})
 
-target_link_libraries(42run glfw assimp image)
+target_link_libraries(42run ${FREETYPE_LIBRARIES} glfw assimp image)
+target_include_directories(42run PRIVATE ${FREETYPE_INCLUDE_DIRS})
