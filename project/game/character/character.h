@@ -4,16 +4,13 @@
 
 #include "game/obstacle/obstacle.h"
 
-class						game::character : public engine::game_object
+class						game::character : public engine::game_object::game_object
 {
 	friend class			manager;
 
 public :
-							character();
+							character(const shared<engine::renderer> &renderer);
 							~character() override = default;
-
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(character)
-
 private :
 
 	void					update() override;
@@ -23,8 +20,8 @@ private :
 	void					callback_functor();
 	interface::callback		callback;
 
-	model::model::ptr		model;
-	model::instance::ptr	instance;
+	shared<model::model>	model;
+	shared<model::instance>	instance;
 
 	static constexpr float	size = 5.f;
 
@@ -59,54 +56,10 @@ private :
 	const vec3				left_position = middle_position - vec3(constants::distance_between_lines, 0, 0);
 	const vec3				right_position = middle_position + vec3(constants::distance_between_lines, 0, 0);
 
-	const vec3				&position_for_line(enum line line)
-	{
-		switch (line)
-		{
-			case line::middle :
-				return (middle_position);
+	const vec3				&position_for_line(enum line line);
 
-			case line::left :
-				return (left_position);
-
-			case line::right :
-				return (right_position);
-		}
-	}
-
-	bool					try_go_left(enum line &line)
-	{
-		switch (line)
-		{
-			case line::left :
-				return (false);
-
-			case line::middle :
-				line = line::left;
-				return (true);
-
-			case line::right :
-				line = line::middle;
-				return (true);
-		}
-	}
-
-	bool					try_go_right(enum line &line)
-	{
-		switch (line)
-		{
-			case line::left :
-				line = line::middle;
-				return (true);
-
-			case line::middle :
-				line = line::right;
-				return (true);
-
-			case line::right :
-				return (false);
-		}
-	}
+	bool					try_go_left(enum line &line);
+	bool					try_go_right(enum line &line);
 
 	vec3 					current_position = middle_position;
 	vec3					target_position = middle_position;

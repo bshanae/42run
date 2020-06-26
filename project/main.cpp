@@ -24,6 +24,8 @@ int					main()
 	engine::settings().camera_near_plane = 10.f;
 	engine::settings().camera_far_plane = 350.f;
 
+	game::sources().program_vertex = "project/resources/engine/main.vertex.glsl";
+	game::sources().program_fragment = "project/resources/engine/main.fragment.glsl";
 	game::sources().room = "project/resources/game/models/Room.obj";
 	game::sources().chair = "project/resources/game/models/Chair.obj";
 	game::sources().mac = "project/resources/game/models/iMac.obj";
@@ -36,8 +38,6 @@ int					main()
 	game::settings().chair_spawning_frequency = common::int_range(4, 12);
 
 	engine::core::initialize();
-	engine::renderer::initialize();
-	engine::scene::scene::initialize();
 	engine::model::manager::initialize();
 
 	game::manager::initialize();

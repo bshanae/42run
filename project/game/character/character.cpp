@@ -4,15 +4,16 @@
 
 using namespace						game;
 
-									character::character()
+									character::character(const shared<engine::renderer> &renderer) :
+										game_object(renderer)
 {
 	model::manager::flag_wrapper	flags = model::manager::flag::triangulate;
 
 	common::warning::ignore = true;
-	model = model::manager::make_model(sources().character, flags);
+	model = model::manager::make(sources().character, flags);
 	common::warning::ignore = false;
 
-	instance = engine::model::manager::make_instance(model);
+	instance = make_shared<model::instance>(model);
 
 	instance->scale(0.085f);
 	instance->rotate(engine::vec3(0, 180, 0));
@@ -77,5 +78,54 @@ void								character::callback_functor()
 
 		default :
 			break ;
+	}
+}
+
+const vec3							&character::position_for_line(enum line line)
+{
+	switch (line)
+	{
+		case line::middle :
+			return (middle_position);
+
+		case line::left :
+			return (left_position);
+
+		case line::right :
+			return (right_position);
+	}
+}
+
+bool								character::try_go_left(enum line &line)
+{
+	switch (line)
+	{
+		case line::left :
+			return (false);
+
+		case line::middle :
+			line = line::left;
+			return (true);
+
+		case line::right :
+			line = line::middle;
+			return (true);
+	}
+}
+
+bool								character::try_go_right(enum line &line)
+{
+	switch (line)
+	{
+		case line::left :
+			line = line::middle;
+			return (true);
+
+		case line::middle :
+			line = line::right;
+			return (true);
+
+		case line::right :
+			return (false);
 	}
 }

@@ -7,10 +7,10 @@ void							room::build_models()
 	model::flag_wrapper			analyze_flag = model::flag::analyze;
 	model::flag_wrapper			center_flag = model::flag::center;
 
-	models.room = model::manager::make_model(sources().room, analyze_flag);
-	models.chair = model::manager::make_model(sources().chair, center_flag);
-	models.mac = model::manager::make_model(sources().mac, center_flag);
-	models.keyboard = model::manager::make_model(sources().keyboard, center_flag);
+	models.room = model::manager::make(sources().room, analyze_flag);
+	models.chair = model::manager::make(sources().chair, center_flag);
+	models.mac = model::manager::make(sources().mac, center_flag);
+	models.keyboard = model::manager::make(sources().keyboard, center_flag);
 }
 
 void							room::build_main_instances()
@@ -19,12 +19,12 @@ void							room::build_main_instances()
 
 //								Construction
 
-	main_instances.room = engine::model::manager::make_instance(models.room);
+	main_instances.room = make_shared<model::instance>(models.room);
 	for (int i = 0; i < number_of_accessories; i++)
 	{
-		main_instances.chair[i] = engine::model::manager::make_instance(models.chair);
-		main_instances.mac[i] = engine::model::manager::make_instance(models.mac);
-		main_instances.keyboard[i] = engine::model::manager::make_instance(models.keyboard);
+		main_instances.chair[i] = make_shared<model::instance>(models.chair);
+		main_instances.mac[i] = make_shared<model::instance>(models.mac);
+		main_instances.keyboard[i] = make_shared<model::instance>(models.keyboard);
 	}
 
 //								Transformation
@@ -94,40 +94,18 @@ void							room::build_unique_groups()
 			}
 
 //								Build groups
-	model::group::ptr			groups[number_of_rows];
-
-	for (int i = 0; i < number_of_rows; i++)
-		groups[i] = model::manager::make_group
-		({
-			instances[i].room,
-			instances[i].chair[0],
-			instances[i].chair[1],
-			instances[i].chair[2],
-			instances[i].chair[3],
-			instances[i].chair[4],
-			instances[i].chair[5],
-			instances[i].chair[6],
-			instances[i].chair[7],
-			instances[i].mac[0],
-			instances[i].mac[1],
-			instances[i].mac[2],
-			instances[i].mac[3],
-			instances[i].mac[4],
-			instances[i].mac[5],
-			instances[i].mac[6],
-			instances[i].mac[7],
-			instances[i].keyboard[0],
-			instances[i].keyboard[1],
-			instances[i].keyboard[2],
-			instances[i].keyboard[3],
-			instances[i].keyboard[4],
-			instances[i].keyboard[5],
-			instances[i].keyboard[6],
-			instances[i].keyboard[7]
-		});
-
-	for (auto &group : groups)
+	for (int row_i = 0; row_i < number_of_rows; row_i++)
 	{
+		auto					group = make_shared<model::group>();
+
+		group->include(instances[row_i].room);
+		for (int accessory_i = 0; accessory_i < number_of_accessories; accessory_i++)
+		{
+			group->include(instances[row_i].chair[accessory_i]);
+			group->include(instances[row_i].mac[accessory_i]);
+			group->include(instances[row_i].keyboard[accessory_i]);
+		}
+
 		game_object::render_target(group);
 		rows.emplace_back(group);
 	}

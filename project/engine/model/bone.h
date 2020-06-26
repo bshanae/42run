@@ -8,15 +8,13 @@ class					engine::model::bone
 {
 public :
 
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(bone)
-
 	string				name;
 	int 				id;
 
 	aiNode				*node = nullptr;
 	aiNodeAnim			*animation = nullptr;
 
-	bone::ptr			parent;
+	shared<bone>		parent;
 	mat4 				offset;
 
 	vec3 				position = vec3(0.f);
@@ -24,9 +22,9 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(bone)
 	vec3 				scale = vec3(0.f);
 
 						bone(int id, const string &name, const mat4 &offset) :
-						id(id),
-						name(name),
-						offset(offset)
+							id(id),
+							name(name),
+							offset(offset)
 						{}
 						~bone() = default;
 

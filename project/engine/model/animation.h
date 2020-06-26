@@ -4,21 +4,22 @@
 
 class				engine::model::animation
 {
-	friend class	animation_queue;
 	friend class	skeleton;
 
 public :
 					animation() = default;
 					~animation() = default;
 
-	explicit		animation(
-					float begin_timestamp,
-					float end_timestamp,
-					float speed = 0.25,
-					bool loop = true) :
-					timestamps{begin_timestamp, end_timestamp},
-					loop(loop),
-					speed(speed)
+	explicit		animation
+					(
+						float begin_timestamp,
+						float end_timestamp,
+						float speed = 0.25,
+						bool loop = true
+					) :
+						timestamps{begin_timestamp, end_timestamp},
+						loop(loop),
+						speed(speed)
 					{}
 private :
 

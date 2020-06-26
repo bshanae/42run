@@ -8,13 +8,11 @@ class							engine::model::mesh
 {
 private :
 
-	friend class 				model;
-	friend class 				manager;
-	friend class 				engine::renderer;
+	friend class 				engine::model::model;
+	friend class 				engine::model::manager;
+	friend class 				engine::model::reader;
 
 public :
-
-IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(mesh)
 
 	struct						vertex
 	{
@@ -28,16 +26,18 @@ IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(mesh)
 		float					bones_weights[bones_limit] = {0.0f};
 	};
 
-								mesh(
-								vector<vertex> &vertices,
-								vector<unsigned> &indices,
-								material::ptr &material);
+								mesh
+								(
+									vector<vertex> &vertices,
+									vector<unsigned> &indices,
+									unique<material> &material
+								);
 								~mesh();
 private:
 
 	vector<vertex>				vertices;
 	vector<unsigned>			indices;
-	material::ptr				material;
+	unique<material>			material;
 
 	unsigned int				VAO = -1;
 	unsigned int				VBO = -1;

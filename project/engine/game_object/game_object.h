@@ -6,58 +6,57 @@
 #include "engine/model/instance.h"
 #include "engine/model/group.h"
 
-class 					engine::game_object
+class 						engine::game_object::game_object
 {
-	friend class		engine::core;
-	friend class		engine::renderer;
-	friend class		engine::scene::scene;
+	friend class			engine::core;
+	friend class			engine::scene::scene;
+	friend class			engine::game_object::reader;
 
 public :
 
-						game_object() = default;
-	virtual				~game_object() = default;
-
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(game_object)
+	explicit				game_object(const shared<renderer> &renderer = nullptr) :
+								renderer(renderer)
+							{}
+	virtual					~game_object() = default;
 
 protected :
 
-	virtual void		update()
+	virtual void			update()
 	{}
 
-	void				render_target(const model::instance::ptr &target)
+	void					render_target(const shared<model::instance> &target)
 	{
 		render_targets.instances.push_back(target);
 	}
 
-	void				render_target(const model::group::ptr &target)
+	void					render_target(const shared<model::group> &target)
 	{
 		render_targets.groups.push_back(target);
 	}
 
-	void				animation_target(const model::model::ptr &target)
+	void					animation_target(const shared<model::model> &target)
 	{
 		animation_targets.push_back(target);
 	}
 
-//						Controls rendering and updating
-	void				enable(bool state)
+public :
+
+	using					models_type = vector<shared<model::model>>;
+	using					instances_type = vector<shared<model::instance>>;
+	using					groups_type = vector<shared<model::group>>;
+
+	struct					render_targets
 	{
-		is_enabled = state;
-	}
+		instances_type		instances;
+		groups_type			groups;
+	};
+
+	bool					is_enabled = true;
 
 private :
 
-	using				models_type = vector<model::model::ptr>;
-	using				instances_type = vector<model::instance::ptr>;
-	using				groups_type = vector<model::group::ptr>;
+	const shared<renderer>	renderer;
 
-	struct
-	{
-		instances_type	instances;
-		groups_type		groups;
-	}					render_targets;
-
-	models_type			animation_targets;
-
-	bool				is_enabled = true;
+	render_targets			render_targets;
+	models_type				animation_targets;
 };

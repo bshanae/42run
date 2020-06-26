@@ -4,12 +4,12 @@
 #include "engine/model/material.h"
 #include "engine/model/mesh.h"
 
-using namespace				engine;
+using namespace					engine;
 
-model::model::ptr			model::manager::make_model(const path &source, flag_wrapper flags)
+shared<model::model>			model::manager::make(const path &source, flag_wrapper flags)
 {
-	auto					&instance = manager::instance();
-	auto					model = instance->make_model_non_static(source, flags);
+	auto						&instance = manager::instance();
+	auto						model = instance->make_non_static(source, flags);
 
 	if (flags & flag::analyze or flags & flag::center)
 		model->analyze();
@@ -18,9 +18,9 @@ model::model::ptr			model::manager::make_model(const path &source, flag_wrapper 
 	return (model);
 }
 
-model::model::ptr			model::manager::make_model_non_static(const path &source, flag_wrapper flags)
+shared<model::model>			model::manager::make_non_static(const path &source, flag_wrapper flags)
 {
-	uint 					assimp_flags;
+	uint 						assimp_flags;
 
 	if (flags & flag::triangulate)
 		assimp_flags |= aiProcess_Triangulate;
@@ -54,39 +54,39 @@ model::model::ptr			model::manager::make_model_non_static(const path &source, fl
 	load_bones();
 	load_meshes();
 
-	skeleton = engine::model::skeleton::make_ptr(bones);
+	skeleton = make_unique<engine::model::skeleton>(bones);
 
-	return (model::make_ptr(shared_ptr<const aiScene>(scene), meshes, skeleton));
+	return (make_shared<engine::model::model>(shared_ptr<const aiScene>(scene), meshes, skeleton));
 }
 
 
 // /////////////////////////////////////////////////////////////////////////////
-//							LOAD_X
+//								LOAD_X
 // /////////////////////////////////////////////////////////////////////////////
 
 
-void						model::manager::load_nodes()
+void							model::manager::load_nodes()
 {
 	process_node(scene->mRootNode);
 }
 
-void						model::manager::load_meshes()
+void							model::manager::load_meshes()
 {
 	for (int i = 0; i < scene->mNumMeshes; i++)
 		meshes.push_back(process_mesh(scene->mMeshes[i]));
 }
 
-void						model::manager::load_bones()
+void							model::manager::load_bones()
 {
-	bone::ptr				pointer;
+	shared<bone>				pointer;
 
 	for (int i = 0; i < scene->mNumMeshes; i++)
 		for (int j = 0; j < scene->mMeshes[i]->mNumBones; j++)
 		{
-			string			name = scene->mMeshes[i]->mBones[j]->mName.data;
-			mat4			offset = converter::to_glm(scene->mMeshes[i]->mBones[j]->mOffsetMatrix);
+			string				name = scene->mMeshes[i]->mBones[j]->mName.data;
+			mat4				offset = converter::to_glm(scene->mMeshes[i]->mBones[j]->mOffsetMatrix);
 
-			pointer = engine::model::bone::make_ptr(bones.size(), name, offset);
+			pointer = make_shared<engine::model::bone>(bones.size(), name, offset);
 
 			pointer->node = find_node(name);
 			pointer->animation = find_animation(name);
@@ -100,14 +100,14 @@ void						model::manager::load_bones()
 
 	for (auto &bone : bones)
 	{
-		auto				parent_name = converter::to_string(bone->node->mParent->mName);
-		auto				parent_bone = find_bone(parent_name).first;
+		auto					parent_name = converter::to_string(bone->node->mParent->mName);
+		auto					parent_bone = find_bone(parent_name).first;
 
 		bone->parent = parent_bone;
 	}
 }
 
-void						model::manager::load_animations()
+void							model::manager::load_animations()
 {
 	if (scene->mNumAnimations == 0)
 		return;
@@ -118,11 +118,11 @@ void						model::manager::load_animations()
 
 
 // /////////////////////////////////////////////////////////////////////////////
-//							PROCESS_X
+//								PROCESS_X
 // /////////////////////////////////////////////////////////////////////////////
 
 
-void						model::manager::process_node(aiNode *node)
+void							model::manager::process_node(aiNode *node)
 {
 	nodes.push_back(node);
 
@@ -130,17 +130,17 @@ void						model::manager::process_node(aiNode *node)
 		process_node(node->mChildren[i]);
 }
 
-model::mesh::ptr			model::manager::process_mesh(aiMesh *mesh)
+unique<model::mesh>				model::manager::process_mesh(aiMesh *mesh)
 {
-	vector<mesh::vertex>	vertices;
-	vector<unsigned>		indices;
-	material::ptr			material;
+	vector<mesh::vertex>		vertices;
+	vector<unsigned>			indices;
+	unique<material>			material;
 
-//							VERTICES
+//								VERTICES
 
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
-		mesh::vertex		vertex;
+		mesh::vertex			vertex;
 
 		vertex.position = converter::to_glm(mesh->mVertices[i]);
 		vertex.normal = converter::to_glm(mesh->mNormals[i]);
@@ -149,24 +149,24 @@ model::mesh::ptr			model::manager::process_mesh(aiMesh *mesh)
 		vertices.push_back(vertex);
 	}
 
-//							FACES
+//								FACES
 
 	for (int i = 0; i < mesh->mNumFaces; i++)
 		for (int j = 0; j < mesh->mFaces[i].mNumIndices; j++)
 			indices.push_back(mesh->mFaces[i].mIndices[j]);
 
-//							MATERIAL
+//								MATERIAL
 
 	if (mesh->mMaterialIndex >= 0)
 		material = move(process_material(scene->mMaterials[mesh->mMaterialIndex]));
 	else
-		material = engine::model::material::make_ptr();
+		material = make_unique<engine::model::material>();
 
-//							BONES
+//								BONES
 
-	aiBone*					bone;
-	aiVertexWeight			weight;
-	int						id;
+	aiBone*						bone;
+	aiVertexWeight				weight;
+	int							id;
 
 	for (int i = 0; i < mesh->mNumBones; i++)
 	{
@@ -193,18 +193,18 @@ model::mesh::ptr			model::manager::process_mesh(aiMesh *mesh)
 		}
 	}
 
-	return (engine::model::mesh::make_ptr(vertices, indices, move(material)));
+	return (make_unique<engine::model::mesh>(vertices, indices, material));
 }
 
-model::material::ptr		model::manager::process_material(aiMaterial *source)
+unique<model::material>			model::manager::process_material(aiMaterial *source)
 {
-	auto					target = engine::model::material::make_ptr();
+	auto						target = make_unique<engine::model::material>();
 
-	aiColor3D				ambient;
-	aiColor3D				diffuse;
-	aiColor3D				specular;
-	aiColor3D				emission;
-	float					opacity;
+	aiColor3D					ambient;
+	aiColor3D					diffuse;
+	aiColor3D					specular;
+	aiColor3D					emission;
+	float						opacity;
 
 #define GET_MATERIAL_PROPERTY(key, target)										\
 	if (source->Get(key, target) != AI_SUCCESS)									\
@@ -222,15 +222,15 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 	target->unite.emission = converter::to_glm(emission);
 	target->unite.alpha = opacity;
 
-	auto					construct_texture = [this, source](texture::ptr &target, aiTextureType type)
+	auto						construct_texture = [this, source](unique<texture> &target, aiTextureType type)
 	{
-		aiString			file;
+		aiString				file;
 
 		if (source->GetTextureCount(type) == 0)
 			return ;
 
 		source->GetTexture(type, 0, &file);
-		target = engine::model::texture::make_ptr(directory / converter::to_path(file));
+		target = make_unique<engine::model::texture>(directory / converter::to_path(file));
 	};
 
 	construct_texture(target->textures.ambient, aiTextureType_AMBIENT);
@@ -242,11 +242,11 @@ model::material::ptr		model::manager::process_material(aiMaterial *source)
 
 
 // /////////////////////////////////////////////////////////////////////////////
-//							FIND_X
+//								FIND_X
 // /////////////////////////////////////////////////////////////////////////////
 
 
-aiNode						*model::manager::find_node(const string &name)
+aiNode							*model::manager::find_node(const string &name)
 {
 	for (const auto &node : nodes)
 		if (node->mName.data == name)
@@ -255,7 +255,7 @@ aiNode						*model::manager::find_node(const string &name)
 	return (nullptr);
 }
 
-pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
+pair<shared<model::bone>, int>	model::manager::find_bone(const string &name)
 {
 	for (const auto &bone : bones)
 		if (bone->name == name)
@@ -268,10 +268,10 @@ pair<model::bone::ptr, int>	model::manager::find_bone(const string &name)
 		cout << "Name = " << name << endl;
 #endif
 
-	return {bone::ptr(), -1};
+	return {shared<bone>(), -1};
 }
 
-aiNodeAnim					*model::manager::find_animation(const string &name)
+aiNodeAnim						*model::manager::find_animation(const string &name)
 {
 	for (const auto &animation : animations)
 		if (animation->mNodeName.data == name)

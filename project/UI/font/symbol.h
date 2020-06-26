@@ -6,13 +6,10 @@ class				UI::font::symbol
 {
 	friend class	UI::font::font;
 
-private :
-					symbol(FT_Face &face);
 public :
+					symbol(FT_Face &face);
 					~symbol();
 private :
-
-IMPLEMENT_CONST_SHARED_POINTER_FUNCTIONALITY(symbol)
 
 	GLuint			texture;
 

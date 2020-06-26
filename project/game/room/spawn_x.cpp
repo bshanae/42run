@@ -22,13 +22,14 @@ void				room::spawn_chair()
 			break ;
 	}
 
-	rows.back().link_obstacle
-	(
-		static_pointer_cast<obstacle::obstacle>
-		(
-			scene::scene::game_object<obstacle::chair>(random_line)
-		)
-	);
+#warning "Use renderer?"
+//	rows.back().link_obstacle
+//	(
+//		static_pointer_cast<obstacle::obstacle>
+//		(
+//			make_shared<obstacle::chair>(random_line)
+//		)
+//	);
 }
 
 void				room::spawn_hollow_row()

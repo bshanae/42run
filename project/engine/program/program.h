@@ -6,12 +6,9 @@
 
 class					engine::program::program : public engine::abstract::OpenGL_wrapper
 {
-private :
-						program(const path &vertex_source, const path &fragment_source);
 public :
+						program(const path &vertex_source, const path &fragment_source);
 						~program() override;
-
-IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(program)
 
 	void				use(bool state) const override
 	{

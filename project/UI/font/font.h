@@ -4,27 +4,25 @@
 
 #include "UI/font/symbol.h"
 
-class				UI::font::font
+class						UI::font::font
 {
 public :
-					font(const path &source, const int &width, const vec3 &color);
+							font(const path &source, const int &width, const vec3 &color);
 
-	symbol::ptr		find_symbol(char task) const;
+	const_shared<symbol>	find_symbol(char task) const;
 
 private :
 
-	static
-	constexpr
-	int				size_of_map = 128;
+	static constexpr int	size_of_map = 128;
 
-	FT_Face			face;
+	FT_Face					face;
 
-	using 			map_type = map<char, symbol::ptr>;
-	map_type		map;
+	using 					map_type = map<char, shared<symbol>>;
+	map_type				map;
 
-	const vec3		color;
+	const vec3				color;
 
-	symbol::ptr		build_symbol(char task);
+	shared<symbol>			build_symbol(char task);
 };
 
 

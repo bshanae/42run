@@ -9,8 +9,9 @@ void				core::process_callbacks()
 	glfwPollEvents();
 
 	for (auto &callback : callbacks)
-		if (event.type_value != interface::event::type::none and
-			event.type_value == callback.get().type)
+		if (event.type_value == interface::event::type::none)
+			;
+		else if (event.type_value == callback.get().type)
 			callback();
 
 	event.type_value = interface::event::type::none;
@@ -22,24 +23,46 @@ void				core::process_timers()
 		timer.get().update();
 }
 
+void				core::process_preparing()
+{
+	if (not scene)
+		return ;
+
+	scene->prepare();
+}
+
 void				core::process_rendering()
 {
+	if (not scene)
+		return ;
+
 	auto			background = settings().background;
 
 	glClearColor(background.x, background.y, background.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	global().renderer->render();
+	for (auto &object : scene->objects)
+		if (object->is_enabled and object->renderer)
+			object->renderer->render(object);
 
 	glfwSwapBuffers(window);
 }
 
+void				core::process_animating()
+{
+	if (not scene)
+		return ;
+
+	for (const auto &object : scene->objects)
+		for (const auto &animation_target : object->animation_targets)
+			animation_target->skeleton->update();
+}
+
 void				core::process_updating()
 {
-	auto			&scene = global().scene;
-
-	global().renderer->animate();
+	if (not scene)
+		return ;
 
 	for (auto &object : scene->objects)
 		if (object->is_enabled)

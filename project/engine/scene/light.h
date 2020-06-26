@@ -5,7 +5,7 @@
 class					engine::scene::light
 {
 	friend class		engine::scene::scene;
-	friend class		engine::renderer;
+	friend class		engine::scene::reader;
 
 public :
 
@@ -17,8 +17,6 @@ public :
 		projector = SHARED_LIGHT_TYPE_PROJECTOR
 	};
 
-						~light() = default;
-private :
 						light
 						(
 							enum type type,
@@ -102,8 +100,9 @@ private :
 		parameter_c = cos(radians(cut_off));
 		parameter_d = cos(radians(outer_cut_off));
 	}
+						~light() = default;
 
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(light)
+private :
 
 	const enum type		type;
 

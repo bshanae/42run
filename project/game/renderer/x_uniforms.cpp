@@ -1,14 +1,9 @@
 #include "renderer.h"
 
-using namespace		engine;
+using namespace		game;
 
-void				renderer::initialize_data()
+void				renderer::initialize_uniforms()
 {
-	auto			vertex = settings().glsl_path / "main.vertex.glsl";
-	auto			fragment = settings().glsl_path / "main.fragment.glsl";
-
-	program = engine::program::program::make_ptr(vertex, fragment);
-
 //					Matrices
 	uniforms.projection = program->make_uniform<mat4>("uniform_projection");
 	uniforms.view = program->make_uniform<mat4>("uniform_view");
@@ -70,35 +65,31 @@ void				renderer::initialize_data()
 	program->use(false);
 }
 
-void 				renderer::upload_camera_data()
+void 				renderer::upload_camera_uniforms() const
 {
-	auto 			scene = global().scene;
-
-	global().revise();
 	program->use(true);
-	uniforms.projection.upload(scene->camera.projection_matrix());
-	uniforms.view.upload(scene->camera.view_matrix());
-	uniforms.scene.camera_position.upload(scene->camera.position);
+	uniforms.projection.upload(scene::reader::projection_matrix(scene));
+	uniforms.view.upload(scene::reader::view_matrix(scene));
+	uniforms.scene.camera_position.upload(scene::reader::position(scene));
 	program->use(false);
 }
 
-void 				renderer::upload_light_data()
+void 				renderer::upload_light_uniforms() const
 {
-	auto			scene = global().scene;
+	auto 			&lights = scene::reader::lights(scene);
 
-	global().revise();
 	program->use(true);
-	uniforms.scene.lights_size.upload(scene->lights.size());
+	uniforms.scene.lights_size.upload(lights.size());
 
-	for (int i = 0; i < scene->lights.size(); i++)
+	for (int i = 0; i < lights.size(); i++)
 	{
-		uniforms.scene.lights[i].type.upload((int)scene->lights[i]->type);
-		uniforms.scene.lights[i].parameter_a.upload(scene->lights[i]->parameter_a);
-		uniforms.scene.lights[i].parameter_b.upload(scene->lights[i]->parameter_b);
-		uniforms.scene.lights[i].parameter_c.upload(scene->lights[i]->parameter_c);
-		uniforms.scene.lights[i].parameter_d.upload(scene->lights[i]->parameter_d);
-		uniforms.scene.lights[i].color.upload(scene->lights[i]->color);
-		uniforms.scene.lights[i].power.upload(scene->lights[i]->power);
+		uniforms.scene.lights[i].type.upload((int)scene::reader::type(lights[i]));
+		uniforms.scene.lights[i].parameter_a.upload(scene::reader::parameter_a(lights[i]));
+		uniforms.scene.lights[i].parameter_b.upload(scene::reader::parameter_b(lights[i]));
+		uniforms.scene.lights[i].parameter_c.upload(scene::reader::parameter_c(lights[i]));
+		uniforms.scene.lights[i].parameter_d.upload(scene::reader::parameter_d(lights[i]));
+		uniforms.scene.lights[i].color.upload(scene::reader::color(lights[i]));
+		uniforms.scene.lights[i].power.upload(scene::reader::power(lights[i]));
 	}
 	program->use(false);
 }

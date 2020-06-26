@@ -2,13 +2,15 @@
 
 using namespace		engine;
 
-					model::mesh::mesh(
-					vector<vertex> &vertices,
-					vector<unsigned> &indices,
-					engine::model::material::ptr &material) :
-					vertices(move(vertices)),
-					indices(move(indices)),
-					material(move(material))
+					model::mesh::mesh
+					(
+						vector<vertex> &vertices,
+						vector<unsigned> &indices,
+						unique<engine::model::material> &material
+					) :
+						vertices(move(vertices)),
+						indices(move(indices)),
+						material(move(material))
 {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);

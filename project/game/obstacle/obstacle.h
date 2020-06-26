@@ -2,7 +2,7 @@
 
 #include "game/namespace.h"
 
-class						game::obstacle::obstacle : public engine::game_object
+class						game::obstacle::obstacle : public engine::game_object::game_object
 {
 	friend class			game::manager;
 	friend class			game::room;
@@ -11,25 +11,25 @@ class						game::obstacle::obstacle : public engine::game_object
 public :
 							obstacle
 							(
+								const shared<engine::renderer> &renderer,
 								const line_wrapper &blocked_lines,
 								const state_wrapper &blocked_states,
-								const model::model::ptr &source
+								const shared<model::model> &source
 							) :
+								game_object(renderer),
 								blocked_lines(blocked_lines),
 								blocked_states(blocked_states)
 	{
-		instance = model::manager::make_instance(source);
+		instance = make_shared<model::instance>(source);
 		game_object::render_target(instance);
-		enable(false);
+		is_enabled = false;
 	}
 
 							~obstacle() override = default;
 
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(obstacle)
-
 protected :
 
-	model::instance::ptr	instance;
+	shared<model::instance>	instance;
 
 private :
 

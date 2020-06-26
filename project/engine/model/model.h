@@ -9,24 +9,21 @@
 
 class							engine::model::model
 {
+	friend class				engine::core;
+	friend class				engine::model::manager;
+	friend class				engine::model::reader;
+
 public :
-
-	friend class				manager;
-	friend class 				engine::renderer;
-
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(model)
-
-private :
-								model(
-								const shared_ptr<const aiScene> &assimp_scene,
-								vector<mesh::ptr> &meshes,
-								skeleton::ptr &skeleton) :
-								assimp_scene(assimp_scene),
-								meshes(move(meshes)),
-								skeleton(move(skeleton))
+								model
+								(
+									const shared_ptr<const aiScene> &assimp_scene,
+									vector<unique<mesh>> &meshes,
+									unique<skeleton> &skeleton
+								) :
+									assimp_scene(assimp_scene),
+									meshes(move(meshes)),
+									skeleton(move(skeleton))
 								{}
-
-public:
 								~model() = default;
 
 	void						animate(const animation &animation)
@@ -48,28 +45,28 @@ public:
 	{
 		if (not is_analyzed)
 			warning::raise(warning::id::model_is_not_analyzed);
-		return (analyzed.min);
+		return (analysis.min);
 	}
 
 	[[nodiscard]] vec3			max() const
 	{
 		if (not is_analyzed)
 			warning::raise(warning::id::model_is_not_analyzed);
-		return (analyzed.max);
+		return (analysis.max);
 	}
 
 	[[nodiscard]] vec3			size() const
 	{
 		if (not is_analyzed)
 			warning::raise(warning::id::model_is_not_analyzed);
-		return (analyzed.size);
+		return (analysis.size);
 	}
 
 	[[nodiscard]] vec3			offset() const
 	{
 		if (not is_analyzed)
 			warning::raise(warning::id::model_is_not_analyzed);
-		return (analyzed.offset);
+		return (analysis.offset);
 	}
 
 private :
@@ -79,18 +76,24 @@ private :
 	void						analyze();
 	void						center();
 
-	vector<mesh::ptr>			meshes;
-	skeleton::ptr				skeleton;
+	vector<unique<mesh>>		meshes;
+	unique<skeleton>			skeleton;
 
 	bool						is_analyzed = false;
 	bool						is_centered = false;
 
-	struct
+public :
+
+	struct						analysis
 	{
 		vec3					min;
 		vec3					max;
 		vec3					size;
 		vec3					offset;
-	}							analyzed;
+	};
+
+private :
+
+	analysis					analysis;
 };
 

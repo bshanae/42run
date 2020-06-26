@@ -7,19 +7,16 @@
 
 class						engine::model::skeleton
 {
-public  :
+	friend class			engine::core;
+	friend class 			engine::model::model;
+	friend class 			engine::model::reader;
 
-	friend class 			model;
-	friend class 			engine::renderer;
+public  :
 
 	static constexpr int	bones_limit = SHARED_BONES_IN_SKELETON;
 
-IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(skeleton)
-
-public:
-
-	explicit				skeleton(const vector<bone::ptr> &bones) :
-							bones(bones)
+	explicit				skeleton(const vector<shared<bone>> &bones) :
+								bones(bones)
 							{}
 							~skeleton() = default;
 
@@ -29,7 +26,7 @@ private :
 
 	void 					update();
 
-	vector<bone::ptr>		bones;
+	vector<shared<bone>>	bones;
 	optional<animation>		animation;
 
 	float					time = 0.f;

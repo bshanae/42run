@@ -15,10 +15,3 @@ static void								initialize()							\
 {																				\
 	instance(false) = std::shared_ptr<class_name>(new class_name());			\
 }
-
-#define	START_GLOBAL_CUSTOM_INITIALIZER(class_name)								\
-static void								initialize()							\
-{																				\
-
-#define	FINISH_GLOBAL_CUSTOM_INITIALIZER										\
-}

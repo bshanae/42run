@@ -22,7 +22,7 @@ void				model::bone::update_keyframe_transformation(float time)
 
 mat4				model::bone::get_parents_transformation() const
 {
-	bone::ptr		iterator = parent;
+	shared<bone>	iterator = parent;
 	vector<mat4>	matrices;
 	mat4			result(1.0f);
 

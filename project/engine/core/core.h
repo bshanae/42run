@@ -5,6 +5,7 @@
 #include "engine/interface/event.h"
 #include "engine/interface/callback.h"
 #include "engine/interface/timer.h"
+#include "engine/scene/scene.h"
 
 class								engine::core
 {
@@ -15,6 +16,8 @@ public :
 private :
 
 	GLFWwindow						*window = nullptr;
+
+	shared<scene::scene>			scene;
 
 	using 							callbacks_type = list<reference_wrapper<interface::callback>>;
 	using 							timers_type = list<reference_wrapper<interface::timer>>;
@@ -35,12 +38,14 @@ IMPLEMENT_GLOBAL_INSTANCER(core)
 
 public :
 
-START_GLOBAL_CUSTOM_INITIALIZER(core)
-	instance(false) = shared_ptr<core>(new core());
-	connect_with_global();
-FINISH_GLOBAL_CUSTOM_INITIALIZER
+IMPLEMENT_GLOBAL_INITIALIZER(core)
 
-	static void						connect_with_global();
+	static void						execute();
+
+	static void						use(const shared<scene::scene> &scene)
+	{
+		instance()->scene = scene;
+	}
 
 	static inline float				time()
 	{
@@ -67,13 +72,13 @@ FINISH_GLOBAL_CUSTOM_INITIALIZER
 		return (core::instance()->event);
 	}
 
-	static void						execute();
-
 private :
 
 	void							process_callbacks();
 	void							process_timers();
+	void							process_preparing();
 	void							process_rendering();
+	void							process_animating();
 	void							process_updating();
 };
 

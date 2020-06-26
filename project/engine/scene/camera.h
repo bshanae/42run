@@ -4,7 +4,7 @@
 
 class						engine::scene::camera
 {
-	friend class			engine::renderer;
+	friend class			engine::scene::reader;
 
 public :
 							camera()
@@ -43,7 +43,9 @@ public :
 private :
 
 	const vec3				up_const = vec3(0.f, 1.f, 0.f);
+
 	vec3					position = settings().camera_position;
+
 	vec3					front = vec3(0.f, 0.f, -1.f);
 	vec3					up = up_const;
 	vec3					right = vec3(0.f, 0.f, 0.f);

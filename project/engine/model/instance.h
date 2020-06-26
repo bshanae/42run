@@ -7,20 +7,16 @@
 class						engine::model::instance
 {
 	friend class			engine::model::manager;
-	friend class			engine::renderer;
-
-private :
-
-	explicit 				instance(model::ptr model);
+	friend class			engine::model::reader;
 
 public :
+
+	explicit 				instance(const shared<model> &model);
 							~instance() = default;
 
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(instance)
-
-	ptr						copy() const
+	shared<instance>		copy() const
 	{
-		auto				result = make_ptr(model);
+		auto				result = make_shared<instance>(model);
 
 		result->data = data;
 		result->transformations = transformations;
@@ -57,14 +53,9 @@ IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(instance)
 	void 					randomize_translation(const vec3_range &range);
 	void 					randomize_rotation(const vec3_range &range);
 
-	void					hollow(bool state)
-	{
-		is_hollow = state;
-	}
-
 private :
 
-	model::ptr 				model;
+	shared<model>			model;
 
 	struct
 	{
@@ -80,5 +71,20 @@ private :
 		mat4				rotation;
 	}						transformations;
 
-	bool					is_hollow = false;
+public :
+
+	const auto				&read_scaling_matrix() const
+	{
+		return (transformations.scaling);
+	}
+
+	const auto				&read_translation_matrix() const
+	{
+		return (transformations.translation);
+	}
+
+	const auto				&read_rotation_matrix() const
+	{
+		return (transformations.rotation);
+	}
 };

@@ -2,8 +2,8 @@
 
 using namespace		engine;
 
-					model::instance::instance(model::ptr model) :
-					model(model)
+					model::instance::instance(const shared<engine::model::model> &model) :
+						model(model)
 {
 	reset_scaling();
 	reset_translation();

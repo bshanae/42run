@@ -66,6 +66,11 @@ namespace							engine
 	using							glm::radians;
 	using							glm::lerp;
 
+	template						<typename type>
+	using							shared = std::shared_ptr<type>;
+	template						<typename type>
+	using							unique = std::unique_ptr<type>;
+
 	using							common::float_range;
 	using							common::vec3_range;
 
@@ -115,15 +120,21 @@ namespace							engine
 		class						model;
 		class						instance;
 		class						group;
+		class						reader;
 	}
 
-	class							game_object;
+	namespace						game_object
+	{
+		class						game_object;
+		class						reader;
+	}
 
 	namespace						scene
 	{
 		class						scene;
 		class						camera;
 		class						light;
+		class						reader;
 	}
 
 	class 							renderer;
@@ -151,21 +162,4 @@ namespace							engine
 	};
 
 	struct settings					&settings();
-
-	struct							global
-	{
-		friend class				core;
-		friend class				renderer;
-		friend class				scene::scene;
-
-	private :
-
-		void						revise();
-
-		shared_ptr<core>			core;
-		shared_ptr<renderer>		renderer;
-		shared_ptr<scene::scene>	scene;
-	};
-
-	struct global					&global();
 }

@@ -28,18 +28,7 @@ IMPLEMENT_GLOBAL_INITIALIZER(manager)
 
 	using						flag_wrapper = engine::abstract::bitflags_wrapper<flag>;
 
-	static model::ptr			make_model(const path &source, flag_wrapper wrap = flag_wrapper());
-
-	template					<typename ...args_type>
-	static instance::ptr		make_instance(args_type ...args)
-	{
-		return (instance::make_ptr(args...));
-	}
-
-	static group::ptr			make_group(const initializer_list<instance::ptr> &list)
-	{
-		return (group::make_ptr(list));
-	}
+	static shared<model>		make(const path &source, flag_wrapper wrap = flag_wrapper());
 
 private :
 
@@ -51,26 +40,25 @@ IMPLEMENT_GLOBAL_INSTANCER(manager)
 	vector<aiNode *>			nodes;
 	vector<aiNodeAnim *>		animations;
 
-	vector<mesh::ptr>			meshes;
-	vector<bone::ptr>			bones;
+	vector<unique<mesh>>		meshes;
+	vector<shared<bone>>		bones;
 
-	skeleton::ptr				skeleton;
+	unique<skeleton>			skeleton;
 
 	path						directory;
 
-	model::ptr					make_model_non_static(const path &source, flag_wrapper wrap);
+	shared<model>				make_non_static(const path &source, flag_wrapper wrap);
 
 	void						load_nodes();
 	void						load_meshes();
-
-	mesh::ptr					process_mesh(aiMesh *mesh);
 	void						load_bones();
 	void						load_animations();
-	material::ptr				process_material(aiMaterial *material);
 
+	unique<mesh>				process_mesh(aiMesh *mesh);
+	unique<material>			process_material(aiMaterial *material);
 	void						process_node(aiNode *node);
 
 	aiNode						*find_node(const string &name);
-	pair<bone::ptr, int>		find_bone(const string &name);
+	pair<shared<bone>, int>		find_bone(const string &name);
 	aiNodeAnim					*find_animation(const string &name);
 };

@@ -7,9 +7,6 @@
 class						engine::model::material
 {
 public :
-
-IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(material)
-
 							material() = default;
 							~material() = default;
 	struct
@@ -23,8 +20,8 @@ IMPLEMENT_UNIQUE_POINTER_FUNCTIONALITY(material)
 
 	struct
 	{
-		texture::ptr		ambient;
-		texture::ptr		diffuse;
-		texture::ptr		specular;
+		unique<texture>		ambient;
+		unique<texture>		diffuse;
+		unique<texture>		specular;
 	}						textures;
 };

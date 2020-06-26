@@ -13,7 +13,7 @@ public :
 					uniform() = default;
 					~uniform() override = default;
 
-	void			upload(const type &data)
+	void			upload(const type &data) const
 	{
 		if (object == -1)
 			error::raise(error::id::uniform_bad_value);

@@ -4,39 +4,18 @@
 
 #include "engine/model/instance.h"
 
-class 					engine::model::group
+class 						engine::model::group
 {
-	friend class 		engine::model::manager;
-	friend class 		engine::renderer;
-
-private :
-
-	explicit			group(const initializer_list<instance::ptr> &list);
+	friend class 			engine::model::manager;
+	friend class 			engine::model::reader;
 
 public :
-						~group() = default;
+							group();
+							~group() = default;
 
-	using				ptr = shared_ptr<group>;
+	void					include(const shared<engine::model::instance> &instance);
 
-	static inline auto	make_ptr(const initializer_list<instance::ptr> &list)
-	{
-		auto			*raw = new group(list);
-
-		return (shared_ptr<group>(raw));
-	}
-
-	ptr					copy() const
-	{
-		auto			result = make_ptr({});
-
-		for (auto &instance : instances)
-			result->instances.push_back(instance->copy());
-
-		result->data = data;
-		result->transformations = transformations;
-
-		return (result);
-	}
+	shared<group>			copy() const;
 
 	vec3					scaling() const
 	{
@@ -61,15 +40,9 @@ public :
 	void 					reset_translation();
 	void 					reset_rotation();
 
-	void					hollow(bool state)
-	{
-		for (auto &instance : instances)
-			instance->hollow(state);
-	}
-
 private :
 
-	list<instance::ptr>		instances;
+	list<shared<instance>>	instances;
 
 	struct
 	{

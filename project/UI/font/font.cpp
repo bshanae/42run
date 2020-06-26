@@ -2,12 +2,12 @@
 
 #include "UI/font/FreeType_controller.h"
 
-using namespace		UI;
+using namespace				UI;
 
-					font::font::font(const path &source, const int &width, const vec3 &color) :
-						color(color)
+							font::font::font(const path &source, const int &width, const vec3 &color) :
+								color(color)
 {
-	auto			&library = FreeType_controller::instance()->library;
+	auto					&library = FreeType_controller::instance()->library;
 
 	if (FT_New_Face(library, source.c_str(), 0, &face))
 		error::raise(error::id::freetype_face_error);
@@ -20,9 +20,9 @@ using namespace		UI;
 }
 
 
-font::symbol::ptr	font::font::find_symbol(char task) const
+const_shared<font::symbol>	font::font::find_symbol(char task) const
 {
-	auto			result = map.find(task);
+	auto					result = map.find(task);
 
 	if (result == map.end())
 	{
@@ -34,10 +34,10 @@ font::symbol::ptr	font::font::find_symbol(char task) const
 }
 
 
-font::symbol::ptr	font::font::build_symbol(char task)
+shared<font::symbol>		font::font::build_symbol(char task)
 {
 	if (FT_Load_Char(face, task, FT_LOAD_RENDER))
 		error::raise(error::id::freetype_symbol_error);
 
-	return (symbol::make_ptr(face));
+	return (make_shared<symbol>(face));
 }

@@ -2,29 +2,28 @@
 
 #include "game/namespace.h"
 
-#include "game/room/room.h"
+#include "game/renderer/renderer.h"
 #include "game/character/character.h"
+#include "game/room/room.h"
 #include "game/obstacle/chair.h"
 
-class						game::manager : public game_object
+class						game::manager : public game_object::game_object
 {
 public :
 							manager();
 							~manager() override = default;
 
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(manager)
-
-START_GLOBAL_CUSTOM_INITIALIZER(manager)
-	instance(false) = scene::scene::game_object<manager>();
-FINISH_GLOBAL_CUSTOM_INITIALIZER
+IMPLEMENT_GLOBAL_INITIALIZER(manager)
 
 private :
 
 IMPLEMENT_GLOBAL_INSTANCER(manager)
 
+	shared<game::renderer>	renderer;
+	shared<scene::scene>	scene;
 
-	room::ptr				room;
-	character::ptr			character;
+	shared<room>			room;
+	shared<character>		character;
 
 	void					update() override;
 };

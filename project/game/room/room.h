@@ -5,15 +5,13 @@
 #include "game/obstacle/chair.h"
 #include "game/character/character.h"
 
-class									game::room : public engine::game_object
+class									game::room : public engine::game_object::game_object
 {
 	friend class						manager;
 
 public :
-										room();
+										room(const shared<engine::renderer> &renderer);
 										~room() override = default;
-
-IMPLEMENT_SHARED_POINTER_FUNCTIONALITY(room)
 
 private :
 
@@ -28,10 +26,10 @@ private :
 
 	struct
 	{
-		model::model::ptr				room;
-		model::model::ptr				chair;
-		model::model::ptr				mac;
-		model::model::ptr				keyboard;
+		shared<model::model>			room;
+		shared<model::model>			chair;
+		shared<model::model>			mac;
+		shared<model::model>			keyboard;
 	}									models;
 
 //										Number of rows (groups)
@@ -40,15 +38,15 @@ private :
 
 	struct
 	{
-		model::instance::ptr			room;
-		model::instance::ptr			chair[number_of_accessories];
-		model::instance::ptr			mac[number_of_accessories];
-		model::instance::ptr			keyboard[number_of_accessories];
+		shared<model::instance>			room;
+		shared<model::instance>			chair[number_of_accessories];
+		shared<model::instance>			mac[number_of_accessories];
+		shared<model::instance>			keyboard[number_of_accessories];
 	}									instances[number_of_rows];
 
 	struct								row
 	{
-										row(const model::group::ptr &group) :
+										row(const shared<model::group> &group) :
 											group(group)
 										{}
 
@@ -57,20 +55,23 @@ private :
 		void							make_hollow(bool state);
 		void 							make_hollow_temporarily(bool state);
 
-		void							link_obstacle(const obstacle::obstacle::ptr &obstacle);
+		void							link_obstacle(const shared<obstacle::obstacle> &obstacle);
 		void							unlink_obstacle();
 
 		bool							does_intersects(const float_range &character_range) const;
 
-		[[nodiscard]] model::group::ptr	read_group() const;
+		[[nodiscard]]
+		shared<model::group>			read_group() const;
 
-		[[nodiscard]] line_wrapper		blocked_lines() const;
-		[[nodiscard]] state_wrapper		blocked_states() const;
+		[[nodiscard]]
+		line_wrapper					blocked_lines() const;
+		[[nodiscard]]
+		state_wrapper					blocked_states() const;
 
 	private :
 
-		model::group::ptr				group;
-		obstacle::obstacle::ptr			obstacle;
+		shared<model::group>			group;
+		shared<obstacle::obstacle>		obstacle;
 
 		void							make_hollow_internal(bool state);
 

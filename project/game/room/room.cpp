@@ -1,8 +1,9 @@
 #include "room.h"
 
-using namespace					game;
+using namespace		game;
 
-								room::room()
+					room::room(const shared<engine::renderer> &renderer) :
+						game_object(renderer)
 {
 	build_models();
 	build_main_instances();

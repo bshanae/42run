@@ -13,6 +13,11 @@ namespace				game
 	using				std::cerr;
 	using				std::cout;
 	using				std::endl;
+	using				std::to_string;
+	using				std::shared_ptr;
+	using				std::unique_ptr;
+	using				std::make_shared;
+	using				std::make_unique;
 	using				std::static_pointer_cast;
 	using				std::dynamic_pointer_cast;
 
@@ -21,8 +26,14 @@ namespace				game
 	using				std::find_if;
 	using				std::remove_if;
 
+	template			<typename type>
+	using				shared = std::shared_ptr<type>;
+	template			<typename type>
+	using				unique = std::unique_ptr<type>;
+
 	using				engine::vec3;
 	using				engine::vec4;
+	using				engine::mat4;
 
 	namespace			error = common::error;
 	namespace			warning = common::warning;
@@ -32,12 +43,16 @@ namespace				game
 	using				common::vec3_range;
 	using				common::random;
 
-	using				engine::game_object;
+	namespace			converter = engine::converter;
+
+	namespace			game_object = engine::game_object;
 
 	namespace			scene
 	{
 		using			engine::scene::scene;
 		using			engine::scene::light;
+		using			engine::scene::camera;
+		using			engine::scene::reader;
 	};
 
 	namespace			model
@@ -47,6 +62,9 @@ namespace				game
 		using			engine::model::group;
 		using			engine::model::manager;
 		using			engine::model::animation;
+		using			engine::model::skeleton;
+		using			engine::model::reader;
+
 		using			flag = engine::model::manager::flag;
 		using			flag_wrapper = engine::model::manager::flag_wrapper;
 	}
@@ -67,6 +85,8 @@ namespace				game
 
 	struct				sources
 	{
+		path			program_vertex;
+		path			program_fragment;
 		path			room;
 		path			chair;
 		path			mac;
@@ -101,6 +121,8 @@ namespace				game
 
 	using				line_wrapper = engine::abstract::bitflags_wrapper<line>;
 	using				state_wrapper = engine::abstract::bitflags_wrapper<state>;
+
+	class				renderer;
 
 	class 				room;
 	class 				character;

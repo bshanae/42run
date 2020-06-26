@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(42run)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Winline")
 
 find_package(OpenGL REQUIRED)
 find_package(Freetype REQUIRED)
@@ -40,7 +41,6 @@ set(SOURCE_ENGINE
 	project/engine/core/execute.cpp
 	project/engine/core/process_x.cpp
 	project/engine/core/callback.cpp
-	project/engine/core/connect_with_global.cpp
 
 	project/engine/converter/converter.cpp
 
@@ -48,6 +48,7 @@ set(SOURCE_ENGINE
 	project/engine/program/program.cpp
 
 	project/engine/scene/camera.cpp
+	project/engine/scene/scene.cpp
 
 	project/engine/model/bone.cpp
 	project/engine/model/skeleton.cpp
@@ -56,18 +57,17 @@ set(SOURCE_ENGINE
 	project/engine/model/model.cpp
 	project/engine/model/instance.cpp
 	project/engine/model/group.cpp
-	project/engine/model/manager.cpp
-
-	project/engine/renderer/render.cpp
-	project/engine/renderer/animate.cpp
-	project/engine/renderer/connect_with_global.cpp
-	project/engine/renderer/callback.cpp
-	project/engine/renderer/data.cpp)
+	project/engine/model/manager.cpp)
 
 set(SOURCE_GAME
 	project/game/game.cpp
 
 	project/game/manager/manager.cpp
+
+	project/game/renderer/renderer.cpp
+	project/game/renderer/render.cpp
+	project/game/renderer/callback.cpp
+	project/game/renderer/x_uniforms.cpp
 
 	project/game/room/room.cpp
 	project/game/room/row.cpp
