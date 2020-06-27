@@ -18,7 +18,7 @@ using namespace		engine;
 		settings().window_name.c_str(),
 		nullptr, nullptr
 	);
-	
+
 	if (window == nullptr)
 		error::raise(error::id::GLFW_error);
 	glfwMakeContextCurrent(window);
@@ -32,9 +32,7 @@ using namespace		engine;
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	glEnable(GL_MULTISAMPLE);
-
 	glEnable(GL_DEPTH_TEST);
 
 	glfwSetWindowUserPointer(window, this);

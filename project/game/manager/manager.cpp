@@ -4,22 +4,23 @@ using namespace		game;
 
 					manager::manager() : game_object()
 {
-	scene = make_shared<scene::scene>();
-	renderer = make_shared<game::renderer>(scene);
+	global().scene = make_shared<scene::scene>();
+	global().renderer_for_game = make_shared<game::renderer>();
+	global().renderer_for_engine = dynamic_pointer_cast<engine::renderer>(global().renderer_for_game);
 
-	engine::core::use(scene);
+	engine::core::use(global().scene);
 
 //					Models
-	room = make_unique<game::room>(renderer);
-	character = make_unique<game::character>(renderer);
+	room = make_unique<game::room>();
+	character = make_unique<game::character>();
 
-	scene->include(room);
-	scene->include(character);
+	global().scene->include(room);
+	global().scene->include(character);
 
 //					Lights
-	scene->include(make_shared<scene::light>(scene::light::type::ambient, vec3(1.f), 0.25f));
+	global().scene->include(make_shared<scene::light>(scene::light::type::ambient, vec3(1.f), 0.25f));
 
-	scene->include
+	global().scene->include
 	(
 		make_shared<scene::light>
 		(
@@ -32,7 +33,7 @@ using namespace		game;
 	);
 
 	for (int i = 1; i < 5; i++)
-		scene->include
+		global().scene->include
 		(
 			make_shared<scene::light>
 			(
@@ -43,6 +44,8 @@ using namespace		game;
 				0.3f
 			)
 		);
+
+	global().renderer_for_game->upload_light_uniforms();
 }
 
 void				manager::update()

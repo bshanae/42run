@@ -64,10 +64,15 @@ void				scene::camera::rotate(enum rotation rotation)
 
 mat4				scene::camera::projection_matrix() const
 {
-	return (glm::perspective(
-		radians(30.f),
-		(float)settings().window_size.x / (float)settings().window_size.y,
-		settings().camera_near_plane, settings().camera_far_plane));
+	return
+	(
+		glm::perspective
+		(
+			radians(30.f),
+			(float)settings().window_size.x / (float)settings().window_size.y,
+			settings().camera_near_plane, settings().camera_far_plane
+		)
+	);
 }
 
 mat4				scene::camera::view_matrix() const

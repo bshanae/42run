@@ -4,10 +4,10 @@
 
 class								game::renderer : public engine::renderer
 {
-	friend class					core;
+	friend class					game::manager;
 
 public :
-									renderer(const shared<scene::scene> &scene);
+									renderer();
 									~renderer() override = default;
 private :
 
@@ -21,22 +21,22 @@ private :
 	void							render(const shared<model::instance> &instance) const;
 	void							render(const shared<model::group> &group) const;
 
-	void							animate();
-
 	void							callback();
 
-	interface::callback				on_press;
-	interface::callback				on_hold;
+	static constexpr float			scene_check_frequency = 1.f / 30.f;
 
-	shared<scene::scene>			scene;
+	interface::timer				check_scene_timer;
 
-	struct							texture_glsl
+	interface::callback				press_callback;
+	interface::callback				hold_callback;
+
+	struct							texture
 	{
 		uniform_int 				is_valid;
 		uniform_int 				value;
 	};
 	
-	struct 							light_glsl
+	struct 							light
 	{
 		uniform_int					type;
 		uniform_vec3				parameter_a;
@@ -65,9 +65,9 @@ private :
 
 			struct
 			{
-				texture_glsl		ambient;
-				texture_glsl		diffuse;
-				texture_glsl		specular;
+				texture				ambient;
+				texture				diffuse;
+				texture				specular;
 			}						textures;
 		}							material;
 		
@@ -76,7 +76,7 @@ private :
 			uniform_vec3			camera_position;
 
 			uniform_int				lights_size;
-			light_glsl				lights[SHARED_LIGHTS_CAPACITY];
+			light					lights[SHARED_LIGHTS_CAPACITY];
 		}							scene;
 
 		uniform_int 				does_mesh_have_bones;

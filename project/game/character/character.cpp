@@ -4,8 +4,7 @@
 
 using namespace						game;
 
-									character::character(const shared<engine::renderer> &renderer) :
-										game_object(renderer)
+									character::character() : game_object(global().renderer_for_engine)
 {
 	model::manager::flag_wrapper	flags = model::manager::flag::triangulate;
 
@@ -18,8 +17,8 @@ using namespace						game;
 	instance->scale(0.085f);
 	instance->rotate(engine::vec3(0, 180, 0));
 
-	animations.run = model::animation(1, 19, 1.1, true);
-	animations.jump = model::animation(20, 63, 0.7, false);
+	animations.run = model::animation(1, 19, 1.);
+	animations.jump = model::animation(20, 63, 0.7);
 
 	model->animate(animations.run);
 

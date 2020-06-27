@@ -9,12 +9,6 @@ void				renderer::render(const shared_ptr<game_object::game_object> &object) con
 	if (not object->is_enabled)
 		return ;
 
-	if (scene::reader::have_changed(scene))
-	{
-		scene::reader::reset_changes(scene);
-		upload_light_uniforms();
-	}
-
 	uniforms.group.scaling.upload(mat4(1.f));
 	uniforms.group.translation.upload(mat4(1.f));
 	uniforms.group.rotation.upload(mat4(1.f));

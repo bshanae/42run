@@ -19,9 +19,6 @@ private :
 
 IMPLEMENT_GLOBAL_INSTANCER(manager)
 
-	shared<game::renderer>	renderer;
-	shared<scene::scene>	scene;
-
 	shared<room>			room;
 	shared<character>		character;
 

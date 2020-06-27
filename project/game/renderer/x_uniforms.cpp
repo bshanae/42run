@@ -67,18 +67,23 @@ void				renderer::initialize_uniforms()
 
 void 				renderer::upload_camera_uniforms() const
 {
+	auto			camera = scene::reader::camera(global().scene);
+
 	program->use(true);
-	uniforms.projection.upload(scene::reader::projection_matrix(scene));
-	uniforms.view.upload(scene::reader::view_matrix(scene));
-	uniforms.scene.camera_position.upload(scene::reader::position(scene));
+
+	uniforms.projection.upload(scene::reader::projection_matrix(camera));
+	uniforms.view.upload(scene::reader::view_matrix(camera));
+	uniforms.scene.camera_position.upload(scene::reader::position(camera));
+
 	program->use(false);
 }
 
 void 				renderer::upload_light_uniforms() const
 {
-	auto 			&lights = scene::reader::lights(scene);
+	auto 			&lights = scene::reader::lights(global().scene);
 
 	program->use(true);
+
 	uniforms.scene.lights_size.upload(lights.size());
 
 	for (int i = 0; i < lights.size(); i++)
@@ -91,5 +96,6 @@ void 				renderer::upload_light_uniforms() const
 		uniforms.scene.lights[i].color.upload(scene::reader::color(lights[i]));
 		uniforms.scene.lights[i].power.upload(scene::reader::power(lights[i]));
 	}
+
 	program->use(false);
 }

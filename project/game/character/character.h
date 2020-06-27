@@ -9,7 +9,7 @@ class						game::character : public engine::game_object::game_object
 	friend class			manager;
 
 public :
-							character(const shared<engine::renderer> &renderer);
+							character();
 							~character() override = default;
 private :
 

@@ -22,8 +22,8 @@ public :
 	vec3 				scale = vec3(0.f);
 
 						bone(int id, const string &name, const mat4 &offset) :
-							id(id),
 							name(name),
+							id(id),
 							offset(offset)
 						{}
 						~bone() = default;

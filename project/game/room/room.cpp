@@ -2,8 +2,7 @@
 
 using namespace		game;
 
-					room::room(const shared<engine::renderer> &renderer) :
-						game_object(renderer)
+					room::room() : game_object(global().renderer_for_engine)
 {
 	build_models();
 	build_main_instances();

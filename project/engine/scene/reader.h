@@ -26,32 +26,44 @@ protected :
 	}
 
 	[[nodiscard]]
-	inline bool			have_changed(const shared<engine::scene::scene> &scene) const
+	inline bool			lights_have_changed(const shared<engine::scene::scene> &scene) const
 	{
-		return (scene->have_changed);
+		return (scene->lights_have_changed);
+	}
+
+	[[nodiscard]]
+	inline bool			objects_have_changed(const shared<engine::scene::scene> &scene) const
+	{
+		return (scene->objects_have_changed);
 	}
 
 	inline void			reset_changes(const shared<engine::scene::scene> &scene) const
 	{
-		scene->have_changed = false;
+		scene->lights_have_changed = false;
+		scene->objects_have_changed = false;
 	}
 
 //						Camera
-	[[nodiscard]]
-	inline vec3			position(const shared<engine::scene::scene> &scene) const
+	inline auto			&camera(const shared<engine::scene::scene> &scene) const
 	{
-		return (scene->camera.position);
+		return (scene->camera);
 	}
 
 	[[nodiscard]]
-	inline mat4			projection_matrix(const shared<engine::scene::scene> &scene) const
+	inline vec3			position(const shared<engine::scene::camera> &camera) const
 	{
-		return (scene->camera.projection_matrix());
+		return (camera->position);
+	}
+
+	[[nodiscard]]
+	inline mat4			projection_matrix(const shared<engine::scene::camera> &camera) const
+	{
+		return (camera->projection_matrix());
 	}
 	[[nodiscard]]
-	inline mat4			view_matrix(const shared<engine::scene::scene> &scene) const
+	inline mat4			view_matrix(const shared<engine::scene::camera> &camera) const
 	{
-		return (scene->camera.view_matrix());
+		return (camera->view_matrix());
 	}
 
 //						Light

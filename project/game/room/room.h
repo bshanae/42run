@@ -10,7 +10,7 @@ class									game::room : public engine::game_object::game_object
 	friend class						manager;
 
 public :
-										room(const shared<engine::renderer> &renderer);
+										room();
 										~room() override = default;
 
 private :

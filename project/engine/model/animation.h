@@ -14,12 +14,10 @@ public :
 					(
 						float begin_timestamp,
 						float end_timestamp,
-						float speed = 0.25,
-						bool loop = true
+						float speed = 0.25
 					) :
 						timestamps{begin_timestamp, end_timestamp},
-						speed(speed),
-						loop(loop)
+						speed(speed)
 					{}
 private :
 
@@ -30,5 +28,4 @@ private :
 	}				timestamps;
 
 	float 			speed = 0.f;
-	bool 			loop = true;
 };

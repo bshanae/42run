@@ -42,8 +42,7 @@ void					room::row::unlink_obstacle()
 {
 	if (obstacle)
 	{
-#warning "Exclude"
-//		scene::scene::exclude(this->obstacle);
+		global().scene->exclude(this->obstacle);
 		this->obstacle = nullptr;
 	}
 }

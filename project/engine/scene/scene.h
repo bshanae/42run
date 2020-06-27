@@ -25,7 +25,7 @@ private :
 
 	void					prepare();
 
-	camera					camera;
+	shared<camera>			camera = make_shared<engine::scene::camera>();
 
 	using					lights_type = vector<shared<engine::scene::light>>;
 	using					lights_iterator = lights_type::iterator;
@@ -43,5 +43,6 @@ private :
 	objects_type			objects_to_include;
 	objects_type			objects_to_exclude;
 
-	bool					have_changed = false;
+	bool					lights_have_changed = false;
+	bool					objects_have_changed = false;
 };
