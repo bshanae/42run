@@ -12,16 +12,20 @@ using namespace		engine;
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, settings().number_of_samples);
 
-	window = glfwCreateWindow(
+	window = glfwCreateWindow
+	(
 		settings().window_size.x, settings().window_size.y,
 		settings().window_name.c_str(),
-		nullptr, nullptr);
+		nullptr, nullptr
+	);
+	
 	if (window == nullptr)
 		error::raise(error::id::GLFW_error);
 	glfwMakeContextCurrent(window);
 
-	if (not gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		error::raise(error::id::GLAD_error);
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK)
+		error::raise(error::id::GLEW_error);
 
 	glfwGetFramebufferSize(window, &settings().window_size.x, &settings().window_size.y);
 	glViewport(0, 0, settings().window_size.x, settings().window_size.y);
@@ -39,7 +43,7 @@ using namespace		engine;
 	timer_for_rendering = interface::timer(settings().rendering_frequency);
 	timer_for_updating = interface::timer(settings().updating_frequency);
 
-//	Manually connect timers
+//					Manually connect timers
 	timers.push_back(timer_for_rendering);
 	timers.push_back(timer_for_updating);
 }

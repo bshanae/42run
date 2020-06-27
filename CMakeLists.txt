@@ -1,35 +1,25 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.16)
 project(42run)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Winline")
 
 find_package(OpenGL REQUIRED)
-find_package(Freetype REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(GLFW3 REQUIRED)
+find_package(ASSIMP REQUIRED)
+find_package(FREETYPE REQUIRED)
 
-set(ZLIB_LIBRARIES zlibstatic)
-set(ENABLE_BOOST_WORKAROUND ON)
-set(BUILD_STATIC_LIB ON)
-set(BUILD_ASSIMP_TOOLS  ON)
-set(ASSIMP_BUILD_STATIC_LIB ON)
+#add_subdirectory(project/external/stb)
 
-add_subdirectory(project/external/glfw)
-add_subdirectory(project/external/assimp)
-add_subdirectory(project/external/stb)
+include_directories(/usr/local/include)
+
+link_directories(/usr/local/lib)
 
 include_directories(
 	project/external
-	project/external/glad/include
-	project/external/glfw/include
-	project/external/assimp/include
-	project/external/assimp/code
-	project/external/stb)
-
-include_directories(
+	project/external/stb
 	project)
-
-set(SOURCE_EXTERNAL
-	project/external/glad/src/glad.c)
 
 set(SOURCE_COMMON
 	project/common/random/random.cpp)
@@ -86,12 +76,21 @@ set(SOURCE_MAIN
 	project/main.cpp)
 
 add_executable(42run
-	${SOURCE_EXTERNAL}
 	${SOURCE_COMMON}
 	${SOURCE_ENGINE}
 	${SOURCE_UI}
 	${SOURCE_GAME}
 	${SOURCE_MAIN})
 
-target_link_libraries(42run ${FREETYPE_LIBRARIES} glfw assimp image)
+target_link_libraries(42run ${OPENGL_LIBRARIES})
+target_link_libraries(42run glfw)
+target_link_libraries(42run glew)
+target_link_libraries(42run ${FREETYPE_LIBRARIES})
+target_link_libraries(42run ${ASSIMP_LIBRARIES})
+
+target_link_directories(42run PRIVATE ${ASSIMP_LIBRARY_DIRS})
+
+target_include_directories(42run PRIVATE ${OPENGL_INCLUDE_DIRS})
+target_include_directories(42run PRIVATE ${GLEW_INCLUDE_DIRS})
+target_include_directories(42run PRIVATE ${ASSIMP_INCLUDE_DIRS})
 target_include_directories(42run PRIVATE ${FREETYPE_INCLUDE_DIRS})

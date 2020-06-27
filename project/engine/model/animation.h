@@ -18,8 +18,8 @@ public :
 						bool loop = true
 					) :
 						timestamps{begin_timestamp, end_timestamp},
-						loop(loop),
-						speed(speed)
+						speed(speed),
+						loop(loop)
 					{}
 private :
 

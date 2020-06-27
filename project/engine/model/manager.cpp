@@ -20,7 +20,7 @@ shared<model::model>			model::manager::make(const path &source, flag_wrapper fla
 
 shared<model::model>			model::manager::make_non_static(const path &source, flag_wrapper flags)
 {
-	uint 						assimp_flags;
+	uint 						assimp_flags = 0;
 
 	if (flags & flag::triangulate)
 		assimp_flags |= aiProcess_Triangulate;
@@ -158,7 +158,7 @@ unique<model::mesh>				model::manager::process_mesh(aiMesh *mesh)
 //								MATERIAL
 
 	if (mesh->mMaterialIndex >= 0)
-		material = move(process_material(scene->mMaterials[mesh->mMaterialIndex]));
+		material = process_material(scene->mMaterials[mesh->mMaterialIndex]);
 	else
 		material = make_unique<engine::model::material>();
 

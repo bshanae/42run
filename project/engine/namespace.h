@@ -12,9 +12,14 @@
 #include <type_traits>
 #include <limits>
 
-#include "common/external/glad.h"
-#include "common/external/glfw.h"
-#include "common/external/assimp.h"
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <assimp/scene.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/types.h>
+
 #include "common/external/glm.h"
 #include "common/common.h"
 
