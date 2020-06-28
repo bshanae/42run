@@ -27,10 +27,9 @@ void 					room::row::make_hollow_temporarily(bool state)
 
 void					room::row::make_hollow_internal(bool state)
 {
-#warning "Hollow"
-//	group->hollow(state);
-//	if (obstacle)
-//		obstacle->instance->hollow(state);
+	group->hollow(state);
+	if (obstacle)
+		obstacle->instance->hollow(state);
 }
 
 void					room::row::link_obstacle(const shared<obstacle::obstacle> &obstacle)

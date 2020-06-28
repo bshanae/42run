@@ -45,7 +45,11 @@ namespace							game
 
 	namespace						converter = engine::converter;
 
-	namespace						game_object = engine::game_object;
+	namespace						game_object
+	{
+		using						game_object = engine::game_object::game_object;
+		using						reader = engine::game_object::reader;
+	}
 
 	namespace						scene
 	{

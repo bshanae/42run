@@ -27,7 +27,7 @@ public :
 
 protected :
 
-	virtual void				render(const shared_ptr<engine::game_object::game_object> &object) const = 0;
+	virtual void				render(const shared<engine::game_object::game_object> &object) const = 0;
 
 	unique<program::program>	program;
 

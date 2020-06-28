@@ -40,6 +40,12 @@ public :
 	void 					reset_translation();
 	void 					reset_rotation();
 
+	void					hollow(bool state)
+	{
+		for (auto &instance : instances)
+			instance->hollow(state);
+	}
+
 private :
 
 	list<shared<instance>>	instances;

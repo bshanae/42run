@@ -91,7 +91,14 @@ protected :
 		return (instance->transformations.rotation);
 	}
 
-//						Group
+	[[nodiscard]]
+	inline bool			is_hollow(const shared<engine::model::instance> &instance) const
+	{
+		return (instance->is_hollow);
+	}
+
+
+	//						Group
 	[[nodiscard]]
 	inline const auto	&instances(const shared<engine::model::group> &group) const
 	{

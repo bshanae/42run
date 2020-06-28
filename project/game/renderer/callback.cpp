@@ -51,14 +51,6 @@ void				renderer::callback()
 			camera->rotate(scene::camera::rotation::down);
 			break ;
 
-		case engine::interface::key::enter :
-			wireframe_mod = not wireframe_mod;
-			if (wireframe_mod)
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			else
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			return ;
-
 		default :
 			return ;
 	}

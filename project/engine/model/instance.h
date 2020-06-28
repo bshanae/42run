@@ -53,6 +53,11 @@ public :
 	void 					randomize_translation(const vec3_range &range);
 	void 					randomize_rotation(const vec3_range &range);
 
+	void					hollow(bool state)
+	{
+		is_hollow = state;
+	}
+
 private :
 
 	shared<model>			model;
@@ -70,6 +75,8 @@ private :
 		mat4				translation;
 		mat4				rotation;
 	}						transformations;
+
+	bool					is_hollow = false;
 
 public :
 

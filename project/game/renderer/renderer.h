@@ -16,7 +16,7 @@ private :
 	void 							upload_camera_uniforms() const;
 	void 							upload_light_uniforms() const;
 
-	void							render(const shared_ptr<game_object::game_object> &object) const override;
+	void							render(const shared<game_object::game_object> &object) const override;
 
 	void							render(const shared<model::instance> &instance) const;
 	void							render(const shared<model::group> &group) const;

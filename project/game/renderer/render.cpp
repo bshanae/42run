@@ -2,12 +2,12 @@
 
 using namespace		game;
 
-void				renderer::render(const shared_ptr<game_object::game_object> &object) const
+void				renderer::render(const shared<game_object::game_object> &object) const
 {
-	program->use(true);
-
 	if (not object->is_enabled)
 		return ;
+
+	program->use(true);
 
 	uniforms.group.scaling.upload(mat4(1.f));
 	uniforms.group.translation.upload(mat4(1.f));
@@ -56,8 +56,7 @@ void				renderer::render(const shared<model::instance> &instance) const
 	uniforms.instance.translation.upload(model::reader::translation(instance));
 	uniforms.instance.rotation.upload(model::reader::rotation(instance));
 
-#warning "Hollow mod"
-	//glPolygonMode(GL_FRONT_AND_BACK, instance->is_hollow ? GL_LINE : GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, model::reader::is_hollow(instance) ? GL_LINE : GL_FILL);
 
 	for (auto &mesh : model::reader::meshes(model))
 	{
