@@ -14,6 +14,9 @@ using namespace		game;
 	room = make_unique<game::room>();
 	character = make_unique<game::character>();
 
+	room->start();
+	character->start();
+
 	global().scene->include(room);
 	global().scene->include(character);
 

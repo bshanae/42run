@@ -9,9 +9,8 @@
 
 class								engine::core
 {
-private :
-									core();
 public :
+									core();
 									~core();
 private :
 
@@ -38,7 +37,8 @@ IMPLEMENT_GLOBAL_INSTANCER(core)
 
 public :
 
-IMPLEMENT_GLOBAL_INITIALIZER(core)
+START_GLOBAL_INITIALIZER(core)
+FINISH_GLOBAL_INITIALIZER
 
 	static void						execute();
 

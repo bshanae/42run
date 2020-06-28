@@ -10,7 +10,7 @@ void					room::row::move(const vec3 &value)
 	{
 		obstacle->instance->edit_translation(2, group->translation().z);
 		obstacle->does_trigger_collision = true;
-		obstacle->is_enabled = true;
+		obstacle->pause(false);
 	}
 }
 
@@ -35,20 +35,22 @@ void					room::row::make_hollow_internal(bool state)
 void					room::row::link_obstacle(const shared<obstacle::obstacle> &obstacle)
 {
 	this->obstacle = obstacle;
+	this->obstacle->start();
+	obstacle->pause(true);
 }
 
 void					room::row::unlink_obstacle()
 {
 	if (obstacle)
 	{
-		global().scene->exclude(this->obstacle);
-		this->obstacle = nullptr;
+		obstacle->stop();
+		obstacle = nullptr;
 	}
 }
 
 bool					room::row::does_intersects(const float_range &character_range) const
 {
-	float_range		my_range = room::row_range + group->translation().z;
+	float_range			my_range = room::row_range + group->translation().z;
 
 	return (my_range or character_range);
 }

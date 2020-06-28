@@ -1,6 +1,7 @@
 #include "core.h"
 
 #include "engine/renderer/renderer.h"
+#include "engine/game_object/game_object.h"
 
 using namespace		engine;
 
@@ -43,7 +44,7 @@ void				core::process_rendering()
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	for (auto &object : scene->objects)
-		if (object->is_enabled and object->renderer)
+		if (object->state == game_object::state::working and object->renderer)
 			object->renderer->render(object);
 
 	glfwSwapBuffers(window);
@@ -64,7 +65,7 @@ void				core::process_updating()
 	if (not scene)
 		return ;
 
-	for (auto &object : scene->objects)
-		if (object->is_enabled)
+	for (auto &object : game_object::game_object::list)
+		if (object->state == game_object::state::working)
 			object->update();
 }

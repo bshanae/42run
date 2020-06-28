@@ -22,7 +22,6 @@ public :
 	{
 		instance = make_shared<model::instance>(source);
 		game_object::render_target(instance);
-		is_enabled = false;
 	}
 
 							~obstacle() override = default;

@@ -37,6 +37,8 @@ set(SOURCE_ENGINE
 	project/engine/program/shader.cpp
 	project/engine/program/program.cpp
 
+	project/engine/game_object/game_object.cpp
+
 	project/engine/scene/camera.cpp
 	project/engine/scene/scene.cpp
 

@@ -6,7 +6,8 @@
 #include "engine/model/instance.h"
 #include "engine/model/group.h"
 
-class 						engine::game_object::game_object
+class 						engine::game_object::game_object :
+								public enable_shared_from_this<engine::game_object::game_object>
 {
 	friend class			engine::core;
 	friend class			engine::scene::scene;
@@ -19,25 +20,19 @@ public :
 							{}
 	virtual					~game_object() = default;
 
+	void					start();
+	void					pause(bool state);
+	void					stop();
+
 protected :
 
 	virtual void			update()
 	{}
 
-	void					render_target(const shared<model::instance> &target)
-	{
-		render_targets.instances.push_back(target);
-	}
+	void					render_target(const shared<model::instance> &target);
+	void					render_target(const shared<model::group> &target);
 
-	void					render_target(const shared<model::group> &target)
-	{
-		render_targets.groups.push_back(target);
-	}
-
-	void					animation_target(const shared<model::model> &target)
-	{
-		animation_targets.push_back(target);
-	}
+	void					animation_target(const shared<model::model> &target);
 
 public :
 
@@ -51,12 +46,15 @@ public :
 		groups_type			groups;
 	};
 
-	bool					is_enabled = true;
-
 private :
 
 	const shared<renderer>	renderer;
 
 	render_targets			render_targets;
 	models_type				animation_targets;
+
+	enum state				state = state::waiting;
+
+	using					list_type = list<shared<game_object>>;
+	static inline list_type	list;
 };

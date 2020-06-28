@@ -4,7 +4,7 @@ using namespace		game;
 
 void				renderer::render(const shared<game_object::game_object> &object) const
 {
-	if (not object->is_enabled)
+	if (game_object::reader::state(object) != game_object::state::working)
 		return ;
 
 	program->use(true);

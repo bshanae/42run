@@ -10,14 +10,12 @@
 
 class							engine::model::manager
 {
-	friend class 				renderer;
-
-private :
-								manager() = default;
 public :
+								manager() = default;
 								~manager() = default;
 
-IMPLEMENT_GLOBAL_INITIALIZER(manager)
+START_GLOBAL_INITIALIZER(manager)
+FINISH_GLOBAL_INITIALIZER
 
 	enum class					flag : uint
 	{

@@ -7,8 +7,6 @@ void				renderer::callback()
 	auto			key = engine::core::receive_event().read_key();
 	auto			camera = scene::reader::camera(global().scene);
 
-	static bool		wireframe_mod = false;
-
 	switch (key)
 	{
 		case engine::interface::key::letter_a :

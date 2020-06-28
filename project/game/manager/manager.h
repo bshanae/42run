@@ -13,7 +13,9 @@ public :
 							manager();
 							~manager() override = default;
 
-IMPLEMENT_GLOBAL_INITIALIZER(manager)
+START_GLOBAL_INITIALIZER(manager)
+	instance()->start();
+FINISH_GLOBAL_INITIALIZER
 
 private :
 

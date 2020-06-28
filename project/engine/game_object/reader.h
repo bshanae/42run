@@ -23,4 +23,10 @@ protected :
 	{
 		return (object->animation_targets);
 	}
+
+	[[nodiscard]]
+	inline auto			state(const shared<engine::game_object::game_object> &object) const
+	{
+		return (object->state);
+	}
 };

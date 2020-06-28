@@ -18,9 +18,6 @@ public :
 	void					include(const shared<light> &light);
 	void					include(const shared<game_object::game_object> &light);
 
-	void					exclude(const shared<light> &light);
-	void					exclude(const shared<game_object::game_object> &light);
-
 private :
 
 	void					prepare();
@@ -31,17 +28,13 @@ private :
 	using					lights_iterator = lights_type::iterator;
 
 	lights_type				lights;
-
 	lights_type				lights_to_include;
-	lights_type				lights_to_exclude;
 
-	using					objects_type = vector<shared<game_object::game_object>>;
+	using					objects_type = list<shared<game_object::game_object>>;
 	using					objects_iterator = objects_type::iterator;
 
 	objects_type			objects;
-
 	objects_type			objects_to_include;
-	objects_type			objects_to_exclude;
 
 	bool					lights_have_changed = false;
 	bool					objects_have_changed = false;

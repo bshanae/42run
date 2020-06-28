@@ -10,8 +10,10 @@ static std::shared_ptr<class_name>		&instance(bool safe = true)				\
 	return (instance);															\
 }
 
-#define	IMPLEMENT_GLOBAL_INITIALIZER(class_name)								\
+#define	START_GLOBAL_INITIALIZER(class_name)									\
 static void								initialize()							\
 {																				\
-	instance(false) = std::shared_ptr<class_name>(new class_name());			\
+	instance(false) = std::make_shared<class_name>();							\
+
+#define	FINISH_GLOBAL_INITIALIZER												\
 }

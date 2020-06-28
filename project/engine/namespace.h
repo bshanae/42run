@@ -51,6 +51,7 @@ namespace							engine
 	using							std::make_shared;
 	using							std::static_pointer_cast;
 	using							std::dynamic_pointer_cast;
+	using							std::enable_shared_from_this;
 
 	using							std::move;
 	using							std::to_string;
@@ -130,6 +131,14 @@ namespace							engine
 
 	namespace						game_object
 	{
+		enum						state
+		{
+			waiting,
+			working,
+			paused,
+			stopped
+		};
+
 		class						game_object;
 		class						reader;
 	}

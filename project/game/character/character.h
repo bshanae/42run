@@ -35,7 +35,7 @@ private :
 	static constexpr float	speed = 0.55f;
 
 	line					current_line = line::middle;
-	state					current_state = state::running;
+	enum state				current_state = state::running;
 
 	void					update_state()
 	{
