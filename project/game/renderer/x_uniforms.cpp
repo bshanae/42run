@@ -67,7 +67,7 @@ void				renderer::initialize_uniforms()
 
 void 				renderer::upload_camera_uniforms() const
 {
-	auto			camera = scene::reader::camera(global().scene);
+	auto			camera = scene::reader::camera(global_scene);
 
 	program->use(true);
 
@@ -80,7 +80,7 @@ void 				renderer::upload_camera_uniforms() const
 
 void 				renderer::upload_light_uniforms() const
 {
-	auto 			&lights = scene::reader::lights(global().scene);
+	auto 			&lights = scene::reader::lights(global_scene);
 
 	program->use(true);
 

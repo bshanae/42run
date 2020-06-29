@@ -2,7 +2,7 @@
 
 using namespace		game;
 
-					room::room() : game_object(global().renderer_for_engine)
+					room::room() : game_object(tag<game::renderer>())
 {
 	build_models();
 	build_main_instances();

@@ -3,6 +3,7 @@
 #include <deque>
 
 #include "engine/engine.h"
+#include "UI/UI.h"
 
 namespace							game
 {
@@ -42,6 +43,9 @@ namespace							game
 	using							common::float_range;
 	using							common::vec3_range;
 	using							common::random;
+
+	template						<typename type>
+	using							tag = common::tag<type>;
 
 	namespace						converter = engine::converter;
 	namespace						game_object = engine::game_object;
@@ -132,12 +136,5 @@ namespace							game
 
 	class 							manager;
 
-	struct							global
-	{
-		shared<game::renderer>		renderer_for_game;
-		shared<engine::renderer>	renderer_for_engine;
-		shared<scene::scene>		scene;
-	};
-
-	struct global					&global();
+	extern shared<scene::scene>		global_scene;
 }

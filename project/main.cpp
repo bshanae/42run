@@ -1,4 +1,3 @@
-#include "engine/engine.h"
 #include "game/game.h"
 
 int					main()
@@ -39,8 +38,10 @@ int					main()
 
 	engine::core::initialize();
 	engine::model::manager::initialize();
-
 	game::manager::initialize();
+
+	engine::core::register_renderer<game::renderer>();
+//	engine::core::register_renderer<UI::renderer>();
 
 	engine::core::execute();
 

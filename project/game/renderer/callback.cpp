@@ -5,7 +5,7 @@ using namespace		game;
 void				renderer::callback()
 {
 	auto			key = engine::core::receive_event().read_key();
-	auto			camera = scene::reader::camera(global().scene);
+	auto			camera = scene::reader::camera(global_scene);
 
 	switch (key)
 	{

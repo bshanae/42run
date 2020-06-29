@@ -6,6 +6,7 @@
 #include "engine/interface/callback.h"
 #include "engine/interface/timer.h"
 #include "engine/scene/scene.h"
+#include "engine/renderer/renderer.h"
 
 class								engine::core
 {
@@ -15,6 +16,8 @@ public :
 private :
 
 	GLFWwindow						*window = nullptr;
+
+	map<size_t, shared<renderer>>	registered_renderers;
 
 	shared<scene::scene>			scene;
 
@@ -42,6 +45,12 @@ FINISH_GLOBAL_INITIALIZER
 
 	static void						execute();
 
+	template						<typename renderer_type>
+	static void						register_renderer()
+	{
+		instance()->registered_renderers[typeid(renderer_type).hash_code()] = make_shared<renderer_type>();
+	}
+
 	static void						use(const shared<scene::scene> &scene)
 	{
 		instance()->scene = scene;
@@ -57,12 +66,12 @@ FINISH_GLOBAL_INITIALIZER
 		return (instance()->last_time_delta / (normalize ? time_delta_normal : 1.f));
 	}
 
-	static void						use_callback(interface::callback &callback)
+	static void						use(interface::callback &callback)
 	{
 		instance()->callbacks.push_back(callback);
 	}
 
-	static void						use_timer(interface::timer &timer)
+	static void						use(interface::timer &timer)
 	{
 		instance()->timers.push_back(timer);
 	}

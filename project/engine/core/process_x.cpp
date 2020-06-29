@@ -1,6 +1,5 @@
 #include "core.h"
 
-#include "engine/renderer/renderer.h"
 #include "engine/game_object/game_object.h"
 
 using namespace		engine;
@@ -30,6 +29,20 @@ void				core::process_preparing()
 		return ;
 
 	scene->prepare();
+
+	auto			fill_renderer = [this](const shared<game_object::game_object> &object)
+	{
+		auto		iterator = registered_renderers.find(object->renderer_code);
+
+		if (iterator == registered_renderers.end())
+			object->renderer.emplace(nullptr);
+		else
+			object->renderer.emplace(iterator->second);
+	};
+
+	for (auto &object : game_object::game_object::list)
+		if (not object->renderer)
+			fill_renderer(object);
 }
 
 void				core::process_rendering()
@@ -44,8 +57,13 @@ void				core::process_rendering()
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	for (auto &object : scene->objects)
-		if (object->state == game_object::state::working and object->renderer)
-			object->renderer->render(object);
+		if
+		(
+			object->state == game_object::state::working and
+			object->renderer and
+			*object->renderer
+		)
+			(*object->renderer)->render(object);
 
 	glfwSwapBuffers(window);
 }

@@ -26,7 +26,7 @@ void				room::spawn_chair()
 	auto			chair_as_object = static_pointer_cast<game_object>(chair);
 	auto			chair_as_obstacle = static_pointer_cast<obstacle::obstacle>(chair);
 
-	global().scene->include(chair_as_object);
+	global_scene->include(chair_as_object);
 	rows.back().link_obstacle(chair_as_obstacle);
 }
 

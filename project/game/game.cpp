@@ -15,10 +15,3 @@ struct settings				&game::settings()
 
 	return (value);
 }
-
-struct global				&game::global()
-{
-	static struct global	value;
-
-	return (value);
-}

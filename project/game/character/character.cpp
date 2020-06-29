@@ -1,10 +1,10 @@
 #include "character.h"
 
-#include "game/obstacle/obstacle.h"
+#include "game/renderer/renderer.h"
 
 using namespace						game;
 
-									character::character() : game_object(global().renderer_for_engine)
+									character::character() : game_object(tag<game::renderer>())
 {
 	model::manager::flag_wrapper	flags = model::manager::flag::triangulate;
 
@@ -27,7 +27,7 @@ using namespace						game;
 
 	callback = interface::callback(interface::event::type::key_press, &character::callback_functor, this);
 
-	engine::core::use_callback(callback);
+	engine::core::use(callback);
 }
 
 void								character::update()

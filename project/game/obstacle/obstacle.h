@@ -2,6 +2,8 @@
 
 #include "game/namespace.h"
 
+#include "game/renderer/renderer.h"
+
 class						game::obstacle::obstacle : public engine::game_object::game_object
 {
 	friend class			game::manager;
@@ -11,12 +13,11 @@ class						game::obstacle::obstacle : public engine::game_object::game_object
 public :
 							obstacle
 							(
-								const shared<engine::renderer> &renderer,
 								const line_wrapper &blocked_lines,
 								const state_wrapper &blocked_states,
 								const shared<model::model> &source
 							) :
-								game_object(renderer),
+								game_object(tag<game::renderer>()),
 								blocked_lines(blocked_lines),
 								blocked_states(blocked_states)
 	{

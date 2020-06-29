@@ -36,5 +36,4 @@ protected :
 	using 						uniform_vec3 = program::uniform<vec3>;
 	using 						uniform_vec4 = program::uniform<vec4>;
 	using 						uniform_mat4 = program::uniform<mat4>;
-
 };

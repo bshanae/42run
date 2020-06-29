@@ -1,14 +1,13 @@
 #include "manager.h"
 
-using namespace		game;
+using namespace			game;
 
-					manager::manager() : game_object()
+shared<scene::scene>	game::global_scene;
+
+						manager::manager() : game_object()
 {
-	global().scene = make_shared<scene::scene>();
-	global().renderer_for_game = make_shared<game::renderer>();
-	global().renderer_for_engine = dynamic_pointer_cast<engine::renderer>(global().renderer_for_game);
-
-	engine::core::use(global().scene);
+	global_scene = make_shared<scene::scene>();
+	engine::core::use(global_scene);
 
 //					Models
 	room = make_unique<game::room>();
@@ -17,13 +16,13 @@ using namespace		game;
 	room->start();
 	character->start();
 
-	global().scene->include(room);
-	global().scene->include(character);
+	global_scene->include(room);
+	global_scene->include(character);
 
 //					Lights
-	global().scene->include(make_shared<scene::light>(scene::light::type::ambient, vec3(1.f), 0.25f));
+	global_scene->include(make_shared<scene::light>(scene::light::type::ambient, vec3(1.f), 0.25f));
 
-	global().scene->include
+	global_scene->include
 	(
 		make_shared<scene::light>
 		(
@@ -36,7 +35,7 @@ using namespace		game;
 	);
 
 	for (int i = 1; i < 5; i++)
-		global().scene->include
+		global_scene->include
 		(
 			make_shared<scene::light>
 			(
@@ -47,8 +46,6 @@ using namespace		game;
 				0.3f
 			)
 		);
-
-	global().renderer_for_game->upload_light_uniforms();
 }
 
 void				manager::update()

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <initializer_list>
 #include <type_traits>
+#include <typeinfo>
 #include <limits>
 
 #define GLEW_STATIC
@@ -81,6 +82,9 @@ namespace							engine
 	using							common::vec3_range;
 
 	using							common::random;
+
+	template						<typename type>
+	using							tag = common::tag<type>;
 
 	namespace						error = common::error;
 	namespace						warning = common::warning;

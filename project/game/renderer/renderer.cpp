@@ -13,7 +13,7 @@ using namespace		game;
 	{
 		check_scene_timer.execute();
 
-		auto		scene = global().scene;
+		auto		scene = global_scene;
 
 		if (scene::reader::lights_have_changed(scene))
 		{
@@ -24,11 +24,11 @@ using namespace		game;
 
 	check_scene_timer = interface::timer(scene_check_frequency, scene_checker);
 
-	engine::core::use_timer(check_scene_timer);
+	engine::core::use(check_scene_timer);
 
 	press_callback = interface::callback(interface::event::type::key_press, &renderer::callback, this);
 	hold_callback = interface::callback(interface::event::type::key_hold, &renderer::callback, this);
 
-	engine::core::use_callback(press_callback);
-	engine::core::use_callback(hold_callback);
+	engine::core::use(press_callback);
+	engine::core::use(hold_callback);
 }
