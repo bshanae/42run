@@ -20,7 +20,7 @@ using namespace				UI;
 }
 
 
-const_shared<font::symbol>	font::font::find_symbol(char task) const
+shared<font::symbol>		font::font::find_symbol(char task) const
 {
 	auto					result = map.find(task);
 

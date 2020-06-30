@@ -72,21 +72,21 @@ void				renderer::render(const shared<model::instance> &instance) const
 		if (material->textures.ambient)
 		{
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, model::reader::object(material->textures.ambient));
+			material->textures.ambient->use(true);
 		}
 
 		uniforms.material.textures.diffuse.is_valid.upload(material->textures.diffuse != nullptr);
 		if (material->textures.diffuse)
 		{
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, model::reader::object(material->textures.diffuse));
+			material->textures.diffuse->use(true);
 		}
 
 		uniforms.material.textures.specular.is_valid.upload(material->textures.specular != nullptr);
 		if (material->textures.specular)
 		{
 			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, model::reader::object(material->textures.specular));
+			material->textures.specular->use(true);
 		}
 
 		glActiveTexture(GL_TEXTURE0);
@@ -94,8 +94,6 @@ void				renderer::render(const shared<model::instance> &instance) const
 		glBindVertexArray(model::reader::VAO(mesh));
 		glDrawElements(GL_TRIANGLES, model::reader::indices(mesh).size(), GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
 

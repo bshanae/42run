@@ -10,10 +10,7 @@ find_package(GLFW3 REQUIRED)
 find_package(ASSIMP REQUIRED)
 find_package(FREETYPE REQUIRED)
 
-#add_subdirectory(project/external/stb)
-
 include_directories(/usr/local/include)
-
 link_directories(/usr/local/lib)
 
 include_directories(
@@ -49,7 +46,7 @@ set(SOURCE_ENGINE
 	project/engine/model/model.cpp
 	project/engine/model/instance.cpp
 	project/engine/model/group.cpp
-	project/engine/model/manager.cpp)
+	project/engine/model/loader.cpp)
 
 set(SOURCE_GAME
 	project/game/game.cpp
@@ -71,8 +68,11 @@ set(SOURCE_GAME
 	project/game/character/character.cpp)
 
 set(SOURCE_UI
+	project/UI/UI.cpp
+
 	project/UI/font/font.cpp
-	project/UI/font/symbol.cpp)
+	project/UI/font/symbol.cpp
+	project/UI/label/label.cpp)
 
 set(SOURCE_MAIN
 	project/main.cpp)

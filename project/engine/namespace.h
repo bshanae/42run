@@ -28,6 +28,8 @@
 
 namespace							engine
 {
+//	-------------------------------	Aliases
+
 	using							std::vector;
 	using							std::list;
 	using							std::array;
@@ -89,6 +91,34 @@ namespace							engine
 	namespace						error = common::error;
 	namespace						warning = common::warning;
 
+//	-------------------------------	Globals
+
+	struct							settings
+	{
+		ivec2						window_size;
+		string						window_name;
+		vec3						background = vec3(0.f, 0.f, 0.f);
+		int							number_of_samples = 0;
+
+		float						rendering_frequency = 1.f;
+		float						updating_frequency = 1.f;
+
+		string						shader_version;
+		path						path_to_shared_header;
+
+		float						camera_movement_speed = 0.f;
+		float						camera_rotation_speed = 0.f;
+		vec3						camera_position = vec3(0.f, 0.f, 0.f);
+		float						camera_yaw = -90.f;
+		float						camera_pitch = 0.f;
+		float						camera_near_plane = 0.1f;
+		float						camera_far_plane = 100.f;
+	};
+
+	struct settings					&settings();
+
+//	-------------------------------	Local classes
+
 	namespace						converter
 	{}
 
@@ -106,7 +136,7 @@ namespace							engine
 	namespace						abstract
 	{
 		template					<typename enum_type, typename underlying_type>
-		class						bitflags_wrapper;
+		class						bitflag_wrapper;
 		class						OpenGL_wrapper;
 	}
 
@@ -126,7 +156,7 @@ namespace							engine
 		class						texture;
 		class						material;
 		class						mesh;
-		class						manager;
+		class						loader;
 		class						model;
 		class						instance;
 		class						group;
@@ -156,28 +186,4 @@ namespace							engine
 	}
 
 	class 							renderer;
-
-	struct							settings
-	{
-		ivec2						window_size;
-		string						window_name;
-		vec3						background = vec3(0.f, 0.f, 0.f);
-		int							number_of_samples = 0;
-
-		float						rendering_frequency = 1.f;
-		float						updating_frequency = 1.f;
-
-		string						glsl_version;
-		path						glsl_path;
-
-		float						camera_movement_speed = 0.f;
-		float						camera_rotation_speed = 0.f;
-		vec3						camera_position = vec3(0.f, 0.f, 0.f);
-		float						camera_yaw = -90.f;
-		float						camera_pitch = 0.f;
-		float						camera_near_plane = 0.1f;
-		float						camera_far_plane = 100.f;
-	};
-
-	struct settings					&settings();
 }

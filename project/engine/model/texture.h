@@ -9,9 +9,12 @@ class				engine::model::texture : public engine::abstract::OpenGL_wrapper
 	friend class	engine::model::reader;
 
 public :
-
+					texture();
 	explicit		texture(const path &source);
+
 					~texture() override;
+
+	void			use(bool state) override;
 };
 
 

@@ -2,6 +2,7 @@
 
 #include "engine/namespace.h"
 
+#include "engine/model/flag.h"
 #include "engine/model/material.h"
 #include "engine/model/mesh.h"
 #include "engine/model/skeleton.h"
@@ -10,21 +11,20 @@
 class							engine::model::model
 {
 	friend class				engine::core;
-	friend class				engine::model::manager;
+	friend class				engine::model::loader;
 	friend class				engine::model::reader;
 
 public :
-								model
-								(
-									const shared_ptr<const aiScene> &assimp_scene,
-									vector<unique<mesh>> &meshes,
-									unique<skeleton> &skeleton
-								) :
-									assimp_scene(assimp_scene),
-									meshes(move(meshes)),
-									skeleton(move(skeleton))
-								{}
+								model() = default;
+								model(const path &source, flag_wrapper flags);
+
 								~model() = default;
+
+//	---------------------------	Building at runtime
+
+	void						append_mesh(unique<mesh> &mesh);
+
+//	---------------------------	Animation
 
 	void						animate(const animation &animation)
 	{
@@ -40,6 +40,8 @@ public :
 	{
 		return (skeleton->time);
 	}
+
+//	---------------------------	Analysis
 
 	[[nodiscard]] vec3			min() const
 	{
@@ -71,7 +73,14 @@ public :
 
 private :
 
+	static inline
+	shared<loader>				loader;
+
+//								Used when model is loaded from file
 	shared_ptr<const aiScene>	assimp_scene;
+
+//								Locked when loaded from file
+	bool						is_locked = false;
 
 	void						analyze();
 	void						center();

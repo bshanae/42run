@@ -7,10 +7,10 @@ void							room::build_models()
 	model::flag_wrapper			analyze_flag = model::flag::analyze;
 	model::flag_wrapper			center_flag = model::flag::center;
 
-	models.room = model::manager::make(sources().room, analyze_flag);
-	models.chair = model::manager::make(sources().chair, center_flag);
-	models.mac = model::manager::make(sources().mac, center_flag);
-	models.keyboard = model::manager::make(sources().keyboard, center_flag);
+	models.room = make_shared<model::model>(sources().room, analyze_flag);
+	models.chair = make_shared<model::model>(sources().chair, center_flag);
+	models.mac = make_shared<model::model>(sources().mac, center_flag);
+	models.keyboard = make_shared<model::model>(sources().keyboard, center_flag);
 }
 
 void							room::build_main_instances()

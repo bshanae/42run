@@ -31,9 +31,6 @@ protected :
 
 	unique<program::program>	program;
 
-	using 						uniform_int = program::uniform<int>;
-	using 						uniform_float = program::uniform<float>;
-	using 						uniform_vec3 = program::uniform<vec3>;
-	using 						uniform_vec4 = program::uniform<vec4>;
-	using 						uniform_mat4 = program::uniform<mat4>;
+	template					<typename type>
+	using						uniform = engine::program::uniform<type>;
 };

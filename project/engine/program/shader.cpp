@@ -19,8 +19,8 @@ shader::shader(type type, const path &source)
 
 	std::stringstream		stream;
 
-	stream << "#version " << settings().glsl_version;
-	if (auto path = settings().glsl_path / "shared.h"; exists(path))
+	stream << "#version " << settings().shader_version;
+	if (auto path = settings().path_to_shared_header / "shared.h"; exists(path))
 		write_file_to_stream(stream, path);
 	write_file_to_stream(stream, source);
 

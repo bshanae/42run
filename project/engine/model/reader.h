@@ -59,13 +59,6 @@ protected :
 		return (skeleton->bones);
 	}
 
-//						Texture
-	[[nodiscard]]
-	inline const auto	object(const unique<engine::model::texture> &texture) const
-	{
-		return (texture->object);
-	}
-
 //						Instance
 	[[nodiscard]]
 	inline const auto	&model(const shared<engine::model::instance> &instance) const

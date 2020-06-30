@@ -32,35 +32,35 @@ private :
 
 	struct							texture
 	{
-		uniform_int 				is_valid;
-		uniform_int 				value;
+		uniform<int> 				is_valid;
+		uniform<int> 				value;
 	};
 	
 	struct 							light
 	{
-		uniform_int					type;
-		uniform_vec3				parameter_a;
-		uniform_vec3				parameter_b;
-		uniform_float				parameter_c;
-		uniform_float				parameter_d;
-		uniform_vec3				color;
-		uniform_float				power;
+		uniform<int>				type;
+		uniform<vec3>				parameter_a;
+		uniform<vec3>				parameter_b;
+		uniform<float>				parameter_c;
+		uniform<float>				parameter_d;
+		uniform<vec3>				color;
+		uniform<float>				power;
 	};
 
 	struct
 	{
-		uniform_mat4				projection;
-		uniform_mat4				view;
+		uniform<mat4>				projection;
+		uniform<mat4>				view;
 
 		struct
 		{
 			struct
 			{
-				uniform_vec3		ambient;
-				uniform_vec3		diffuse;
-				uniform_vec3		specular;
-				uniform_vec3		emission;
-				uniform_float		alpha;
+				uniform<vec3>		ambient;
+				uniform<vec3>		diffuse;
+				uniform<vec3>		specular;
+				uniform<vec3>		emission;
+				uniform<float>		alpha;
 			}						unite;
 
 			struct
@@ -73,27 +73,27 @@ private :
 		
 		struct
 		{
-			uniform_vec3			camera_position;
+			uniform<vec3>			camera_position;
 
-			uniform_int				lights_size;
+			uniform<int>				lights_size;
 			light					lights[SHARED_LIGHTS_CAPACITY];
 		}							scene;
 
-		uniform_int 				does_mesh_have_bones;
-		uniform_mat4 				bones_transformations[model::skeleton::bones_limit];
+		uniform<int> 				does_mesh_have_bones;
+		uniform<mat4> 				bones_transformations[model::skeleton::bones_limit];
 
 		struct
 		{
-			uniform_mat4			scaling;
-			uniform_mat4			translation;
-			uniform_mat4			rotation;
+			uniform<mat4>			scaling;
+			uniform<mat4>			translation;
+			uniform<mat4>			rotation;
 		}							instance;
 
 		struct
 		{
-			uniform_mat4			scaling;
-			uniform_mat4			translation;
-			uniform_mat4			rotation;
+			uniform<mat4>			scaling;
+			uniform<mat4>			translation;
+			uniform<mat4>			rotation;
 		}							group;
 	}								uniforms;
 };

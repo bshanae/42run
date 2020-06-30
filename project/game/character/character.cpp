@@ -2,14 +2,14 @@
 
 #include "game/renderer/renderer.h"
 
-using namespace						game;
+using namespace		game;
 
-									character::character() : game_object(tag<game::renderer>())
+					character::character() : game_object(tag<game::renderer>())
 {
-	model::manager::flag_wrapper	flags = model::manager::flag::triangulate;
+	auto			flags = model::flag::triangulate;
 
 	common::warning::ignore = true;
-	model = model::manager::make(sources().character, flags);
+	model = make_shared<model::model>(sources().character, flags);
 	common::warning::ignore = false;
 
 	instance = make_shared<model::instance>(model);
@@ -30,7 +30,7 @@ using namespace						game;
 	engine::core::use(callback);
 }
 
-void								character::update()
+void				character::update()
 {
 	if (not model->is_animation_playing())
 		model->animate(animations.run);
@@ -46,14 +46,14 @@ void								character::update()
 	}
 }
 
-float_range 						character::calculate_range() const
+float_range 		character::calculate_range() const
 {
 	return {current_position.z - this->size / 2.f, current_position.z + this->size / 2.f};
 }
 
-void								character::callback_functor()
+void				character::callback_functor()
 {
-	auto							key = engine::core::receive_event().read_key();
+	auto			key = engine::core::receive_event().read_key();
 
 	switch (key)
 	{
@@ -80,7 +80,7 @@ void								character::callback_functor()
 	}
 }
 
-const vec3							&character::position_for_line(enum line line)
+const vec3			&character::position_for_line(enum line line)
 {
 	switch (line)
 	{
@@ -95,7 +95,7 @@ const vec3							&character::position_for_line(enum line line)
 	}
 }
 
-bool								character::try_go_left(enum line &line)
+bool				character::try_go_left(enum line &line)
 {
 	switch (line)
 	{
@@ -112,7 +112,7 @@ bool								character::try_go_left(enum line &line)
 	}
 }
 
-bool								character::try_go_right(enum line &line)
+bool				character::try_go_right(enum line &line)
 {
 	switch (line)
 	{

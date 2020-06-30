@@ -5,10 +5,14 @@
 
 using namespace		engine;
 
-					model::texture::texture(const path &source)
+					model::texture::texture()
 {
 	glGenTextures(1, &object);
+}
 
+					model::texture::texture(const path &source) :
+						texture()
+{
 	int				width;
 	int				height;
 	int				number_of_components;
@@ -38,7 +42,8 @@ using namespace		engine;
 
 	}
 
-	glBindTexture(GL_TEXTURE_2D, object);
+	texture::use(true);
+
 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -47,7 +52,7 @@ using namespace		engine;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	texture::use(false);
 
 	stbi_image_free(data);
 }
@@ -57,4 +62,7 @@ using namespace		engine;
 	glDeleteTextures(1, &object);
 }
 
-
+void				model::texture::use(bool state)
+{
+	glBindTexture(GL_TEXTURE_2D, state ? object : 0);
+}

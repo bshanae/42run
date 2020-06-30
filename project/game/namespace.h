@@ -7,6 +7,8 @@
 
 namespace							game
 {
+//	-------------------------------	Aliases
+
 	using							std::vector;
 	using							std::list;
 	using							std::deque;
@@ -63,13 +65,12 @@ namespace							game
 		using						engine::model::model;
 		using						engine::model::instance;
 		using						engine::model::group;
-		using						engine::model::manager;
 		using						engine::model::animation;
 		using						engine::model::skeleton;
 		using						engine::model::reader;
 
-		using						flag = engine::model::manager::flag;
-		using						flag_wrapper = engine::model::manager::flag_wrapper;
+		using						flag = engine::model::flag;
+		using						flag_wrapper = engine::model::flag_wrapper;
 	}
 
 	namespace						interface
@@ -79,6 +80,10 @@ namespace							game
 		using						engine::interface::timer;
 	}
 
+	using							UI::label;
+
+//	-------------------------------	Globals
+
 	struct							constants
 	{
 		static constexpr float		distance_between_lines = 6.f;
@@ -86,8 +91,8 @@ namespace							game
 
 	struct							sources
 	{
-		path						program_vertex;
-		path						program_fragment;
+		path						vertex_shader;
+		path						fragment_shader;
 		path						room;
 		path						chair;
 		path						mac;
@@ -107,6 +112,10 @@ namespace							game
 
 	struct settings					&settings();
 
+	extern shared<scene::scene>		global_scene;
+
+//	-------------------------------	Local classes
+
 	enum class 						line : unsigned int
 	{
 		left = 0x001,
@@ -120,8 +129,8 @@ namespace							game
 		jumping = 0x10
 	};
 
-	using							line_wrapper = engine::abstract::bitflags_wrapper<line>;
-	using							state_wrapper = engine::abstract::bitflags_wrapper<state>;
+	using							line_wrapper = engine::abstract::bitflag_wrapper<line>;
+	using							state_wrapper = engine::abstract::bitflag_wrapper<state>;
 
 	class							renderer;
 
@@ -135,6 +144,4 @@ namespace							game
 	}
 
 	class 							manager;
-
-	extern shared<scene::scene>		global_scene;
 }

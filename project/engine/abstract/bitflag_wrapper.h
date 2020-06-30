@@ -6,56 +6,56 @@ template					<
     							typename enum_type,
     							typename underlying_type = typename std::underlying_type<enum_type>::type
     						>
-class						engine::abstract::bitflags_wrapper
+class						engine::abstract::bitflag_wrapper
 {
 public:
-							bitflags_wrapper() : data(0)
+							bitflag_wrapper() : data(0)
 							{}
-							bitflags_wrapper(enum_type flag) : data(static_cast<underlying_type>(flag))
+							bitflag_wrapper(enum_type flag) : data(static_cast<underlying_type>(flag))
 							{}
-							bitflags_wrapper(const bitflags_wrapper &original) : data(original.data)
+							bitflag_wrapper(const bitflag_wrapper &original) : data(original.data)
 							{}
 
-	bitflags_wrapper		&operator |= (enum_type value)
+	bitflag_wrapper		&operator |= (enum_type value)
 	{
 		data |= static_cast<underlying_type>(value);
 		return (*this);
 	}
 
-	bitflags_wrapper		operator | (enum_type value) const
+	bitflag_wrapper		operator | (enum_type value) const
 	{
-		bitflags_wrapper	result(*this);
+		bitflag_wrapper	result(*this);
 
 		result |= value;
 		return (result);
 	}
 
-	bitflags_wrapper		operator | (const bitflags_wrapper &that) const
+	bitflag_wrapper		operator | (const bitflag_wrapper &that) const
 	{
-		bitflags_wrapper	result;
+		bitflag_wrapper	result;
 
 		result.data = this->data | that.data;
 		return (result);
 	}
 
-	bitflags_wrapper		&operator &= (enum_type mask)
+	bitflag_wrapper		&operator &= (enum_type mask)
 	{
 		data &= static_cast<underlying_type>(mask);
 
 		return (*this);
 	}
 
-	bitflags_wrapper		operator & (enum_type mask) const
+	bitflag_wrapper		operator & (enum_type mask) const
 	{
-		bitflags_wrapper	result(*this);
+		bitflag_wrapper	result(*this);
 
 		result &= mask;
 		return (result);
 	}
 
-	bitflags_wrapper		operator ~ () const
+	bitflag_wrapper		operator ~ () const
 	{
-		bitflags_wrapper	result(*this);
+		bitflag_wrapper	result(*this);
 
 		result.data = ~result.data;
 		return (result);

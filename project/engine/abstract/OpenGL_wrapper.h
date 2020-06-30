@@ -10,7 +10,7 @@ public :
 
 	virtual			~OpenGL_wrapper() = default;
 
-	virtual void	use(bool state) const
+	virtual void	use(bool state)
 	{
 		error::raise(error::id::unimplemented_virtual_method);
 	}

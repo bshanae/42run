@@ -2,35 +2,20 @@
 
 #include "engine/namespace.h"
 
-#include "engine/abstract/bitflags_wrapper.h"
+#include "engine/abstract/bitflag_wrapper.h"
 #include "engine/model/bone.h"
 #include "engine/model/model.h"
 #include "engine/model/instance.h"
 #include "engine/model/group.h"
 
-class							engine::model::manager
+class							engine::model::loader
 {
+	friend class				engine::model::model;
+
 public :
-								manager() = default;
-								~manager() = default;
-
-START_GLOBAL_INITIALIZER(manager)
-FINISH_GLOBAL_INITIALIZER
-
-	enum class					flag : uint
-	{
-		triangulate = 1u << 1u,
-		analyze = 1u << 2u,
-		center = 1u << 3u
-	};
-
-	using						flag_wrapper = engine::abstract::bitflags_wrapper<flag>;
-
-	static shared<model>		make(const path &source, flag_wrapper wrap = flag_wrapper());
-
+								loader() = default;
+								~loader() = default;
 private :
-
-IMPLEMENT_GLOBAL_INSTANCER(manager)
 
 	Assimp::Importer			importer;
 	const aiScene				*scene = nullptr;
@@ -41,11 +26,9 @@ IMPLEMENT_GLOBAL_INSTANCER(manager)
 	vector<unique<mesh>>		meshes;
 	vector<shared<bone>>		bones;
 
-	unique<skeleton>			skeleton;
-
 	path						directory;
 
-	shared<model>				make_non_static(const path &source, flag_wrapper wrap);
+	void						load(model &model, const path &source, flag_wrapper wrap);
 
 	void						load_nodes();
 	void						load_meshes();

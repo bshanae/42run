@@ -1,4 +1,4 @@
-#include "manager.h"
+#include "loader.h"
 
 #include "engine/converter/converter.h"
 #include "engine/model/material.h"
@@ -6,19 +6,7 @@
 
 using namespace					engine;
 
-shared<model::model>			model::manager::make(const path &source, flag_wrapper flags)
-{
-	auto						&instance = manager::instance();
-	auto						model = instance->make_non_static(source, flags);
-
-	if (flags & flag::analyze or flags & flag::center)
-		model->analyze();
-	if (flags & flag::center)
-		model->center();
-	return (model);
-}
-
-shared<model::model>			model::manager::make_non_static(const path &source, flag_wrapper flags)
+void							model::loader::load(model &model, const path &source, flag_wrapper flags)
 {
 	uint 						assimp_flags = 0;
 
@@ -54,9 +42,16 @@ shared<model::model>			model::manager::make_non_static(const path &source, flag_
 	load_bones();
 	load_meshes();
 
-	skeleton = make_unique<engine::model::skeleton>(bones);
+	model.meshes.clear();
 
-	return (make_shared<engine::model::model>(shared_ptr<const aiScene>(scene), meshes, skeleton));
+	model.assimp_scene = shared_ptr<const aiScene>(scene);
+	model.meshes = move(meshes);
+	model.skeleton = make_unique<engine::model::skeleton>(bones);
+
+	if (flags & flag::analyze or flags & flag::center)
+		model.analyze();
+	if (flags & flag::center)
+		model.center();
 }
 
 
@@ -65,18 +60,18 @@ shared<model::model>			model::manager::make_non_static(const path &source, flag_
 // /////////////////////////////////////////////////////////////////////////////
 
 
-void							model::manager::load_nodes()
+void							model::loader::load_nodes()
 {
 	process_node(scene->mRootNode);
 }
 
-void							model::manager::load_meshes()
+void							model::loader::load_meshes()
 {
 	for (int i = 0; i < scene->mNumMeshes; i++)
 		meshes.push_back(process_mesh(scene->mMeshes[i]));
 }
 
-void							model::manager::load_bones()
+void							model::loader::load_bones()
 {
 	shared<bone>				pointer;
 
@@ -107,7 +102,7 @@ void							model::manager::load_bones()
 	}
 }
 
-void							model::manager::load_animations()
+void							model::loader::load_animations()
 {
 	if (scene->mNumAnimations == 0)
 		return;
@@ -122,7 +117,7 @@ void							model::manager::load_animations()
 // /////////////////////////////////////////////////////////////////////////////
 
 
-void							model::manager::process_node(aiNode *node)
+void							model::loader::process_node(aiNode *node)
 {
 	nodes.push_back(node);
 
@@ -130,7 +125,7 @@ void							model::manager::process_node(aiNode *node)
 		process_node(node->mChildren[i]);
 }
 
-unique<model::mesh>				model::manager::process_mesh(aiMesh *mesh)
+unique<model::mesh>				model::loader::process_mesh(aiMesh *mesh)
 {
 	vector<mesh::vertex>		vertices;
 	vector<unsigned>			indices;
@@ -196,7 +191,7 @@ unique<model::mesh>				model::manager::process_mesh(aiMesh *mesh)
 	return (make_unique<engine::model::mesh>(vertices, indices, material));
 }
 
-unique<model::material>			model::manager::process_material(aiMaterial *source)
+unique<model::material>			model::loader::process_material(aiMaterial *source)
 {
 	auto						target = make_unique<engine::model::material>();
 
@@ -246,7 +241,7 @@ unique<model::material>			model::manager::process_material(aiMaterial *source)
 // /////////////////////////////////////////////////////////////////////////////
 
 
-aiNode							*model::manager::find_node(const string &name)
+aiNode							*model::loader::find_node(const string &name)
 {
 	for (const auto &node : nodes)
 		if (node->mName.data == name)
@@ -255,7 +250,7 @@ aiNode							*model::manager::find_node(const string &name)
 	return (nullptr);
 }
 
-pair<shared<model::bone>, int>	model::manager::find_bone(const string &name)
+pair<shared<model::bone>, int>	model::loader::find_bone(const string &name)
 {
 	for (const auto &bone : bones)
 		if (bone->name == name)
@@ -271,7 +266,7 @@ pair<shared<model::bone>, int>	model::manager::find_bone(const string &name)
 	return {shared<bone>(), -1};
 }
 
-aiNodeAnim						*model::manager::find_animation(const string &name)
+aiNodeAnim						*model::loader::find_animation(const string &name)
 {
 	for (const auto &animation : animations)
 		if (animation->mNodeName.data == name)

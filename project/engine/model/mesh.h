@@ -9,7 +9,7 @@ class							engine::model::mesh
 private :
 
 	friend class 				engine::model::model;
-	friend class 				engine::model::manager;
+	friend class 				engine::model::loader;
 	friend class 				engine::model::reader;
 
 public :

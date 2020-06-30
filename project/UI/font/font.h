@@ -6,10 +6,9 @@
 
 class						UI::font::font
 {
+	friend class			UI::font::reader;
 public :
 							font(const path &source, const int &width, const vec3 &color);
-
-	const_shared<symbol>	find_symbol(char task) const;
 
 private :
 
@@ -23,6 +22,7 @@ private :
 	const vec3				color;
 
 	shared<symbol>			build_symbol(char task);
+	shared<symbol>			find_symbol(char task) const;
 };
 
 

@@ -3,7 +3,7 @@
 using namespace		game;
 
 					renderer::renderer() :
-						engine::renderer(sources().program_vertex, sources().program_fragment)
+						engine::renderer(sources().vertex_shader, sources().fragment_shader)
 {
 	initialize_uniforms();
 	upload_camera_uniforms();

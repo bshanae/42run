@@ -12,8 +12,8 @@ int					main()
 	engine::settings().rendering_frequency = 1 / 60.f;
 	engine::settings().updating_frequency = 1 / 40.f;
 
-	engine::settings().glsl_version = "330 core";
-	engine::settings().glsl_path = "project/resources/engine";
+	engine::settings().shader_version = "330 core";
+	engine::settings().path_to_shared_header = "project/resources/engine";
 
 	engine::settings().camera_position = engine::vec3(0.f, 22.f, 50.f);
 	engine::settings().camera_yaw = -90;
@@ -23,8 +23,11 @@ int					main()
 	engine::settings().camera_near_plane = 10.f;
 	engine::settings().camera_far_plane = 350.f;
 
-	game::sources().program_vertex = "project/resources/engine/main.vertex.glsl";
-	game::sources().program_fragment = "project/resources/engine/main.fragment.glsl";
+	UI::sources().vertex_shader = "project/resources/UI/shaders/label.vertex.glsl";
+	UI::sources().fragment_shader = "project/resources/UI/shaders/label.fragment.glsl";
+
+	game::sources().vertex_shader = "project/resources/game/shaders/vertex.glsl";
+	game::sources().fragment_shader = "project/resources/game/shaders/fragment.glsl";
 	game::sources().room = "project/resources/game/models/Room.obj";
 	game::sources().chair = "project/resources/game/models/Chair.obj";
 	game::sources().mac = "project/resources/game/models/iMac.obj";
@@ -37,11 +40,10 @@ int					main()
 	game::settings().chair_spawning_frequency = common::int_range(4, 12);
 
 	engine::core::initialize();
-	engine::model::manager::initialize();
 	game::manager::initialize();
 
 	engine::core::register_renderer<game::renderer>();
-//	engine::core::register_renderer<UI::renderer>();
+	engine::core::register_renderer<UI::renderer>();
 
 	engine::core::execute();
 

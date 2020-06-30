@@ -34,7 +34,7 @@ private :
 		static shared<model::model>	model;
 
 		if (not model)
-			model = model::manager::make(sources().chair, model::flag::center);
+			model = make_shared<model::model>(sources().chair, model::flag::center);
 		return (model);
 	}
 };

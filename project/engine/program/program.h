@@ -10,7 +10,7 @@ public :
 						program(const path &vertex_source, const path &fragment_source);
 						~program() override;
 
-	void				use(bool state) const override
+	void				use(bool state) override
 	{
 		glUseProgram(state ? object : 0);
 	}

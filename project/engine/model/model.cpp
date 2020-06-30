@@ -2,7 +2,22 @@
 
 #include <limits>
 
+#include "engine/model/loader.h"
+
 using namespace		engine;
+
+					model::model::model(const path &source, flag_wrapper flags)
+{
+	if (not loader)
+		loader = make_shared<engine::model::loader>();
+
+	loader->load(*this, source, flags);
+}
+
+void				model::model::append_mesh(unique<engine::model::mesh> &mesh)
+{
+	meshes.push_back(move(mesh));
+}
 
 void				model::model::analyze()
 {

@@ -6,7 +6,7 @@
 
 class 						engine::model::group
 {
-	friend class 			engine::model::manager;
+	friend class 			engine::model::loader;
 	friend class 			engine::model::reader;
 
 public :
