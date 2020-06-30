@@ -1,19 +1,43 @@
 #pragma once
 
-#define	IMPLEMENT_GLOBAL_INSTANCER(class_name)									\
-static std::shared_ptr<class_name>		&instance(bool safe = true)				\
-{																				\
-	static std::shared_ptr<class_name>	instance;								\
-																				\
-	if (safe and not instance)													\
-		common::error::raise(common::error::id::empty_global_object);			\
-	return (instance);															\
-}
+#include "common/error/error.h"
 
-#define	START_GLOBAL_INITIALIZER(class_name)									\
-static void								initialize()							\
-{																				\
-	instance(false) = std::make_shared<class_name>();							\
+namespace							common
+{
+	template						<typename final_type>
+	class							global
+	{
+	public :
+									global() = default;
+		virtual						~global() = default;
 
-#define	FINISH_GLOBAL_INITIALIZER												\
+		static void					initialize()
+		{
+			global					temporary;
+
+			pointer = temporary.initializer();
+		}
+
+	protected :
+
+		static auto					instance()
+		{
+			if (not pointer)
+				common::error::raise(common::error::id::empty_global_object);
+
+			return (pointer);
+		}
+
+		virtual
+		std::shared_ptr<final_type>	initializer()
+		{
+			return (std::make_shared<final_type>());
+		}
+
+	private :
+
+		static
+		inline
+		std::shared_ptr<final_type>	pointer;
+	};
 }

@@ -1,13 +1,13 @@
 #include "font.h"
 
-#include "UI/font/FreeType_controller.h"
+#include "UI/font/manager.h"
 
 using namespace				UI;
 
 							font::font::font(const path &source, const int &width, const vec3 &color) :
 								color(color)
 {
-	auto					&library = FreeType_controller::instance()->library;
+	auto					&library = manager::instance()->library;
 
 	if (FT_New_Face(library, source.c_str(), 0, &face))
 		error::raise(error::id::freetype_face_error);

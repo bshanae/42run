@@ -87,6 +87,8 @@ namespace							engine
 
 	template						<typename type>
 	using							tag = common::tag<type>;
+	template						<typename type>
+	using							global = common::global<type>;
 
 	namespace						error = common::error;
 	namespace						warning = common::warning;

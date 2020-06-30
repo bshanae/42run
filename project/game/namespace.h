@@ -44,10 +44,13 @@ namespace							game
 	using							common::int_range;
 	using							common::float_range;
 	using							common::vec3_range;
+
 	using							common::random;
 
 	template						<typename type>
 	using							tag = common::tag<type>;
+	template						<typename type>
+	using							global = common::global<type>;
 
 	namespace						converter = engine::converter;
 	namespace						game_object = engine::game_object;

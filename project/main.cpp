@@ -41,6 +41,7 @@ int					main()
 
 	engine::core::initialize();
 	game::manager::initialize();
+	UI::font::manager::initialize();
 
 	engine::core::register_renderer<game::renderer>();
 	engine::core::register_renderer<UI::renderer>();

@@ -29,6 +29,9 @@ namespace							UI
 	namespace						error = common::error;
 	namespace						warning = common::warning;
 
+	template						<typename type>
+	using							global = common::global<type>;
+
 	namespace						model = engine::model;
 
 //	-------------------------------	Globals
@@ -47,7 +50,7 @@ namespace							UI
 
 	namespace						font
 	{
-		class						FreeType_controller;
+		class						manager;
 		class						font;
 		class 						symbol;
 		class 						reader;

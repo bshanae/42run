@@ -6,7 +6,7 @@ using namespace		engine;
 
 void 				core::execute()
 {
-	auto			&instance = core::instance();
+	auto			instance = core::instance();
 
 	float			time_before = 0.f;
 	float			time_after = 0.f;

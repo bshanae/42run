@@ -8,7 +8,7 @@
 #include "engine/scene/scene.h"
 #include "engine/renderer/renderer.h"
 
-class								engine::core
+class								engine::core : public global<engine::core>
 {
 public :
 									core();
@@ -36,12 +36,7 @@ private :
 	interface::timer				timer_for_rendering;
 	interface::timer				timer_for_updating;
 
-IMPLEMENT_GLOBAL_INSTANCER(core)
-
 public :
-
-START_GLOBAL_INITIALIZER(core)
-FINISH_GLOBAL_INITIALIZER
 
 	static void						execute();
 
