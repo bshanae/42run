@@ -1,4 +1,5 @@
 #pragma once
 
 #include "UI/font/font.h"
-#include "UI/renderer/renderer.h"
+#include "UI/font/manager.h"
+#include "UI/label/label.h"

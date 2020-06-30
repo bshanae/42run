@@ -30,6 +30,11 @@ private :
 	interface::callback				press_callback;
 	interface::callback				hold_callback;
 
+	unique<program::program>		program;
+
+	template						<typename type>
+	using							uniform = program::uniform<type>;
+
 	struct							texture
 	{
 		uniform<int> 				is_valid;
@@ -75,7 +80,7 @@ private :
 		{
 			uniform<vec3>			camera_position;
 
-			uniform<int>				lights_size;
+			uniform<int>			lights_size;
 			light					lights[SHARED_LIGHTS_CAPACITY];
 		}							scene;
 

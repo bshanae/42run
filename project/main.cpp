@@ -40,11 +40,12 @@ int					main()
 	game::settings().chair_spawning_frequency = common::int_range(4, 12);
 
 	engine::core::initialize();
-	game::manager::initialize();
 	UI::font::manager::initialize();
+	game::manager::initialize();
 
 	engine::core::register_renderer<game::renderer>();
-	engine::core::register_renderer<UI::renderer>();
+	engine::core::register_renderer<UI::rectangle::renderer>();
+	engine::core::register_renderer<UI::label::renderer>();
 
 	engine::core::execute();
 

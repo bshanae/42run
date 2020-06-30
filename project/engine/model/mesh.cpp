@@ -4,12 +4,12 @@ using namespace		engine;
 
 					model::mesh::mesh
 					(
-						vector<vertex> &vertices,
-						vector<unsigned> &indices,
+						const vector<vertex> &vertices,
+						const vector<unsigned> &indices,
 						unique<engine::model::material> &material
 					) :
-						vertices(move(vertices)),
-						indices(move(indices)),
+						vertices(vertices),
+						indices(indices),
 						material(move(material))
 {
 	glGenVertexArrays(1, &VAO);

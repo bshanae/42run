@@ -8,6 +8,8 @@ using namespace		UI;
 	bearing = ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
 	advance = (int)((unsigned int)face->glyph->advance.x >> 6u);
 
+	auto			texture = make_unique<model::texture>();
+
 	texture->use(true);
 
 	glTexImage2D
@@ -23,4 +25,7 @@ using namespace		UI;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	texture->use(false);
+
+	rectangle = make_shared<UI::rectangle::rectangle>(texture);
+	rectangle->start();
 }

@@ -9,16 +9,23 @@ namespace							UI
 {
 //	-------------------------------	Aliases
 
+	using							std::cerr;
+	using							std::cout;
+	using							std::endl;
+
 	using							std::map;
+	using							std::vector;
 	using							std::string;
 	using							std::filesystem::path;
 	using							std::max;
 
 	using							std::make_unique;
 	using							std::make_shared;
+	using							std::dynamic_pointer_cast;
 
 	using 							glm::ivec2;
 	using							glm::vec3;
+	using							glm::vec2;
 	using							glm::mat4;
 
 	template						<typename type>
@@ -30,9 +37,13 @@ namespace							UI
 	namespace						warning = common::warning;
 
 	template						<typename type>
+	using							tag = common::tag<type>;
+	template						<typename type>
 	using							global = common::global<type>;
 
+	namespace						game_object = engine::game_object;
 	namespace						model = engine::model;
+	namespace						program = engine::program;
 
 //	-------------------------------	Globals
 
@@ -48,6 +59,12 @@ namespace							UI
 
 	class							renderer;
 
+	namespace						rectangle
+	{
+		class						rectangle;
+		class						renderer;
+	}
+
 	namespace						font
 	{
 		class						manager;
@@ -56,5 +73,9 @@ namespace							UI
 		class 						reader;
 	}
 
-	class							label;
+	namespace						label
+	{
+		class						label;
+		class						renderer;
+	}
 }

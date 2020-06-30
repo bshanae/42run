@@ -157,6 +157,7 @@ namespace							engine
 		class						animation;
 		class						texture;
 		class						material;
+		class						vertex;
 		class						mesh;
 		class						loader;
 		class						model;
@@ -175,6 +176,13 @@ namespace							engine
 			stopped
 		};
 
+		enum class					renderer_state
+		{
+			not_set,
+			set_but_null,
+			set
+		};
+
 		class						game_object;
 		class						reader;
 	}
@@ -187,5 +195,7 @@ namespace							engine
 		class						reader;
 	}
 
+	class							null_renderer
+									{};
 	class 							renderer;
 }

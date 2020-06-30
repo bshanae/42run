@@ -7,6 +7,8 @@ void				renderer::render(const shared<game_object::game_object> &object) const
 	if (game_object::reader::state(object) != game_object::state::working)
 		return ;
 
+	engine::core::default_settings();
+
 	program->use(true);
 
 	uniforms.group.scaling.upload(mat4(1.f));
@@ -56,7 +58,7 @@ void				renderer::render(const shared<model::instance> &instance) const
 	uniforms.instance.translation.upload(model::reader::translation(instance));
 	uniforms.instance.rotation.upload(model::reader::rotation(instance));
 
-	glPolygonMode(GL_FRONT_AND_BACK, model::reader::is_hollow(instance) ? GL_LINE : GL_FILL);
+	engine::core::fill_polygon(not model::reader::is_hollow(instance));
 
 	for (auto &mesh : model::reader::meshes(model))
 	{

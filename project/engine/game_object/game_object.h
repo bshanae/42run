@@ -15,8 +15,8 @@ class 							engine::game_object::game_object :
 
 public :
 
-	template					<typename final_type = nullptr_t>
-	explicit					game_object(tag<final_type> = tag<nullptr_t>()) :
+	template					<typename final_type = null_renderer>
+	explicit					game_object(tag<final_type> = tag<null_renderer>()) :
 								renderer_code(typeid(final_type).hash_code())
 								{}
 	virtual						~game_object() = default;
@@ -24,6 +24,8 @@ public :
 	void						start();
 	void						pause(bool state);
 	void						stop();
+
+	void						render();
 
 protected :
 
@@ -50,7 +52,10 @@ public :
 private :
 
 	const size_t				renderer_code;
-	optional<shared<renderer>>	renderer;
+
+//								Filled by core
+	shared<renderer>			renderer;
+	enum renderer_state			renderer_state = renderer_state::not_set;
 
 	render_targets				render_targets;
 	models_type					animation_targets;

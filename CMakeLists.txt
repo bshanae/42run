@@ -28,6 +28,13 @@ set(SOURCE_ENGINE
 	project/engine/core/execute.cpp
 	project/engine/core/process_x.cpp
 	project/engine/core/callback.cpp
+	project/engine/core/use.cpp
+	project/engine/core/time_x.cpp
+	project/engine/core/use_depth_test.cpp
+	project/engine/core/show_polygon_back.cpp
+	project/engine/core/fill_polygon.cpp
+	project/engine/core/default_settings.cpp
+
 
 	project/engine/converter/converter.cpp
 
@@ -70,9 +77,14 @@ set(SOURCE_GAME
 set(SOURCE_UI
 	project/UI/UI.cpp
 
+	project/UI/rectangle/rectangle.cpp
+	project/UI/rectangle/renderer.cpp
+
 	project/UI/font/font.cpp
 	project/UI/font/symbol.cpp
-	project/UI/label/label.cpp)
+
+	project/UI/label/label.cpp
+	project/UI/label/renderer.cpp)
 
 set(SOURCE_MAIN
 	project/main.cpp)

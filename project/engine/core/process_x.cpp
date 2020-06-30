@@ -32,12 +32,16 @@ void				core::process_preparing()
 
 	auto			fill_renderer = [this](const shared<game_object::game_object> &object)
 	{
-		auto		iterator = registered_renderers.find(object->renderer_code);
+		if (object->renderer_code == typeid(null_renderer).hash_code())
+			object->renderer_state = game_object::renderer_state::set_but_null;
 
-		if (iterator == registered_renderers.end())
-			object->renderer.emplace(nullptr);
+		if (auto iterator = registered_renderers.find(object->renderer_code); iterator == registered_renderers.end())
+			error::raise(error::id::renderer_not_found);
 		else
-			object->renderer.emplace(iterator->second);
+		{
+			object->renderer = iterator->second;
+			object->renderer_state = game_object::renderer_state::set;
+		}
 	};
 
 	for (auto &object : game_object::game_object::list)
@@ -57,13 +61,8 @@ void				core::process_rendering()
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	for (auto &object : scene->objects)
-		if
-		(
-			object->state == game_object::state::working and
-			object->renderer and
-			*object->renderer
-		)
-			(*object->renderer)->render(object);
+		if (object->state == game_object::state::working)
+			object->render();
 
 	glfwSwapBuffers(window);
 }

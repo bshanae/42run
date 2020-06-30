@@ -2,9 +2,14 @@
 
 using namespace		game;
 
-					renderer::renderer() :
-						engine::renderer(sources().vertex_shader, sources().fragment_shader)
+					renderer::renderer()
 {
+	program = make_unique<engine::program::program>
+	(
+		sources().vertex_shader,
+		sources().fragment_shader
+	);
+
 	initialize_uniforms();
 	upload_camera_uniforms();
 	upload_light_uniforms();

@@ -22,7 +22,15 @@ public :
 
 //	---------------------------	Building at runtime
 
-	void						append_mesh(unique<mesh> &mesh);
+	void						push(unique<mesh> &mesh);
+
+	template					<typename ...args_type>
+	void						emplace(args_type &&...args)
+	{
+		auto					mesh = make_unique<engine::model::mesh>(args...);
+
+		meshes.push_back(move(mesh));
+	}
 
 //	---------------------------	Animation
 

@@ -34,6 +34,7 @@ namespace							game
 	template						<typename type>
 	using							unique = std::unique_ptr<type>;
 
+	using							engine::ivec2;
 	using							engine::vec3;
 	using							engine::vec4;
 	using							engine::mat4;
@@ -55,35 +56,12 @@ namespace							game
 	namespace						converter = engine::converter;
 	namespace						game_object = engine::game_object;
 
-	namespace						scene
-	{
-		using						engine::scene::scene;
-		using						engine::scene::light;
-		using						engine::scene::camera;
-		using						engine::scene::reader;
-	};
+	namespace						interface = engine::interface;
+	namespace						model = engine::model;
+	namespace						program = engine::program;
+	namespace						scene = engine::scene;
 
-	namespace						model
-	{
-		using						engine::model::model;
-		using						engine::model::instance;
-		using						engine::model::group;
-		using						engine::model::animation;
-		using						engine::model::skeleton;
-		using						engine::model::reader;
-
-		using						flag = engine::model::flag;
-		using						flag_wrapper = engine::model::flag_wrapper;
-	}
-
-	namespace						interface
-	{
-		using						engine::interface::event;
-		using						engine::interface::callback;
-		using						engine::interface::timer;
-	}
-
-	using							UI::label;
+	namespace						label = UI::label;
 
 //	-------------------------------	Globals
 

@@ -127,7 +127,7 @@ void							model::loader::process_node(aiNode *node)
 
 unique<model::mesh>				model::loader::process_mesh(aiMesh *mesh)
 {
-	vector<mesh::vertex>		vertices;
+	vector<vertex>				vertices;
 	vector<unsigned>			indices;
 	unique<material>			material;
 
@@ -135,7 +135,7 @@ unique<model::mesh>				model::loader::process_mesh(aiMesh *mesh)
 
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
-		mesh::vertex			vertex;
+		class vertex			vertex;
 
 		vertex.position = converter::to_glm(mesh->mVertices[i]);
 		vertex.normal = converter::to_glm(mesh->mNormals[i]);
@@ -172,7 +172,7 @@ unique<model::mesh>				model::loader::process_mesh(aiMesh *mesh)
 			weight = bone->mWeights[j];
 			id = (int)weight.mVertexId;
 
-			for (int k = 0; k < mesh::vertex::bones_limit; k++)
+			for (int k = 0; k < vertex::bones_limit; k++)
 			{
 				if (vertices[id].bones_weights[k] == 0.0f)
 				{
@@ -182,7 +182,7 @@ unique<model::mesh>				model::loader::process_mesh(aiMesh *mesh)
 					break ;
 				}
 
-				if (k == mesh::vertex::bones_limit - 1)
+				if (k == vertex::bones_limit - 1)
 					error::raise(error::id::model_too_many_bones);
 			}
 		}

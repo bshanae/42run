@@ -2,13 +2,15 @@
 
 #include "UI/namespace.h"
 
-#include "UI/font/font.h"
 #include "UI/font/reader.h"
+#include "UI/label/renderer.h"
 
-class					UI::label :
+class					UI::label::label :
 							public engine::game_object::game_object,
 							public UI::font::reader
 {
+	friend class		UI::label::renderer;
+
 public :
 
 	explicit			label
@@ -16,20 +18,7 @@ public :
 							const ivec2 &position,
 							const string &text,
 							const shared<font::font> font
-						) :
-							position(position),
-							text(text),
-							font(font)
-
-	{
-		for (char character : text)
-		{
-			auto		symbol = font::reader::find_symbol(font, character);
-
-			size.x += font::reader::advance(symbol);
-			size.y = max(size.y, font::reader::size(symbol).y);
-		}
-	}
+						);
 						~label() override = default;
 private :
 

@@ -14,7 +14,7 @@ using namespace		engine;
 	loader->load(*this, source, flags);
 }
 
-void				model::model::append_mesh(unique<engine::model::mesh> &mesh)
+void				model::model::push(unique<engine::model::mesh> &mesh)
 {
 	meshes.push_back(move(mesh));
 }
@@ -48,7 +48,7 @@ void 				model::model::center()
 			vertex.position -= analysis.offset;
 
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);
-		glBufferData(GL_ARRAY_BUFFER, mesh->vertices.size() * sizeof(mesh::vertex), mesh->vertices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, mesh->vertices.size() * sizeof(vertex), mesh->vertices.data(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 

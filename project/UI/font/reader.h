@@ -2,6 +2,8 @@
 
 #include "UI/namespace.h"
 
+#include "UI/font/font.h"
+
 class				UI::font::reader
 {
 public :
@@ -19,21 +21,27 @@ protected :
 
 //					Symbol
 	[[nodiscard]]
-	ivec2			size(const shared<UI::font::symbol> &symbol)
+	ivec2			size(const shared<UI::font::symbol> &symbol) const
 	{
 		return (symbol->size);
 	}
 
 	[[nodiscard]]
-	ivec2			bearing(const shared<UI::font::symbol> &symbol)
+	ivec2			bearing(const shared<UI::font::symbol> &symbol) const
 	{
 		return (symbol->bearing);
 	}
 
 	[[nodiscard]]
-	int				advance(const shared<UI::font::symbol> &symbol)
+	int				advance(const shared<UI::font::symbol> &symbol) const
 	{
 		return (symbol->advance);
+	}
+
+	[[nodiscard]]
+	auto			rectangle(const shared<UI::font::symbol> &symbol) const
+	{
+		return (symbol->rectangle);
 	}
 };
 
