@@ -2,7 +2,7 @@
 
 #include "UI/namespace.h"
 
-class							UI::rectangle::renderer : public engine::renderer
+class							UI::font::renderer : public engine::renderer
 {
 public :
 								renderer();

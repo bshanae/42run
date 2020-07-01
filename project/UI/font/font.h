@@ -6,6 +6,7 @@
 
 class						UI::font::font
 {
+	friend class			UI::font::renderer;
 	friend class			UI::font::reader;
 
 public :

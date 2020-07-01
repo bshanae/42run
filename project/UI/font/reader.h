@@ -3,6 +3,7 @@
 #include "UI/namespace.h"
 
 #include "UI/font/font.h"
+#include "UI/font/manager.h"
 
 class				UI::font::reader
 {
@@ -14,9 +15,12 @@ protected :
 
 //					Font
 	[[nodiscard]]
-	shared<symbol>	find_symbol(const shared<UI::font::font> &font, char task) const
+	shared<symbol>	find_symbol(char task) const
 	{
-		return (font->find_symbol(task));
+		if (not UI::font::manager::instance()->font)
+			error::raise(error::id::global_font_not_loaded);
+
+		return (UI::font::manager::instance()->font->find_symbol(task));
 	}
 
 //					Symbol

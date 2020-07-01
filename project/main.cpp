@@ -23,8 +23,8 @@ int					main()
 	engine::settings().camera_near_plane = 10.f;
 	engine::settings().camera_far_plane = 350.f;
 
-	UI::sources().vertex_shader = "project/resources/UI/shaders/vertex.glsl";
-	UI::sources().fragment_shader = "project/resources/UI/shaders/fragment.glsl";
+	UI::sources().vertex_shader = "project/resources/UI/shaders/symbol.vertex.glsl";
+	UI::sources().fragment_shader = "project/resources/UI/shaders/symbol.fragment.glsl";
 
 	game::sources().vertex_shader = "project/resources/game/shaders/vertex.glsl";
 	game::sources().fragment_shader = "project/resources/game/shaders/fragment.glsl";
@@ -40,11 +40,14 @@ int					main()
 	game::settings().chair_spawning_frequency = common::int_range(4, 12);
 
 	engine::core::initialize();
+
 	UI::font::manager::initialize();
+	UI::font::manager::load("project/resources/UI/fonts/HelveticaNeue.ttc", 40, engine::vec3(1, 0, 0));
+
 	game::manager::initialize();
 
 	engine::core::register_renderer<game::renderer>();
-	engine::core::register_renderer<UI::rectangle::renderer>();
+	engine::core::register_renderer<UI::font::renderer>();
 	engine::core::register_renderer<UI::label::renderer>();
 
 	engine::core::execute();

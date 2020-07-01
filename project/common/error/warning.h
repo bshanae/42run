@@ -35,7 +35,7 @@ namespace									common::warning
 		{id::game_object_without_renderer,	"Engine : Game object doesn't have renderer"},
 		{id::font_symbol_not_found,			"UI : Can't find symbol"},
 		{id::object_without_texture,		"UI : Object assumed to be rectangle, doesn't have texture"},
-		{id::object_is_not_a_label,			"UI : Object is not a label"}
+		{id::object_is_not_a_label,			"UI : Object is not a label"},
 	};
 
 	inline bool								ignore = false;

@@ -59,17 +59,14 @@ namespace							UI
 
 	class							renderer;
 
-	namespace						rectangle
-	{
-		class						rectangle;
-		class						renderer;
-	}
+	class							rectangle;
 
 	namespace						font
 	{
 		class						manager;
 		class						font;
 		class 						symbol;
+		class 						renderer;
 		class 						reader;
 	}
 

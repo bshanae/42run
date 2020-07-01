@@ -77,11 +77,10 @@ set(SOURCE_GAME
 set(SOURCE_UI
 	project/UI/UI.cpp
 
-	project/UI/rectangle/rectangle.cpp
-	project/UI/rectangle/renderer.cpp
-
-	project/UI/font/font.cpp
 	project/UI/font/symbol.cpp
+	project/UI/font/renderer.cpp
+	project/UI/font/font.cpp
+	project/UI/font/manager.cpp
 
 	project/UI/label/label.cpp
 	project/UI/label/renderer.cpp)

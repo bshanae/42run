@@ -13,18 +13,11 @@ class					UI::label::label :
 
 public :
 
-	explicit			label
-						(
-							const ivec2 &position,
-							const string &text,
-							const shared<font::font> font
-						);
+	explicit			label(const ivec2 &position, const string &text);
 						~label() override = default;
 private :
 
 	ivec2				position;
 	ivec2				size;
 	string				text;
-
-	shared<font::font>	font;
 };

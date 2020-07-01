@@ -1,5 +1,8 @@
 #include "symbol.h"
 
+#include "UI/rectangle/rectangle.h"
+#include "UI/font/renderer.h"
+
 using namespace		UI;
 
 					font::symbol::symbol(FT_Face &face)
@@ -26,7 +29,7 @@ using namespace		UI;
 
 	texture->use(false);
 
-	rectangle = make_shared<UI::rectangle::rectangle>(texture);
-	rectangle->instance->scale(vec3(size.x, size.y, 1.f));
+	rectangle = make_shared<UI::rectangle>(tag<UI::font::renderer>(), texture);
+	rectangle->instance->scale(vec3(size.x * 0.5, size.y * 0.5, 1.f));
 	rectangle->start();
 }

@@ -2,24 +2,22 @@
 
 #include "UI/namespace.h"
 
-class				UI::font::manager : public global<UI::font::manager>
+class						UI::font::manager : public global<UI::font::manager>
 {
-	friend class 	font;
+	friend class 			UI::font::font;
+	friend class 			UI::font::renderer;
+	friend class 			UI::font::reader;
 
 public :
-					manager()
-	{
-		if (FT_Init_FreeType(&library))
-			error::raise(error::id::freetype_library_error);
-	}
-					~manager()
-	{
-		FT_Done_FreeType(library);
-	}
+							manager();
+							~manager();
+
+	static void				load(const path &source, const int &width, const vec3 &color);
 
 private :
 
-	FT_Library		library;
+	FT_Library				library;
+	shared<UI::font::font>	font;
 };
 
 

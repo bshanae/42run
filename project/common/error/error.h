@@ -33,6 +33,7 @@ namespace 									common::error
 		freetype_library_error,
 		freetype_face_error,
 		freetype_symbol_error,
+		global_font_not_loaded,
 		room_bad_obstacle_type
 	};
 
@@ -59,6 +60,7 @@ namespace 									common::error
 		{id::freetype_library_error,		"UI : Can't initialize FreeType library"},
 		{id::freetype_face_error,			"UI : Can't initialize FreeType face"},
 		{id::freetype_symbol_error,			"UI : Can't initialize FreeType symbol"},
+		{id::global_font_not_loaded,		"UI : Global font is not loaded"},
 		{id::room_bad_obstacle_type,		"Game : Given type is not derived from obstacle"}
 	};
 

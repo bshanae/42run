@@ -1,8 +1,11 @@
 #include "renderer.h"
 
+#include "UI/font/font.h"
+#include "UI/font/manager.h"
+
 using namespace		UI;
 
-					rectangle::renderer::renderer()
+					font::renderer::renderer()
 {
 	program = make_unique<engine::program::program>
 	(
@@ -32,13 +35,17 @@ using namespace		UI;
 	program->use(false);
 }
 
-void				rectangle::renderer::render(const shared<engine::game_object::game_object> &object) const
+void				font::renderer::render(const shared<engine::game_object::game_object> &object) const
 {
 	engine::core::default_settings();
 	engine::core::show_polygon_back(true);
-	engine::core::use_depth_test(false);
+//	engine::core::use_depth_test(false);
 
 	program->use(true);
+
+	if (not UI::font::manager::instance()->font)
+		error::raise(error::id::global_font_not_loaded);
+	uniforms.color.upload(UI::font::manager::instance()->font->color);
 
 	for (const auto &instance : game_object::reader::render_targets(object).instances)
 		render(instance);
@@ -46,7 +53,7 @@ void				rectangle::renderer::render(const shared<engine::game_object::game_objec
 	program->use(false);
 }
 
-void				rectangle::renderer::render(const shared<model::instance> &instance) const
+void				font::renderer::render(const shared<model::instance> &instance) const
 {
 	auto			&model = model::reader::model(instance);
 

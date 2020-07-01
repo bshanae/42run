@@ -51,19 +51,7 @@ shared<scene::scene>	game::global_scene;
 
 // --------------------	UI
 
-	auto				font = make_shared<UI::font::font>
-	(
-		"./project/resources/UI/fonts/HelveticaNeue.ttc",
-		40,
-		vec3(1, 0, 0)
-	);
-
-	auto				label = make_shared<UI::label::label>
-	(
-		ivec2(720 / 2, 480 / 2),
-		"Hello",
-		font
-	);
+	auto				label = make_shared<UI::label::label>(ivec2(720 / 2, 480 / 2), "Hello");
 
 	label->start();
 	global_scene->include(label);
