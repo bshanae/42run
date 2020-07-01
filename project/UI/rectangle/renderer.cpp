@@ -57,13 +57,13 @@ void				rectangle::renderer::render(const shared<model::instance> &instance) con
 	{
 		auto		&material = model::reader::material(mesh);
 
-//		if (material->textures.ambient)
-//		{
-//			glActiveTexture(GL_TEXTURE0);
-//			material->textures.ambient->use(true);
-//		}
-//		else
-//			warning::raise(warning::id::object_without_texture);
+		if (material->textures.ambient)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			material->textures.ambient->use(true);
+		}
+		else
+			warning::raise(warning::id::object_without_texture);
 
 		glBindVertexArray(model::reader::VAO(mesh));
 		glDrawElements(GL_TRIANGLES, model::reader::indices(mesh).size(), GL_UNSIGNED_INT, nullptr);

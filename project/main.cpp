@@ -23,8 +23,8 @@ int					main()
 	engine::settings().camera_near_plane = 10.f;
 	engine::settings().camera_far_plane = 350.f;
 
-	UI::sources().vertex_shader = "project/resources/UI/shaders/label.vertex.glsl";
-	UI::sources().fragment_shader = "project/resources/UI/shaders/label.fragment.glsl";
+	UI::sources().vertex_shader = "project/resources/UI/shaders/vertex.glsl";
+	UI::sources().fragment_shader = "project/resources/UI/shaders/fragment.glsl";
 
 	game::sources().vertex_shader = "project/resources/game/shaders/vertex.glsl";
 	game::sources().fragment_shader = "project/resources/game/shaders/fragment.glsl";

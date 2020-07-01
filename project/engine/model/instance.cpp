@@ -10,9 +10,15 @@ using namespace		engine;
 	reset_rotation();
 }
 
-void				model::instance::scale(float value)
+void				model::instance::scale(vec3 value)
 {
 	data.scaling *= vec3(value);
+	transformations.scaling = glm::scale(data.scaling);
+}
+
+void				model::instance::scale(float value)
+{
+	data.scaling *= value;
 	transformations.scaling = glm::scale(data.scaling);
 }
 

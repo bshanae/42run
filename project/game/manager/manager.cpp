@@ -60,7 +60,7 @@ shared<scene::scene>	game::global_scene;
 
 	auto				label = make_shared<UI::label::label>
 	(
-		ivec2(100, 100),
+		ivec2(720 / 2, 480 / 2),
 		"Hello",
 		font
 	);

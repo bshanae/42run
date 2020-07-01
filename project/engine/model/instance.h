@@ -39,6 +39,7 @@ public :
 		return (data.rotation);
 	}
 
+	void 					scale(vec3 value);
 	void 					scale(float value);
 	void 					translate(vec3 value);
 	void 					rotate(vec3 angles);

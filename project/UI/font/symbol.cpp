@@ -27,5 +27,6 @@ using namespace		UI;
 	texture->use(false);
 
 	rectangle = make_shared<UI::rectangle::rectangle>(texture);
+	rectangle->instance->scale(vec3(size.x, size.y, 1.f));
 	rectangle->start();
 }

@@ -15,12 +15,11 @@ void				label::renderer::render(const shared<engine::game_object::game_object> &
 	}
 
 	ivec2			position_iterator = label->position;
-	vec3			position_of_symbol;
+	vec3			position_of_symbol = vec3(0.f);
 
 	for (char character : label->text)
 	{
 		auto		symbol = font::reader::find_symbol(label->font, character);
-
 		auto		rectangle = font::reader::rectangle(symbol);
 
 		auto		size = font::reader::size(symbol);
@@ -29,12 +28,9 @@ void				label::renderer::render(const shared<engine::game_object::game_object> &
 
 		position_of_symbol.x = (float)(position_iterator.x + bearing.x);// + (float)size.x / 2.f;
 		position_of_symbol.y = (float)(position_iterator.y - bearing.y);// + (float)size.y / 2.f;
-		position_of_symbol.z = 0;
 
 		rectangle->instance->reset_translation();
 		rectangle->instance->translate(position_of_symbol);
-
-		cerr << position_of_symbol.x << " : " << position_of_symbol.y << endl;
 
 		rectangle->render();
 
