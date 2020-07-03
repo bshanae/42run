@@ -83,7 +83,10 @@ set(SOURCE_UI
 	project/UI/font/manager.cpp
 
 	project/UI/label/label.cpp
-	project/UI/label/renderer.cpp)
+	project/UI/label/renderer.cpp
+
+	project/UI/icon/icon.cpp
+	project/UI/icon/renderer.cpp)
 
 set(SOURCE_MAIN
 	project/main.cpp)

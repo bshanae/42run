@@ -15,6 +15,16 @@ public :
 					~texture() override;
 
 	void			use(bool state) override;
+
+	[[nodiscard]]
+	auto			read_size() const
+	{
+		return (size);
+	}
+
+private :
+
+	ivec2			size = ivec2(0);
 };
 
 

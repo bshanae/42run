@@ -3,7 +3,6 @@
 #include "UI/namespace.h"
 
 #include "UI/font/reader.h"
-#include "UI/label/renderer.h"
 
 class					UI::label::label :
 							public engine::game_object::game_object,
@@ -12,8 +11,7 @@ class					UI::label::label :
 	friend class		UI::label::renderer;
 
 public :
-
-	explicit			label(const ivec2 &position, const string &text);
+						label(const ivec2 &position, const string &text);
 						~label() override = default;
 private :
 

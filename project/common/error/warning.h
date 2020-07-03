@@ -21,7 +21,8 @@ namespace									common::warning
 		game_object_without_renderer,
 		font_symbol_not_found,
 		object_without_texture,
-		object_is_not_a_label
+		object_is_not_a_label,
+		object_is_not_an_icon
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
@@ -36,6 +37,7 @@ namespace									common::warning
 		{id::font_symbol_not_found,			"UI : Can't find symbol"},
 		{id::object_without_texture,		"UI : Object assumed to be rectangle, doesn't have texture"},
 		{id::object_is_not_a_label,			"UI : Object is not a label"},
+		{id::object_is_not_an_icon,			"UI : Object is not an icon"}
 	};
 
 	inline bool								ignore = false;

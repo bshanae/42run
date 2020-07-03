@@ -49,8 +49,10 @@ namespace							UI
 
 	struct							sources
 	{
-		path						vertex_shader;
-		path						fragment_shader;
+		path						symbol_vertex_shader;
+		path						symbol_fragment_shader;
+		path						icon_vertex_shader;
+		path						icon_fragment_shader;
 	};
 
 	struct sources					&sources();
@@ -73,6 +75,12 @@ namespace							UI
 	namespace						label
 	{
 		class						label;
+		class						renderer;
+	}
+
+	namespace						icon
+	{
+		class						icon;
 		class						renderer;
 	}
 }

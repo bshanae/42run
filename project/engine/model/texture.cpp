@@ -13,13 +13,11 @@ using namespace		engine;
 					model::texture::texture(const path &source) :
 						texture()
 {
-	int				width;
-	int				height;
 	int				number_of_components;
 
 	stbi_set_flip_vertically_on_load(1);
 
-	auto			*data = stbi_load(source.c_str(), &width, &height, &number_of_components, 0);
+	auto			*data = stbi_load(source.c_str(), &size.x, &size.y, &number_of_components, 0);
 
 	if (not data)
 		error::raise(error::id::texture_creation_error);
@@ -44,7 +42,7 @@ using namespace		engine;
 
 	texture::use(true);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, size.x, size.y, 0, format, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

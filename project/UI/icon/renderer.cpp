@@ -1,20 +1,19 @@
 #include "renderer.h"
 
-#include "UI/font/font.h"
-#include "UI/font/manager.h"
+#include "UI/rectangle/rectangle.h"
+#include "UI/icon/icon.h"
 
 using namespace		UI;
 
-					font::renderer::renderer()
+					icon::renderer::renderer()
 {
 	program = make_unique<engine::program::program>
 	(
-		sources().symbol_vertex_shader,
-		sources().symbol_fragment_shader
+		sources().icon_vertex_shader,
+		sources().icon_fragment_shader
 	);
 
 	uniforms.texture = program->make_uniform<int>("uniform_texture");
-	uniforms.color = program->make_uniform<vec3>("uniform_color");
 	uniforms.projection = program->make_uniform<mat4>("uniform_projection");
 	uniforms.scaling = program->make_uniform<mat4>("uniform_scaling");
 	uniforms.translation = program->make_uniform<mat4>("uniform_translation");
@@ -35,24 +34,32 @@ using namespace		UI;
 	program->use(false);
 }
 
-void				font::renderer::render(const shared<engine::game_object::game_object> &object) const
+void				icon::renderer::render(const shared<engine::game_object::game_object> &object) const
 {
+	auto			icon = dynamic_pointer_cast<UI::icon::icon>(object);
+
+	if (not icon)
+	{
+		warning::raise(warning::id::object_is_not_an_icon);
+		return;
+	}
+
+	auto			rectangle = icon->rectangle;
+	auto			rectangle_as_object = dynamic_pointer_cast<game_object::game_object>(rectangle);
+	auto			targets = game_object::reader::render_targets(rectangle_as_object);
+
 	engine::core::default_settings();
 	engine::core::show_polygon_back(true);
 
 	program->use(true);
 
-	if (not UI::font::manager::instance()->font)
-		error::raise(error::id::global_font_not_loaded);
-	uniforms.color.upload(UI::font::manager::instance()->font->color);
-
-	for (const auto &instance : game_object::reader::render_targets(object).instances)
+	for (const auto &instance : targets.instances)
 		render(instance);
 
 	program->use(false);
 }
 
-void				font::renderer::render(const shared<model::instance> &instance) const
+void				icon::renderer::render(const shared<model::instance> &instance) const
 {
 	auto			&model = model::reader::model(instance);
 

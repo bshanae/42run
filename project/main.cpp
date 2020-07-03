@@ -23,8 +23,10 @@ int					main()
 	engine::settings().camera_near_plane = 10.f;
 	engine::settings().camera_far_plane = 350.f;
 
-	UI::sources().vertex_shader = "project/resources/UI/shaders/symbol.vertex.glsl";
-	UI::sources().fragment_shader = "project/resources/UI/shaders/symbol.fragment.glsl";
+	UI::sources().symbol_vertex_shader = "project/resources/UI/shaders/symbol.vertex.glsl";
+	UI::sources().symbol_fragment_shader = "project/resources/UI/shaders/symbol.fragment.glsl";
+	UI::sources().icon_vertex_shader = "project/resources/UI/shaders/icon.vertex.glsl";
+	UI::sources().icon_fragment_shader = "project/resources/UI/shaders/icon.fragment.glsl";
 
 	game::sources().vertex_shader = "project/resources/game/shaders/vertex.glsl";
 	game::sources().fragment_shader = "project/resources/game/shaders/fragment.glsl";
@@ -49,6 +51,7 @@ int					main()
 	engine::core::register_renderer<game::renderer>();
 	engine::core::register_renderer<UI::font::renderer>();
 	engine::core::register_renderer<UI::label::renderer>();
+	engine::core::register_renderer<UI::icon::renderer>();
 
 	engine::core::execute();
 

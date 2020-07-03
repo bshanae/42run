@@ -34,8 +34,7 @@ void				core::process_preparing()
 	{
 		if (object->renderer_code == typeid(null_renderer).hash_code())
 			object->renderer_state = game_object::renderer_state::set_but_null;
-
-		if (auto iterator = registered_renderers.find(object->renderer_code); iterator == registered_renderers.end())
+		else if (auto iterator = registered_renderers.find(object->renderer_code); iterator == registered_renderers.end())
 			error::raise(error::id::renderer_not_found);
 		else
 		{

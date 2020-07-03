@@ -1,5 +1,7 @@
 #include "label.h"
 
+#include "UI/label/renderer.h"
+
 using namespace		UI;
 
 					label::label::label(const ivec2 &position, const string &text) :
