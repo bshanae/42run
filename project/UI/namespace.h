@@ -41,6 +41,7 @@ namespace							UI
 	template						<typename type>
 	using							global = common::global<type>;
 
+	namespace						converter = engine::converter;
 	namespace						game_object = engine::game_object;
 	namespace						model = engine::model;
 	namespace						program = engine::program;

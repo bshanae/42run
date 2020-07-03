@@ -4,9 +4,9 @@
 
 using namespace		UI;
 
-					label::label::label(const ivec2 &position, const string &text) :
+					label::label::label(const vec2 &position, const string &text) :
 						engine::game_object::game_object(tag<UI::label::renderer>()),
-						position(position),
+						position(converter::to_absolute(position)),
 						text(text)
 {
 	size = ivec2(0);

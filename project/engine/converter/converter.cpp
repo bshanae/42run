@@ -69,3 +69,17 @@ aiMatrix4x4			converter::to_assimp(const mat4 &source)
 		source[0][3], source[1][3], source[2][3], source[3][3]
 	));
 }
+
+ivec2				converter::to_absolute(const vec2 &source)
+{
+	auto			window_size = engine::settings().window_size;
+
+	return {window_size.x * source.x, window_size.y * source.y};
+}
+
+ivec2				converter::to_relative(const vec2 &source)
+{
+	auto			window_size = engine::settings().window_size;
+
+	return {source.x / window_size.x, source.y / window_size.y};
+}

@@ -51,8 +51,8 @@ shared<scene::scene>	game::global_scene;
 
 // --------------------	UI
 
-	auto				label = make_shared<UI::label::label>(ivec2(720 / 2, 480 / 2), "Hello");
-	auto				icon = make_shared<UI::icon::icon>(ivec2(720 / 2, 480 / 2), "/Users/belchenkovova/Downloads/Shape-Circle-48.png");
+	auto				label = make_shared<UI::label::label>(vec2(0.5, 0.5), "Hello");
+	auto				icon = make_shared<UI::icon::icon>(vec2(0.5, 0.5), "/Users/belchenkovova/Downloads/Shape-Circle-48.png");
 
 //	label->start();
 //	global_scene->include(label);

@@ -34,6 +34,7 @@ namespace							game
 	template						<typename type>
 	using							unique = std::unique_ptr<type>;
 
+	using							engine::vec2;
 	using							engine::ivec2;
 	using							engine::vec3;
 	using							engine::vec4;

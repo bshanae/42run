@@ -8,7 +8,7 @@ class					UI::icon::icon : public engine::game_object::game_object
 
 public :
 
-	explicit			icon(const ivec2 &position, const path &source);
+	explicit			icon(const vec2 &position, const path &source);
 						~icon() override = default;
 private :
 

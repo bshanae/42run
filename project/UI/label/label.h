@@ -11,7 +11,7 @@ class					UI::label::label :
 	friend class		UI::label::renderer;
 
 public :
-						label(const ivec2 &position, const string &text);
+						label(const vec2 &position, const string &text);
 						~label() override = default;
 private :
 
