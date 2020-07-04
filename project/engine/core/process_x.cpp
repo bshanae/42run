@@ -78,9 +78,6 @@ void				core::process_animating()
 
 void				core::process_updating()
 {
-	if (not scene)
-		return ;
-
 	for (auto &object : game_object::game_object::list)
 		if (object->state == game_object::state::working)
 			object->update();

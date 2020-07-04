@@ -34,7 +34,7 @@ namespace 									common::error
 		freetype_face_error,
 		freetype_symbol_error,
 		global_font_not_loaded,
-		room_bad_obstacle_type
+		room_bad_obstacle_type,
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;

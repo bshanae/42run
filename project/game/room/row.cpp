@@ -48,7 +48,7 @@ void					room::row::unlink_obstacle()
 	}
 }
 
-bool					room::row::does_intersects(const float_range &character_range) const
+bool					room::row::does_intersect(const float_range &character_range) const
 {
 	float_range			my_range = room::row_range + group->translation().z;
 

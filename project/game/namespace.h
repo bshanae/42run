@@ -80,6 +80,7 @@ namespace							game
 		path						mac;
 		path						keyboard;
 		path						character;
+		path						circle;
 	};
 
 	struct sources					&sources();

@@ -10,10 +10,10 @@ public :
 
 	explicit			icon(const vec2 &position, const path &source);
 						~icon() override = default;
-private :
 
-	ivec2				position;
-	ivec2				size;
+	void				reposition(const vec2 &position);
+
+private :
 
 	shared<rectangle>	rectangle;
 };

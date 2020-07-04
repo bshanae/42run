@@ -107,6 +107,6 @@ void							room::build_unique_groups()
 		}
 
 		game_object::render_target(group);
-		rows.emplace_back(group);
+		rows.push_back(make_shared<row>(group));
 	}
 }

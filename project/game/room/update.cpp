@@ -13,12 +13,12 @@ void					room::update()
 	auto				nearest_row = rows.front();
 	auto				furthest_row = rows.back();
 
-	auto				nearest_group = nearest_row.read_group();
-	auto				furthest_group = furthest_row.read_group();
+	auto				nearest_group = nearest_row->read_group();
+	auto				furthest_group = furthest_row->read_group();
 
 //										Rows and obstacles movement
 	for (auto &row : rows)
-		row.move(movement);
+		row->move(movement);
 
 //										Replacing first row with last
 	if (nearest_group->translation().z > size.z)
@@ -29,8 +29,8 @@ void					room::update()
 		nearest_group->translate(furthest_group->translation());
 		nearest_group->translate(row_offset);
 
-		nearest_row.make_hollow(false);
-		nearest_row.unlink_obstacle();
+		nearest_row->make_hollow(false);
+		nearest_row->unlink_obstacle();
 
 		rows.push_back(nearest_row);
 		rows.pop_front();
@@ -39,7 +39,7 @@ void					room::update()
 		int				count = settings().number_of_faded_rows;
 
 		for (auto iterator = rows.rbegin(); iterator != rows.rend(); iterator++)
-			(*iterator).make_hollow_temporarily(count-- > 0);
+			(*iterator)->make_hollow_temporarily(count-- > 0);
 	}
 
 //						Obstacles spawning

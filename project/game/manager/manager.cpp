@@ -52,13 +52,18 @@ shared<scene::scene>	game::global_scene;
 // --------------------	UI
 
 	auto				label = make_shared<UI::label::label>(vec2(0.5, 0.5), "Hello");
-	auto				icon = make_shared<UI::icon::icon>(vec2(0.5, 0.5), "/Users/belchenkovova/Downloads/Shape-Circle-48.png");
+
+	for (auto &circle : circles)
+	{
+		circle = make_shared<UI::icon::icon>(vec2(0.9, 0.5), sources().circle);
+		global_scene->include(circle);
+		circle->start();
+		circle->pause(true);
+	}
+	show_health();
 
 //	label->start();
 //	global_scene->include(label);
-
-	icon->start();
-	global_scene->include(icon);
 }
 
 void					manager::update()
@@ -66,15 +71,74 @@ void					manager::update()
 	static int			collision_i;
 	const auto			character_range = character->calculate_range();
 
-	for (int i = room::dangerous_rows_for_character.lower; i <= room::dangerous_rows_for_character.higher; i++)
-	{
-		if (not (room->rows[i].blocked_lines() & character->current_line))
-			continue ;
-		if (not (room->rows[i].blocked_states() & character->current_state))
-			continue ;
-		if (not room->rows[i].does_intersects(character_range))
-			continue ;
+	static
+	shared<room::row>	last_intersected_row;
+	shared<room::row>	dangerous_row;
 
-		cerr << "COLLISION" << collision_i++ << endl;
-	}
+	for (auto iterator = room->rows.rbegin(); iterator != room->rows.rend(); ++iterator)
+		if ((*iterator)->does_intersect(character_range))
+		{
+			dangerous_row = *iterator;
+			break ;
+		}
+
+	if (not dangerous_row)
+		return ;
+	if (last_intersected_row == dangerous_row)
+		return ;
+
+	if (not (dangerous_row->blocked_lines() & character->current_line))
+		return ;
+	if (not (dangerous_row->blocked_states() & character->current_state))
+		return ;
+
+	last_intersected_row = dangerous_row;
+
+	cerr << "------------------------> Collision with " << dangerous_row->id << collision_i++ << endl;
+	character->health--;
+	show_health();
 }
+
+void					manager::show_health()
+{
+	switch (character->health)
+	{
+		case 0 :
+			circles[0]->pause(true);
+			circles[1]->pause(true);
+			circles[2]->pause(true);
+			show_game_over();
+			break ;
+
+		case 1 :
+			circles[0]->pause(false);
+			circles[1]->pause(true);
+			circles[2]->pause(true);
+			circles[0]->reposition(vec2(0.8, 0.5));
+			break ;
+
+		case 2 :
+			circles[0]->pause(false);
+			circles[1]->pause(false);
+			circles[2]->pause(true);
+			circles[0]->reposition(vec2(0.8, 0.42));
+			circles[1]->reposition(vec2(0.8, 0.58));
+			break ;
+
+		case 3 :
+			circles[0]->pause(false);
+			circles[1]->pause(false);
+			circles[2]->pause(false);
+			circles[0]->reposition(vec2(0.8, 0.35));
+			circles[1]->reposition(vec2(0.8, 0.5));
+			circles[2]->reposition(vec2(0.8, 0.65));
+			break ;
+
+		default :
+			warning::raise(warning::id::unexpected_health_value);
+	}
+
+}
+
+void					manager::show_game_over()
+{}

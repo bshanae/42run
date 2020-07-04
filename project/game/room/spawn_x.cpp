@@ -27,10 +27,10 @@ void				room::spawn_chair()
 	auto			chair_as_obstacle = static_pointer_cast<obstacle::obstacle>(chair);
 
 	global_scene->include(chair_as_object);
-	rows.back().link_obstacle(chair_as_obstacle);
+	rows.back()->link_obstacle(chair_as_obstacle);
 }
 
 void				room::spawn_hollow_row()
 {
-	rows.back().make_hollow(true);
+	rows.back()->make_hollow(true);
 }

@@ -63,6 +63,8 @@ private :
 
 	vec3 					current_position = middle_position;
 	vec3					target_position = middle_position;
+
+	int						health = 3;
 };
 
 

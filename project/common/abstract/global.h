@@ -13,9 +13,8 @@ namespace							common
 
 		static void					initialize()
 		{
-			global					temporary;
-
-			pointer = temporary.initializer();
+			pointer = std::make_shared<final_type>();
+			std::static_pointer_cast<global>(pointer)->initializer(pointer);
 		}
 
 	protected :
@@ -28,11 +27,8 @@ namespace							common
 			return (pointer);
 		}
 
-		virtual
-		std::shared_ptr<final_type>	initializer()
-		{
-			return (std::make_shared<final_type>());
-		}
+		virtual void				initializer(std::shared_ptr<final_type>)
+		{}
 
 	private :
 

@@ -11,5 +11,5 @@ void							room::prepare_offset()
 void							room::offset_groups()
 {
 	for (int i = 1; i < number_of_rows; i++)
-		rows[i].read_group()->translate(row_offset * vec3(i));
+		rows[i]->read_group()->translate(row_offset * vec3(i));
 }

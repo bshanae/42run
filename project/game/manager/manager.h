@@ -17,16 +17,18 @@ public :
 
 private :
 
-	shared<game::manager>	initializer() override
+	void					initializer(std::shared_ptr<game::manager> pointer) override
 	{
-		auto				result = make_shared<game::manager>();
-
-		result->start();
-		return (result);
-	};
+		pointer->start();
+	}
 
 	shared<room>			room;
 	shared<character>		character;
 
 	void					update() override;
+
+	shared<UI::icon::icon>	circles[3];
+
+	void					show_health();
+	void					show_game_over();
 };

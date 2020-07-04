@@ -35,6 +35,7 @@ int					main()
 	game::sources().mac = "project/resources/game/models/iMac.obj";
 	game::sources().keyboard = "project/resources/game/models/Keyboard.obj";
 	game::sources().character = "project/resources/game/models/Character.fbx";
+	game::sources().circle = "project/resources/game/icons/circle.png";
 
 	game::settings().number_of_faded_rows = 2;
 	game::settings().obstacle_generation_wait = 5;

@@ -3,6 +3,7 @@ project(42run)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Winline")
+SET(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)

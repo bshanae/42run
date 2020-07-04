@@ -48,7 +48,9 @@ private :
 	{
 										row(const shared<model::group> &group) :
 											group(group)
-										{}
+		{
+			id = next_id++;
+		}
 
 		void							move(const vec3 &value);
 
@@ -58,7 +60,7 @@ private :
 		void							link_obstacle(const shared<obstacle::obstacle> &obstacle);
 		void							unlink_obstacle();
 
-		bool							does_intersects(const float_range &character_range) const;
+		bool							does_intersect(const float_range &character_range) const;
 
 		[[nodiscard]]
 		shared<model::group>			read_group() const;
@@ -68,7 +70,11 @@ private :
 		[[nodiscard]]
 		state_wrapper					blocked_states() const;
 
+		int								id;
+
 	private :
+
+		static inline int				next_id = 0;
 
 		shared<model::group>			group;
 		shared<obstacle::obstacle>		obstacle;
@@ -78,7 +84,7 @@ private :
 		bool							is_hollow = false;
 	};
 
-	deque<row>							rows;
+	deque<shared<row>>					rows;
 
 //										Distance between neighbor rows, set in prepare_offset method
 	static inline vec3					row_offset = vec3(0.f);
@@ -121,8 +127,6 @@ private :
 //										Obstacles
 	void								spawn_chair();
 	void								spawn_hollow_row();
-
-	static inline int_range				dangerous_rows_for_character = int_range(0, 2);
 };
 
 
