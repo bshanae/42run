@@ -1,11 +1,11 @@
 #include "symbol.h"
 
-#include "UI/rectangle/rectangle.h"
 #include "UI/font/renderer.h"
 
 using namespace		UI;
 
-					font::symbol::symbol(FT_Face &face)
+					font::symbol::symbol(FT_Face &face) :
+						widget(tag<UI::font::renderer>())
 {
 	size = ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
 	bearing = ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
@@ -29,7 +29,6 @@ using namespace		UI;
 
 	texture->use(false);
 
-	rectangle = make_shared<UI::rectangle>(tag<UI::font::renderer>(), texture);
-	rectangle->instance->scale(vec3(size.x * 0.5, size.y * 0.5, 1.f));
-	rectangle->start();
+	set_texture(texture);
+	instance->scale(vec3(size.x * 0.5, size.y * 0.5, 1.f));
 }

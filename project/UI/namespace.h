@@ -60,9 +60,7 @@ namespace							UI
 
 //	------------------------------- Local classes
 
-	class							renderer;
-
-	class							rectangle;
+	class							widget;
 
 	namespace						font
 	{

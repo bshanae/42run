@@ -43,9 +43,9 @@ protected :
 	}
 
 	[[nodiscard]]
-	auto			rectangle(const shared<UI::font::symbol> &symbol) const
+	auto			instance(const shared<UI::font::symbol> &symbol) const
 	{
-		return (symbol->rectangle);
+		return (symbol->instance);
 	}
 };
 
