@@ -6,4 +6,3 @@
 #include "UI/label/label.h"
 #include "UI/label/renderer.h"
 #include "UI/icon/icon.h"
-#include "UI/icon/renderer.h"

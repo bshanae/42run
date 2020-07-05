@@ -5,18 +5,20 @@
 
 using namespace		UI;
 
-					icon::renderer::renderer()
+					rectangle::renderer::renderer()
 {
 	program = make_unique<engine::program::program>
 	(
-		sources().icon_vertex_shader,
-		sources().icon_fragment_shader
+		sources().rectangle_vertex_shader,
+		sources().rectangle_fragment_shader
 	);
 
-	uniforms.texture = program->make_uniform<int>("uniform_texture");
 	uniforms.projection = program->make_uniform<mat4>("uniform_projection");
 	uniforms.scaling = program->make_uniform<mat4>("uniform_scaling");
 	uniforms.translation = program->make_uniform<mat4>("uniform_translation");
+	uniforms.texture = program->make_uniform<int>("uniform_texture");
+	uniforms.color = program->make_uniform<vec3>("uniform_color");
+	uniforms.use_texture = program->make_uniform<int>("uniform_use_texture");
 
 	auto			projection = glm::ortho
 	(
@@ -34,32 +36,28 @@ using namespace		UI;
 	program->use(false);
 }
 
-void				icon::renderer::render(const shared<engine::game_object::game_object> &object) const
+void				rectangle::renderer::render(const shared<engine::game_object::game_object> &object) const
 {
-	auto			icon = dynamic_pointer_cast<UI::icon::icon>(object);
+	auto			rectangle = dynamic_pointer_cast<UI::rectangle::rectangle>(object);
 
-	if (not icon)
+	if (not rectangle)
 	{
-		warning::raise(warning::id::object_is_not_an_icon);
+		warning::raise(warning::id::object_improper_type);
 		return;
 	}
-
-	auto			rectangle = icon->rectangle;
-	auto			rectangle_as_object = dynamic_pointer_cast<game_object::game_object>(rectangle);
-	auto			targets = game_object::reader::render_targets(rectangle_as_object);
 
 	engine::core::default_settings();
 	engine::core::show_polygon_back(true);
 
 	program->use(true);
 
-	for (const auto &instance : targets.instances)
+	for (const auto &instance : game_object::reader::render_targets(rectangle).instances)
 		render(instance);
 
 	program->use(false);
 }
 
-void				icon::renderer::render(const shared<model::instance> &instance) const
+void				rectangle::renderer::render(const shared<model::instance> &instance) const
 {
 	auto			&model = model::reader::model(instance);
 
@@ -76,7 +74,8 @@ void				icon::renderer::render(const shared<model::instance> &instance) const
 			material->textures.ambient->use(true);
 		}
 		else
-			warning::raise(warning::id::object_without_texture);
+			uniforms.color.upload(material->unite.ambient);
+		uniforms.use_texture.upload(material->textures.ambient != nullptr);
 
 		glBindVertexArray(model::reader::VAO(mesh));
 		glDrawElements(GL_TRIANGLES, model::reader::indices(mesh).size(), GL_UNSIGNED_INT, nullptr);

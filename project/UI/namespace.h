@@ -50,10 +50,10 @@ namespace							UI
 
 	struct							sources
 	{
+		path						rectangle_vertex_shader;
+		path						rectangle_fragment_shader;
 		path						symbol_vertex_shader;
 		path						symbol_fragment_shader;
-		path						icon_vertex_shader;
-		path						icon_fragment_shader;
 	};
 
 	struct sources					&sources();
@@ -62,7 +62,11 @@ namespace							UI
 
 	class							renderer;
 
-	class							rectangle;
+	namespace						rectangle
+	{
+		class						rectangle;
+		class						renderer;
+	}
 
 	namespace						font
 	{
@@ -82,6 +86,5 @@ namespace							UI
 	namespace						icon
 	{
 		class						icon;
-		class						renderer;
 	}
 }

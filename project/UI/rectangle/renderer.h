@@ -2,7 +2,7 @@
 
 #include "UI/namespace.h"
 
-class							UI::icon::renderer :
+class							UI::rectangle::renderer :
 									public engine::renderer
 {
 public :
@@ -20,10 +20,12 @@ private :
 
 	struct
 	{
-		uniform<int>			texture;
 		uniform<mat4>			projection;
 		uniform<mat4>			scaling;
 		uniform<mat4>			translation;
+		uniform<int>			texture;
+		uniform<vec3>			color;
+		uniform<int>			use_texture;
 	}							uniforms;
 };
 

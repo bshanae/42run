@@ -16,7 +16,7 @@ private :
 
 	static constexpr int	size_of_map = 128;
 
-	FT_Face					face;
+	FT_Face					face = nullptr;
 
 	using 					map_type = map<char, shared<symbol>>;
 	map_type				map;

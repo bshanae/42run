@@ -21,8 +21,7 @@ namespace									common::warning
 		game_object_without_renderer,
 		font_symbol_not_found,
 		object_without_texture,
-		object_is_not_a_label,
-		object_is_not_an_icon,
+		object_improper_type,
 		unexpected_health_value
 	};
 
@@ -37,8 +36,7 @@ namespace									common::warning
 		{id::game_object_without_renderer,	"Engine : Game object doesn't have renderer"},
 		{id::font_symbol_not_found,			"UI : Can't find symbol"},
 		{id::object_without_texture,		"UI : Object assumed to be rectangle, doesn't have texture"},
-		{id::object_is_not_a_label,			"UI : Object is not a label"},
-		{id::object_is_not_an_icon,			"UI : Object is not an icon"},
+		{id::object_improper_type,			"UI : Object has improper type"},
 		{id::unexpected_health_value,		"Game : Unexpected health value"}
 	};
 
