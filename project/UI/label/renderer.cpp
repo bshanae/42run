@@ -15,11 +15,8 @@ void				label::renderer::render(const shared<engine::game_object::game_object> &
 		return ;
 	}
 
-	ivec2			position_iterator = label->position;
+	ivec2			position_iterator = label->text_position;
 	vec3			position_of_symbol = vec3(0.f);
-
-	position_iterator.x -= label->size.x / 2;
-	position_iterator.y += label->size.y / 2;
 
 	for (char character : label->text)
 	{

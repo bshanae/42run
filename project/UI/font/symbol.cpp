@@ -1,8 +1,11 @@
 #include "symbol.h"
 
+#include "UI/font/renderer.h"
+
 using namespace		UI;
 
 					font::symbol::symbol(FT_Face &face) :
+						rectangle(tag<UI::font::renderer>()),
 						size(0),
 						bearing(0)
 {

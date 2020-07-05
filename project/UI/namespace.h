@@ -79,6 +79,13 @@ namespace							UI
 
 	namespace						label
 	{
+		enum class					alignment
+		{
+			center,
+			left,
+			right
+		};
+
 		class						label;
 		class						renderer;
 	}

@@ -11,11 +11,21 @@ class					UI::label::label :
 	friend class		UI::label::renderer;
 
 public :
-						label(const vec2 &position, const string &text);
+						label
+						(
+							const vec2 &position,
+							const string &text,
+							alignment alignment = alignment::center
+						);
 						~label() override = default;
+
+	void				change_text(const string &text);
+
 private :
 
 	ivec2				position;
-	ivec2				size;
+	enum alignment		alignment;
+
 	string				text;
+	ivec2				text_position;
 };

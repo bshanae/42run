@@ -12,7 +12,7 @@ public :
 	explicit			icon(const vec2 &position, const path &source);
 						~icon() override = default;
 
-	void				reposition(const vec2 &position);
+	void				change_position(const vec2 &position);
 };
 
 

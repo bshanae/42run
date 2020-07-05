@@ -60,10 +60,10 @@ shared<scene::scene>	game::global_scene;
 	}
 	show_health();
 
-	auto				label = make_shared<UI::label::label>(vec2(0.5, 0.5), "Hello");
+	auto				label = make_shared<UI::label::label>(vec2(1., 0.5), "Hello", UI::label::alignment::right);
 
-//	label->start();
-//	global_scene->include(label);
+	label->start();
+	global_scene->include(label);
 
 	auto				frame = make_shared<UI::frame::frame>
 	(
@@ -74,8 +74,8 @@ shared<scene::scene>	game::global_scene;
 		vec3(0.15f)
 	);
 
-	frame->start();
-	global_scene->include(frame);
+//	frame->start();
+//	global_scene->include(frame);
 }
 
 void					manager::update()
@@ -126,24 +126,24 @@ void					manager::show_health()
 			circles[0]->pause(false);
 			circles[1]->pause(true);
 			circles[2]->pause(true);
-			circles[0]->reposition(vec2(0.8, 0.5));
+			circles[0]->change_position(vec2(0.8, 0.5));
 			break ;
 
 		case 2 :
 			circles[0]->pause(false);
 			circles[1]->pause(false);
 			circles[2]->pause(true);
-			circles[0]->reposition(vec2(0.8, 0.42));
-			circles[1]->reposition(vec2(0.8, 0.58));
+			circles[0]->change_position(vec2(0.8, 0.42));
+			circles[1]->change_position(vec2(0.8, 0.58));
 			break ;
 
 		case 3 :
 			circles[0]->pause(false);
 			circles[1]->pause(false);
 			circles[2]->pause(false);
-			circles[0]->reposition(vec2(0.8, 0.35));
-			circles[1]->reposition(vec2(0.8, 0.5));
-			circles[2]->reposition(vec2(0.8, 0.65));
+			circles[0]->change_position(vec2(0.8, 0.35));
+			circles[1]->change_position(vec2(0.8, 0.5));
+			circles[2]->change_position(vec2(0.8, 0.65));
 			break ;
 
 		default :

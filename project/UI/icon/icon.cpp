@@ -9,10 +9,10 @@ using namespace		UI;
 
 	build(texture);
 	instance->scale(vec3(size.x * 0.5, size.y * 0.5, 1.f));
-	reposition(position);
+	change_position(position);
 }
 
-void				icon::icon::reposition(const vec2 &position)
+void				icon::icon::change_position(const vec2 &position)
 {
 	auto			new_position = converter::to_absolute(position);
 
