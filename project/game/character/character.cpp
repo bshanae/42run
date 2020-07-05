@@ -8,9 +8,9 @@ using namespace		game;
 {
 	auto			flags = model::flag::triangulate;
 
-	common::warning::ignore = true;
+	common::warning::is_muted = true;
 	model = make_shared<model::model>(sources().character, flags);
-	common::warning::ignore = false;
+	common::warning::is_muted = false;
 
 	instance = make_shared<model::instance>(model);
 

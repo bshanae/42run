@@ -43,7 +43,7 @@ void				core::process_preparing()
 		}
 	};
 
-	for (auto &object : game_object::game_object::list)
+	for (auto &object : game_object::game_object::started_objects)
 		if (not object->renderer)
 			fill_renderer(object);
 }
@@ -78,7 +78,7 @@ void				core::process_animating()
 
 void				core::process_updating()
 {
-	for (auto &object : game_object::game_object::list)
+	for (auto &object : game_object::game_object::started_objects)
 		if (object->state == game_object::state::working)
 			object->update();
 }

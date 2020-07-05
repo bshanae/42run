@@ -2,6 +2,10 @@
 
 int					main()
 {
+#if DEBUG_STATE
+	common::warning::is_critical = true;
+#endif
+
 	common::seed = 42;
 
 	engine::settings().window_size = engine::ivec2(720, 480);

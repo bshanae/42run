@@ -259,7 +259,7 @@ pair<shared<model::bone>, int>	model::loader::find_bone(const string &name)
 	warning::raise(warning::id::model_bone_not_found);
 
 #if DEBUG_STATE
-	if (not warning::ignore)
+	if (not warning::is_muted)
 		cout << "Name = " << name << endl;
 #endif
 

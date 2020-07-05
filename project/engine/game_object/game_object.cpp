@@ -10,7 +10,7 @@ void				game_object::game_object::start()
 		error::raise(error::id::game_object_bad_logic);
 
 	state = state::working;
-	list.push_back(shared_from_this());
+	started_objects.push_back(shared_from_this());
 }
 
 void				game_object::game_object::pause(bool state)
@@ -23,11 +23,16 @@ void				game_object::game_object::pause(bool state)
 
 void				game_object::game_object::stop()
 {
-	auto			iterator = find(list.begin(), list.end(), shared_from_this());
+	auto			iterator = find
+	(
+		started_objects.begin(),
+		started_objects.end(),
+		shared_from_this()
+	);
 
 	state = state::stopped;
-	if (iterator == list.end())
-		list.erase(iterator);
+	if (iterator == started_objects.end())
+		started_objects.erase(iterator);
 }
 
 void				game_object::game_object::render()

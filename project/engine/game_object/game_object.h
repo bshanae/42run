@@ -62,6 +62,7 @@ private :
 
 	enum state					state = state::waiting;
 
-	using						list_type = list<shared<game_object>>;
-	static inline list_type		list;
+	static
+	inline
+	list<shared<game_object>>	started_objects;
 };

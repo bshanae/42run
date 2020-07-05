@@ -13,8 +13,10 @@ namespace 									common::error
 {
 	enum class								id
 	{
+//		Common
 		unimplemented_virtual_method,
 		empty_global_object,
+//		Engine
 		GLFW_error,
 		GLEW_error,
 		ASSIMP_error,
@@ -30,18 +32,22 @@ namespace 									common::error
 		model_too_many_bones,
 		game_object_bad_logic,
 		light_bad_input,
+//		UI
 		freetype_library_error,
 		freetype_face_error,
 		freetype_symbol_error,
 		global_font_not_loaded,
+//		Game
 		room_bad_obstacle_type,
 	};
 
 	using									messages_type = const std::unordered_map<id, const char *>;
 	messages_type							messages =
 	{
+//		Common
 		{id::unimplemented_virtual_method,	"A virtual method is not implemented"},
 		{id::empty_global_object,         	"A global object is not initialized"},
+//		Engine
 		{id::GLFW_error,                  	"Engine : GLFW error"},
 		{id::GLEW_error,                  	"Engine : GLAD error"},
 		{id::ASSIMP_error,                	"Engine : ASSIMP error"},
@@ -57,10 +63,12 @@ namespace 									common::error
 		{id::model_too_many_bones,        	"Engine : Mesh has too many bones"},
 		{id::game_object_bad_logic,			"Engine : Bad usage of game object"},
 		{id::light_bad_input,				"Engine : Bad input arguments for constructor"},
+//		UI
 		{id::freetype_library_error,		"UI : Can't initialize FreeType library"},
 		{id::freetype_face_error,			"UI : Can't initialize FreeType face"},
 		{id::freetype_symbol_error,			"UI : Can't initialize FreeType symbol"},
 		{id::global_font_not_loaded,		"UI : Global font is not loaded"},
+//		Game
 		{id::room_bad_obstacle_type,		"Game : Given type is not derived from obstacle"}
 	};
 
