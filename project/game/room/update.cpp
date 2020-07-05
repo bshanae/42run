@@ -24,6 +24,7 @@ void					room::update()
 	if (nearest_group->translation().z > size.z)
 	{
 		rows_was_swapped = true;
+		rows_swap_counter++;
 
 		nearest_group->reset_translation();
 		nearest_group->translate(furthest_group->translation());

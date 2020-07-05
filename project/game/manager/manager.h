@@ -7,28 +7,29 @@
 #include "game/room/room.h"
 #include "game/obstacle/chair.h"
 
-class						game::manager :
-								public global<game::manager>,
-								public game_object::game_object
+class							game::manager :
+									public global<game::manager>,
+									public game_object::game_object
 {
 public :
-							manager();
-							~manager() override = default;
+								manager();
+								~manager() override = default;
 
 private :
 
-	void					initializer(std::shared_ptr<game::manager> pointer) override
+	void						initializer(std::shared_ptr<game::manager> pointer) override
 	{
 		pointer->start();
 	}
 
-	shared<room>			room;
-	shared<character>		character;
+	shared<room>				room;
+	shared<character>			character;
 
-	void					update() override;
+	void						update() override;
 
-	shared<UI::icon::icon>	circles[3];
+	shared<UI::label::label>	score;
+	shared<UI::icon::icon>		circles[3];
 
-	void					show_health();
-	void					show_game_over();
+	void						show_health();
+	void						show_game_over();
 };

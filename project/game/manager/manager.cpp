@@ -60,10 +60,10 @@ shared<scene::scene>	game::global_scene;
 	}
 	show_health();
 
-	auto				label = make_shared<UI::label::label>(vec2(1., 0.5), "Hello", UI::label::alignment::right);
+	score = make_shared<UI::label::label>(vec2(0.98, 0.2), "0", UI::label::alignment::right);
 
-	label->start();
-	global_scene->include(label);
+	score->start();
+	global_scene->include(score);
 
 	auto				frame = make_shared<UI::frame::frame>
 	(
@@ -87,6 +87,8 @@ void					manager::update()
 	shared<room::row>	last_intersected_row;
 	shared<room::row>	dangerous_row;
 
+	score->change_text(to_string(room->rows_swap_counter));
+
 	for (auto iterator = room->rows.rbegin(); iterator != room->rows.rend(); ++iterator)
 		if ((*iterator)->does_intersect(character_range))
 		{
@@ -106,7 +108,7 @@ void					manager::update()
 
 	last_intersected_row = dangerous_row;
 
-	cerr << "------------------------> Collision with " << dangerous_row->id << collision_i++ << endl;
+	cerr << "Collision" << collision_i++ << endl;
 	character->health--;
 	show_health();
 }

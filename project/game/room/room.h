@@ -48,9 +48,7 @@ private :
 	{
 										row(const shared<model::group> &group) :
 											group(group)
-		{
-			id = next_id++;
-		}
+										{}
 
 		void							move(const vec3 &value);
 
@@ -70,11 +68,7 @@ private :
 		[[nodiscard]]
 		state_wrapper					blocked_states() const;
 
-		int								id;
-
 	private :
-
-		static inline int				next_id = 0;
 
 		shared<model::group>			group;
 		shared<obstacle::obstacle>		obstacle;
@@ -85,6 +79,7 @@ private :
 	};
 
 	deque<shared<row>>					rows;
+	int									rows_swap_counter = 0;
 
 //										Distance between neighbor rows, set in prepare_offset method
 	static inline vec3					row_offset = vec3(0.f);

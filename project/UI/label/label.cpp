@@ -12,8 +12,7 @@ using namespace		UI;
 					) :
 						engine::game_object::game_object(tag<UI::label::renderer>()),
 						position(converter::to_absolute(position)),
-						alignment(alignment),
-						text(text)
+						alignment(alignment)
 {
 	change_text(text);
 }
@@ -21,6 +20,8 @@ using namespace		UI;
 void				label::label::change_text(const string &text)
 {
 	auto			size = ivec2(0);
+
+	this->text = text;
 
 	for (char character : text)
 	{
