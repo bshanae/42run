@@ -89,7 +89,10 @@ set(SOURCE_UI
 	project/UI/label/label.cpp
 	project/UI/label/renderer.cpp
 
-	project/UI/icon/icon.cpp)
+	project/UI/icon/icon.cpp
+
+	project/UI/frame/frame.cpp
+	project/UI/frame/renderer.cpp)
 
 set(SOURCE_MAIN
 	project/main.cpp)

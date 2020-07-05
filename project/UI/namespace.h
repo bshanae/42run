@@ -87,4 +87,10 @@ namespace							UI
 	{
 		class						icon;
 	}
+
+	namespace						frame
+	{
+		class						frame;
+		class						renderer;
+	}
 }

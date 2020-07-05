@@ -57,6 +57,7 @@ int					main()
 	engine::core::register_renderer<UI::font::renderer>();
 	engine::core::register_renderer<UI::rectangle::renderer>();
 	engine::core::register_renderer<UI::label::renderer>();
+	engine::core::register_renderer<UI::frame::renderer>();
 
 	engine::core::execute();
 

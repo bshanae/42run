@@ -7,7 +7,7 @@
 class						UI::rectangle::rectangle :
 								public engine::game_object::game_object
 {
-protected :
+public  :
 
 	template				<typename renderer_type = UI::rectangle::renderer>
 							rectangle(tag<renderer_type> tag = common::tag<UI::rectangle::renderer>()) :

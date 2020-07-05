@@ -51,8 +51,6 @@ shared<scene::scene>	game::global_scene;
 
 // --------------------	UI
 
-	auto				label = make_shared<UI::label::label>(vec2(0.5, 0.5), "Hello");
-
 	for (auto &circle : circles)
 	{
 		circle = make_shared<UI::icon::icon>(vec2(0.9, 0.5), sources().circle);
@@ -62,8 +60,22 @@ shared<scene::scene>	game::global_scene;
 	}
 	show_health();
 
+	auto				label = make_shared<UI::label::label>(vec2(0.5, 0.5), "Hello");
+
 //	label->start();
 //	global_scene->include(label);
+
+	auto				frame = make_shared<UI::frame::frame>
+	(
+		vec2(0.5f, 0.5f),
+		vec2(0.1f, 0.1f),
+		vec3(0.2f),
+		0.05f,
+		vec3(0.15f)
+	);
+
+	frame->start();
+	global_scene->include(frame);
 }
 
 void					manager::update()
