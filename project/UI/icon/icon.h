@@ -2,9 +2,7 @@
 
 #include "UI/namespace.h"
 
-#include "UI/widget/widget.h"
-
-class					UI::icon::icon : public UI::widget
+class					UI::icon::icon : public engine::game_object::game_object
 {
 	friend class		UI::icon::renderer;
 
@@ -14,6 +12,10 @@ public :
 						~icon() override = default;
 
 	void				reposition(const vec2 &position);
+
+private :
+
+	shared<rectangle>	rectangle;
 };
 
 

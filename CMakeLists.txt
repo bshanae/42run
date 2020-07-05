@@ -78,8 +78,6 @@ set(SOURCE_GAME
 set(SOURCE_UI
 	project/UI/UI.cpp
 
-	project/UI/widget/widget.cpp
-
 	project/UI/font/symbol.cpp
 	project/UI/font/renderer.cpp
 	project/UI/font/font.cpp

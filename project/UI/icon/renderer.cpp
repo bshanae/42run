@@ -1,5 +1,6 @@
 #include "renderer.h"
 
+#include "UI/rectangle/rectangle.h"
 #include "UI/icon/icon.h"
 
 using namespace		UI;
@@ -43,7 +44,9 @@ void				icon::renderer::render(const shared<engine::game_object::game_object> &o
 		return;
 	}
 
-	auto			targets = game_object::reader::render_targets(icon);
+	auto			rectangle = icon->rectangle;
+	auto			rectangle_as_object = dynamic_pointer_cast<game_object::game_object>(rectangle);
+	auto			targets = game_object::reader::render_targets(rectangle_as_object);
 
 	engine::core::default_settings();
 	engine::core::show_polygon_back(true);

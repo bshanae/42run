@@ -39,8 +39,5 @@ shared<font::symbol>		font::font::build_symbol(char task)
 	if (FT_Load_Char(face, task, FT_LOAD_RENDER))
 		error::raise(error::id::freetype_symbol_error);
 
-	auto					symbol = make_shared<UI::font::symbol>(face);
-
-	symbol->start();
-	return (symbol);
+	return (make_shared<symbol>(face));
 }

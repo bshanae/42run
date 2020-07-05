@@ -1,5 +1,6 @@
 #include "renderer.h"
 
+#include "UI/rectangle/rectangle.h"
 #include "UI/label/label.h"
 
 using namespace		UI;
@@ -23,7 +24,7 @@ void				label::renderer::render(const shared<engine::game_object::game_object> &
 	for (char character : label->text)
 	{
 		auto		symbol = font::reader::find_symbol(character);
-		auto		instance = font::reader::instance(symbol);
+		auto		rectangle = font::reader::rectangle(symbol);
 
 		auto		size = font::reader::size(symbol);
 		auto		bearing = font::reader::bearing(symbol);
@@ -32,10 +33,10 @@ void				label::renderer::render(const shared<engine::game_object::game_object> &
 		position_of_symbol.x = (float)(position_iterator.x + bearing.x) + (float)size.x / 2.f;
 		position_of_symbol.y = (float)(position_iterator.y - bearing.y) + (float)size.y / 2.f;
 
-		instance->reset_translation();
-		instance->translate(position_of_symbol);
+		rectangle->instance->reset_translation();
+		rectangle->instance->translate(position_of_symbol);
 
-		symbol->render();
+		rectangle->render();
 
 		position_iterator.x += advance;
 	}
