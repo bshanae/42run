@@ -20,7 +20,7 @@ void				label::renderer::render(const shared<engine::game_object::game_object> &
 
 	for (char character : label->text)
 	{
-		auto		symbol = font::reader::find_symbol(character);
+		auto		symbol = font::reader::find_symbol(label->font, character);
 		auto		instance = font::reader::instance(symbol);
 
 		auto		size = font::reader::size(symbol);

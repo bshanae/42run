@@ -11,13 +11,9 @@ class						UI::font::manager : public global<UI::font::manager>
 public :
 							manager();
 							~manager();
-
-	static void				load(const path &source, const int &width, const vec3 &color);
-
 private :
 
 	FT_Library				library;
-	shared<UI::font::font>	font;
 };
 
 

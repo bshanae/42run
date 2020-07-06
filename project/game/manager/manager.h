@@ -27,6 +27,9 @@ private :
 
 	void						update() override;
 
+	shared<UI::font::font>		font_for_intro;
+	shared<UI::font::font>		font_for_score;
+
 	shared<UI::label::label>	score;
 	shared<UI::icon::icon>		circles[3];
 

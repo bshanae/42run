@@ -8,10 +8,12 @@ using namespace		UI;
 					(
 						const vec2 &position,
 						const string &text,
+						const shared<font::font> &font,
 						enum alignment alignment
 					) :
 						engine::game_object::game_object(tag<UI::label::renderer>()),
 						position(converter::to_absolute(position)),
+						font(font),
 						alignment(alignment)
 {
 	change_text(text);
@@ -25,7 +27,7 @@ void				label::label::change_text(const string &text)
 
 	for (char character : text)
 	{
-		auto		symbol = font::reader::find_symbol(character);
+		auto		symbol = font::reader::find_symbol(font, character);
 
 		size.x += font::reader::advance(symbol);
 		size.y = max(size.y, font::reader::size(symbol).y);

@@ -37,14 +37,20 @@ using namespace		UI;
 
 void				font::renderer::render(const shared<engine::game_object::game_object> &object) const
 {
+	auto			symbol = dynamic_pointer_cast<class symbol>(object);
+
+	if (not symbol)
+	{
+		warning::raise(warning::id::object_improper_type);
+		return ;
+	}
+
 	engine::core::default_settings();
 	engine::core::show_polygon_back(true);
 
 	program->use(true);
 
-	if (not UI::font::manager::instance()->font)
-		error::raise(error::id::global_font_not_loaded);
-	uniforms.color.upload(UI::font::manager::instance()->font->color);
+	uniforms.color.upload(symbol->font->color);
 
 	for (const auto &instance : game_object::reader::render_targets(object).instances)
 		render(instance);

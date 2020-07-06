@@ -15,6 +15,7 @@ public :
 						(
 							const vec2 &position,
 							const string &text,
+							const shared<font::font> &font,
 							alignment alignment = alignment::center
 						);
 						~label() override = default;
@@ -24,6 +25,7 @@ public :
 private :
 
 	ivec2				position;
+	shared<font::font>	font;
 	enum alignment		alignment;
 
 	string				text;

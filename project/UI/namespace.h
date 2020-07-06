@@ -23,6 +23,8 @@ namespace							UI
 	using							std::make_shared;
 	using							std::dynamic_pointer_cast;
 
+	using							std::enable_shared_from_this;
+
 	using 							glm::ivec2;
 	using							glm::vec3;
 	using							glm::vec2;

@@ -51,6 +51,22 @@ shared<scene::scene>	game::global_scene;
 
 // --------------------	UI
 
+	font_for_intro = make_shared<UI::font::font>
+	(
+		"project/resources/UI/fonts/HelveticaNeue.ttc",
+		120,
+		engine::vec3(1, 0, 0)
+	);
+
+	font_for_score = make_shared<UI::font::font>
+	(
+		"project/resources/UI/fonts/HelveticaNeue.ttc",
+		40,
+		engine::vec3(1, 0, 0)
+	);
+
+	font_for_score->build_map();
+
 	for (auto &circle : circles)
 	{
 		circle = make_shared<UI::icon::icon>(vec2(0.9, 0.5), sources().circle);
@@ -60,7 +76,7 @@ shared<scene::scene>	game::global_scene;
 	}
 	show_health();
 
-	score = make_shared<UI::label::label>(vec2(0.98, 0.2), "0", UI::label::alignment::right);
+	score = make_shared<UI::label::label>(vec2(0.98, 0.2), "0", font_for_score, UI::label::alignment::right);
 
 	score->start();
 	global_scene->include(score);

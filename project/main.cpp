@@ -47,10 +47,7 @@ int					main()
 	game::settings().chair_spawning_frequency = common::int_range(4, 12);
 
 	engine::core::initialize();
-
 	UI::font::manager::initialize();
-	UI::font::manager::load("project/resources/UI/fonts/HelveticaNeue.ttc", 40, engine::vec3(1, 0, 0));
-
 	game::manager::initialize();
 
 	engine::core::register_renderer<game::renderer>();

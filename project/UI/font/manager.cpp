@@ -8,14 +8,11 @@ using namespace		UI;
 {
 	if (FT_Init_FreeType(&library))
 		error::raise(error::id::freetype_library_error);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
 					font::manager::~manager()
 {
 	FT_Done_FreeType(library);
-}
-
-void				font::manager::load(const path &source, const int &width, const vec3 &color)
-{
-	instance()->font = make_shared<UI::font::font>(source, width, color);
 }

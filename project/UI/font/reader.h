@@ -15,12 +15,9 @@ protected :
 
 //					Font
 	[[nodiscard]]
-	shared<symbol>	find_symbol(char task) const
+	shared<symbol>	find_symbol(const shared<UI::font::font> &font, char task) const
 	{
-		if (not UI::font::manager::instance()->font)
-			error::raise(error::id::global_font_not_loaded);
-
-		return (UI::font::manager::instance()->font->find_symbol(task));
+		return (font->find_symbol(task));
 	}
 
 //					Symbol

@@ -13,12 +13,13 @@ using namespace				UI;
 		error::raise(error::id::freetype_face_error);
 
 	FT_Set_Pixel_Sizes(face, 0, width);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+}
 
+void						font::font::build_map()
+{
 	for (int i = 0; i < size_of_map; i++)
 		map.emplace(i, build_symbol(static_cast<char>(i)));
 }
-
 
 shared<font::symbol>		font::font::find_symbol(char task) const
 {
@@ -42,6 +43,7 @@ shared<font::symbol>		font::font::build_symbol(char task)
 	shared<symbol>			new_symbol;
 
 	new_symbol = make_shared<symbol>(face);
+	new_symbol->font = shared_from_this();
 	new_symbol->start();
 	return (new_symbol);
 }
