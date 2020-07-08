@@ -13,6 +13,7 @@ layout(location = 9) in float	in_bones_weights[SHARED_BONES_IN_VERTEX];
 out vec3						pass_position;
 out vec3						pass_normal;
 out vec2						pass_UV;
+out float						pass_distance_to_camera;
 
 ///////////////////////////////////////////////////////////////////////////////
 //								UNIFORM
@@ -62,9 +63,12 @@ void							main()
 	instance_transformation = uniform_instance.translation * uniform_instance.rotation * uniform_instance.scaling;
 	group_transformation = uniform_group.translation * uniform_group.rotation * uniform_group.scaling;
 
-	pass_position = vec3(group_transformation * instance_transformation * bones_transformation * vec4(in_position, 1.f));
+	position = group_transformation * instance_transformation * bones_transformation * vec4(in_position, 1.f);
+
+	pass_position = position.xyz;
 	pass_normal = vec3(uniform_group.rotation * uniform_instance.rotation * bones_transformation * vec4(in_normal, 0.f));
 	pass_UV = in_UV;
+	pass_distance_to_camera = length(uniform_view * position);
 
-	gl_Position = uniform_projection * uniform_view * group_transformation * instance_transformation * bones_transformation * vec4(in_position, 1.f);
+	gl_Position = uniform_projection * uniform_view * position;
 }

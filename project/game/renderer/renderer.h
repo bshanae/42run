@@ -100,5 +100,13 @@ private :
 			uniform<mat4>			translation;
 			uniform<mat4>			rotation;
 		}							group;
+
+		struct
+		{
+			uniform<float>			density;
+			uniform<float>			gradient;
+			uniform<int>			use;
+			uniform<vec3>			background;
+		}							fog;
 	}								uniforms;
 };

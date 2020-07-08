@@ -15,6 +15,9 @@ void				renderer::render(const shared<game_object::game_object> &object) const
 	uniforms.group.translation.upload(mat4(1.f));
 	uniforms.group.rotation.upload(mat4(1.f));
 
+	uniforms.fog.use.upload(1);
+	uniforms.fog.background.upload(engine::settings().background);
+
 	auto			render_targets = game_object::reader::render_targets(object);
 
 	for (const auto &instance : render_targets.instances)

@@ -93,6 +93,8 @@ namespace							game
 
 	struct							settings
 	{
+		float						fog_density;
+		float						fog_gradient;
 		int							number_of_faded_rows;
 		int							obstacle_generation_wait;
 		int_range					hollow_row_spawning_frequency;

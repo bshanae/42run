@@ -42,6 +42,8 @@ int					main()
 	game::sources().circle = "project/resources/UI/icons/circle.png";
 	game::sources().font = "project/resources/UI/fonts/HelveticaNeue.ttc";
 
+	game::settings().fog_density = 0.005;
+	game::settings().fog_gradient = 4.5f;
 	game::settings().number_of_faded_rows = 2;
 	game::settings().obstacle_generation_wait = 5;
 	game::settings().hollow_row_spawning_frequency = common::int_range(8, 20);

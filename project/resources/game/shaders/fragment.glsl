@@ -5,6 +5,7 @@
 in vec3					pass_position;
 in vec3					pass_normal;
 in vec2					pass_UV;
+in float				pass_distance_to_camera;
 
 out vec4				final_color;
 
@@ -60,9 +61,11 @@ uniform struct
 
 uniform struct
 {
+	float				density;
+	float				gradient;
 	int					use;
-	vec3				color;
-}						uniform_fading;
+	vec3				background;
+}						uniform_fog;
 
 ///////////////////////////////////////////////////////////////////////////////
 //						FUNCTIONS
@@ -196,9 +199,17 @@ void					main()
 	final_color = vec4(0, 0, 0, uniform_material.unite.alpha);
 
 	vec3				normal = normalize(pass_normal);
+	float				visibility;
 
 	for (int i = 0; i < uniform_scene.lights_size; i++)
 		final_color.rgb += process_light(normal, i);
 
 	final_color.rgb += uniform_material.unite.emission;
+
+	if (uniform_fog.use == 1)
+	{
+		visibility = exp(-pow(pass_distance_to_camera * uniform_fog.density, uniform_fog.gradient));
+		visibility = clamp(visibility, 0.f, 1.f);
+		final_color = mix(vec4(uniform_fog.background, 1.f), final_color, visibility);
+	}
 }

@@ -55,8 +55,17 @@ void				renderer::initialize_uniforms()
 	uniforms.group.translation = program->make_uniform<mat4>("uniform_group.translation");
 	uniforms.group.rotation = program->make_uniform<mat4>("uniform_group.rotation");
 
+//					For
+	uniforms.fog.density = program->make_uniform<float>("uniform_fog.density");
+	uniforms.fog.gradient = program->make_uniform<float>("uniform_fog.gradient");
+	uniforms.fog.use = program->make_uniform<int>("uniform_fog.use");
+	uniforms.fog.background = program->make_uniform<vec3>("uniform_fog.background");
+
 //					Initial upload
 	program->use(true);
+
+	uniforms.fog.density.upload(settings().fog_density);
+	uniforms.fog.gradient.upload(settings().fog_gradient);
 
 	uniforms.material.textures.ambient.value.upload(0);
 	uniforms.material.textures.diffuse.value.upload(1);
