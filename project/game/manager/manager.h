@@ -37,4 +37,9 @@ private :
 
 	void						show_health();
 	void						show_game_over();
+
+	float						row_value = settings().initial_row_value;
+	float						row_value_factor = 1.f;
+
+	float						total_row_value = 0.f;
 };

@@ -117,7 +117,14 @@ void					manager::update()
 	shared<room::row>	last_intersected_row;
 	shared<room::row>	dangerous_row;
 
-	score->change_text(to_string(room->rows_swap_counter));
+	total_row_value += room->rows_swap_counter * row_value * row_value_factor;
+	total_row_value = std::min(total_row_value, 42000.f);
+	room->rows_swap_counter = 0;
+	score->change_text(to_string((int)total_row_value));
+
+//						Update values
+	if (row_value_factor < settings().maximum_row_value_factor)
+		row_value_factor *= (1.f + settings().increase_of_row_value);
 
 	for (auto iterator = room->rows.rbegin(); iterator != room->rows.rend(); ++iterator)
 		if ((*iterator)->does_intersect(character_range))

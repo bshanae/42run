@@ -16,6 +16,8 @@ namespace							game
 	using							std::cerr;
 	using							std::cout;
 	using							std::endl;
+	using							std::min;
+	using							std::max;
 	using							std::to_string;
 	using							std::shared_ptr;
 	using							std::unique_ptr;
@@ -95,6 +97,15 @@ namespace							game
 		int							obstacle_generation_wait;
 		int_range					hollow_row_spawning_frequency;
 		int_range					chair_spawning_frequency;
+		float						initial_room_speed;
+		float						initial_character_speed;
+		float						initial_row_value;
+		float						increase_of_room_speed;
+		float						increase_of_character_speed;
+		float						increase_of_row_value;
+		float						maximum_room_speed_factor;
+		float						maximum_character_speed_factor;
+		float						maximum_row_value_factor;
 	};
 
 	struct settings					&settings();

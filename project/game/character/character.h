@@ -32,7 +32,8 @@ private :
 	}						animations;
 
 //							Speed of changing row action
-	static constexpr float	speed = 0.55f;
+	float					speed = settings().initial_character_speed;
+	float					speed_factor = 1.f;
 
 	line					current_line = line::middle;
 	enum state				current_state = state::running;

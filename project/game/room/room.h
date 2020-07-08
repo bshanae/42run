@@ -87,7 +87,8 @@ private :
 	static inline float_range			row_range = {0.f, 0.f};
 
 //										Movement speed
-	static constexpr float				speed = 1.8f;
+	float								speed = settings().initial_room_speed;
+	float								speed_factor = 1.f;
 
 	struct
 	{

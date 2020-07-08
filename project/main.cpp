@@ -3,7 +3,7 @@
 int					main()
 {
 #if DEBUG_STATE
-	common::warning::is_critical = true;
+	common::warning::is_critical = false;
 #endif
 
 	common::seed = 42;
@@ -46,6 +46,15 @@ int					main()
 	game::settings().obstacle_generation_wait = 5;
 	game::settings().hollow_row_spawning_frequency = common::int_range(8, 20);
 	game::settings().chair_spawning_frequency = common::int_range(4, 12);
+	game::settings().initial_room_speed = 1.5f;
+	game::settings().initial_character_speed = 0.5f;
+	game::settings().initial_row_value = 50.f;
+	game::settings().increase_of_room_speed = 0.0001f;
+	game::settings().increase_of_character_speed = 0.0001f;
+	game::settings().increase_of_row_value = 0.05f;
+	game::settings().maximum_room_speed_factor = 2.f;
+	game::settings().maximum_character_speed_factor = 2.f;
+	game::settings().maximum_row_value_factor = 4.f;
 
 	engine::core::initialize();
 	UI::font::manager::initialize();

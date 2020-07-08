@@ -7,12 +7,10 @@ void					room::update()
 	static const vec3	size = models.room->size();
 
 	bool				rows_was_swapped = false;
-
 	auto				movement = vec3(0, 0, speed * engine::core::time_delta(true));
 
 	auto				nearest_row = rows.front();
 	auto				furthest_row = rows.back();
-
 	auto				nearest_group = nearest_row->read_group();
 	auto				furthest_group = furthest_row->read_group();
 
@@ -75,4 +73,8 @@ void					room::update()
 		spawn_hollow_row();
 	else if (should_spawn_chair)
 		spawn_chair();
+
+//						Update values
+	if (speed_factor < settings().maximum_room_speed_factor)
+		speed_factor *= (1.f + settings().increase_of_room_speed);
 }

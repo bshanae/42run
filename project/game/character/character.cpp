@@ -39,16 +39,20 @@ void				character::update()
 
 	if (current_position != target_position)
 	{
-		current_position = lerp(current_position, target_position, speed);
+		current_position = lerp(current_position, target_position, speed * speed_factor);
 
 		instance->reset_translation();
 		instance->translate(current_position);
 	}
+
+//					Update values
+	if (speed_factor > settings().maximum_character_speed_factor)
+		speed_factor *= (1.f + settings().increase_of_character_speed);
 }
 
 float_range 		character::calculate_range() const
 {
-	return {current_position.z - this->size / 2.f, current_position.z + this->size / 2.f};
+	return {current_position.z - size / 2.f, current_position.z + size / 2.f};
 }
 
 void				character::callback_functor()
