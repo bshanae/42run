@@ -62,7 +62,10 @@ namespace							game
 	namespace						program = engine::program;
 	namespace						scene = engine::scene;
 
+	namespace						font = UI::font;
 	namespace						label = UI::label;
+	namespace						icon = UI::icon;
+	namespace						frame = UI::frame;
 
 //	-------------------------------	Globals
 
@@ -81,6 +84,7 @@ namespace							game
 		path						keyboard;
 		path						character;
 		path						circle;
+		path						font;
 	};
 
 	struct sources					&sources();

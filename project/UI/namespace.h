@@ -62,8 +62,6 @@ namespace							UI
 
 //	------------------------------- Local classes
 
-	class							renderer;
-
 	namespace						rectangle
 	{
 		class						rectangle;

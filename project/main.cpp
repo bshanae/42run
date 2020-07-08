@@ -8,7 +8,7 @@ int					main()
 
 	common::seed = 42;
 
-	engine::settings().window_size = engine::ivec2(720, 480);
+	engine::settings().window_size = engine::ivec2(1280, 720);
 	engine::settings().window_name = "42run";
 	engine::settings().background = engine::vec3(1.f);
 	engine::settings().number_of_samples = 1;
@@ -39,7 +39,8 @@ int					main()
 	game::sources().mac = "project/resources/game/models/iMac.obj";
 	game::sources().keyboard = "project/resources/game/models/Keyboard.obj";
 	game::sources().character = "project/resources/game/models/Character.fbx";
-	game::sources().circle = "project/resources/game/icons/circle.png";
+	game::sources().circle = "project/resources/UI/icons/circle.png";
+	game::sources().font = "project/resources/UI/fonts/HelveticaNeue.ttc";
 
 	game::settings().number_of_faded_rows = 2;
 	game::settings().obstacle_generation_wait = 5;

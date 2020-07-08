@@ -27,11 +27,11 @@ using namespace		UI;
 	front->build(color);
 	front->start();
 	front->instance->scale(vec3(front_size.x * 0.5f, front_size.y * 0.5f, 1.f));
-	front->instance->translate(vec3(absolute_position.x, absolute_position.y, 0.f));
+	front->instance->translate(vec3(absolute_position.x, absolute_position.y, -0.00001f));
 
 	back = make_shared<rectangle::rectangle>();
 	back->build(border_color);
 	back->start();
 	back->instance->scale(vec3(back_size.x * 0.5, back_size.y * 0.5, 1.f));
-	back->instance->translate(vec3(absolute_position.x, absolute_position.y, -0.00001f));
+	back->instance->translate(vec3(absolute_position.x, absolute_position.y, -0.00002f));
 }

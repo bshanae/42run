@@ -49,49 +49,63 @@ shared<scene::scene>	game::global_scene;
 			)
 		);
 
-// --------------------	UI
+// --------------------	UI : Frames
 
-	font_for_intro = make_shared<UI::font::font>
+	frame_for_score = make_shared<frame::frame>
 	(
-		"project/resources/UI/fonts/HelveticaNeue.ttc",
-		120,
-		engine::vec3(1, 0, 0)
+		vec2(0.90f, 0.235f),
+		vec2(0.22f, 0.1f),
+		vec3(0.2f),
+		0.02f,
+		vec3(0.12f)
 	);
 
-	font_for_score = make_shared<UI::font::font>
+	frame_for_score->start();
+	global_scene->include(frame_for_score);
+
+	frame_for_health = make_shared<frame::frame>
 	(
-		"project/resources/UI/fonts/HelveticaNeue.ttc",
-		40,
-		engine::vec3(1, 0, 0)
+		vec2(0.92f, 0.33f),
+		vec2(0.18f, 0.08f),
+		vec3(0.2f),
+		0.02f,
+		vec3(0.12f)
 	);
 
-	font_for_score->build_map();
+	frame_for_health->start();
+	global_scene->include(frame_for_health);
 
-	for (auto &circle : circles)
+// --------------------	UI : Font
+
+	font = make_shared<font::font>(sources().font, 70, engine::vec3(1.f));
+	font->build_map();
+
+// --------------------	UI : Icons
+
+	auto				build_circle = [](const vec2 &position)
 	{
-		circle = make_shared<UI::icon::icon>(vec2(0.9, 0.5), sources().circle);
-		global_scene->include(circle);
-		circle->start();
-		circle->pause(true);
-	}
-	show_health();
+		auto			result = make_shared<icon::icon>
+		(
+			position,
+			sources().circle
+		);
 
-	score = make_shared<UI::label::label>(vec2(0.98, 0.2), "0", font_for_score, UI::label::alignment::right);
+		global_scene->include(result);
+		result->start();
+
+		return (result);
+	};
+
+	circles[0] = build_circle(vec2(0.88, 0.33));
+	circles[1] = build_circle(vec2(0.92, 0.33));
+	circles[2] = build_circle(vec2(0.96, 0.33));
+
+// --------------------	UI : Label
+
+	score = make_shared<label::label>(vec2(0.98, 0.2), "0", font, label::alignment::right);
 
 	score->start();
 	global_scene->include(score);
-
-	auto				frame = make_shared<UI::frame::frame>
-	(
-		vec2(0.5f, 0.5f),
-		vec2(0.1f, 0.1f),
-		vec3(0.2f),
-		0.05f,
-		vec3(0.15f)
-	);
-
-//	frame->start();
-//	global_scene->include(frame);
 }
 
 void					manager::update()
@@ -137,31 +151,24 @@ void					manager::show_health()
 			circles[0]->pause(true);
 			circles[1]->pause(true);
 			circles[2]->pause(true);
-			show_game_over();
 			break ;
 
 		case 1 :
-			circles[0]->pause(false);
+			circles[0]->pause(true);
 			circles[1]->pause(true);
-			circles[2]->pause(true);
-			circles[0]->change_position(vec2(0.8, 0.5));
+			circles[2]->pause(false);
 			break ;
 
 		case 2 :
-			circles[0]->pause(false);
+			circles[0]->pause(true);
 			circles[1]->pause(false);
-			circles[2]->pause(true);
-			circles[0]->change_position(vec2(0.8, 0.42));
-			circles[1]->change_position(vec2(0.8, 0.58));
+			circles[2]->pause(false);
 			break ;
 
 		case 3 :
 			circles[0]->pause(false);
 			circles[1]->pause(false);
 			circles[2]->pause(false);
-			circles[0]->change_position(vec2(0.8, 0.35));
-			circles[1]->change_position(vec2(0.8, 0.5));
-			circles[2]->change_position(vec2(0.8, 0.65));
 			break ;
 
 		default :
