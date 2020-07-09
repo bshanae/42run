@@ -42,15 +42,15 @@ int					main()
 	game::sources().circle = "project/resources/UI/icons/circle.png";
 	game::sources().font = "project/resources/UI/fonts/HelveticaNeue.ttc";
 
-	game::settings().fog_density = 0.005;
-	game::settings().fog_gradient = 4.5f;
+	game::settings().fog_density = 0.004;
+	game::settings().fog_gradient = 8.f;
 	game::settings().number_of_faded_rows = 2;
 	game::settings().obstacle_generation_wait = 5;
-	game::settings().hollow_row_spawning_frequency = common::int_range(8, 20);
-	game::settings().chair_spawning_frequency = common::int_range(4, 12);
+	game::settings().hollow_row_spawning_frequency = common::int_range(8, 15);
+	game::settings().chair_spawning_frequency = common::int_range(4, 8);
 	game::settings().initial_room_speed = 1.5f;
 	game::settings().initial_character_speed = 0.5f;
-	game::settings().initial_row_value = 50.f;
+	game::settings().initial_row_value = 20.f;
 	game::settings().increase_of_room_speed = 0.0001f;
 	game::settings().increase_of_character_speed = 0.0001f;
 	game::settings().increase_of_row_value = 0.05f;

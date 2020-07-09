@@ -50,6 +50,21 @@ void				character::update()
 		speed_factor *= (1.f + settings().increase_of_character_speed);
 }
 
+void				character::update_state()
+{
+	const float		time = model->current_animation_timestamp();
+
+	auto			is_time_in_range = [time](float min, float max)
+	{
+		return (time >= min and time <= max);
+	};
+
+	if (is_time_in_range(28, 38))
+		current_state = state::jumping;
+	else
+		current_state = state::running;
+}
+
 float_range 		character::calculate_range() const
 {
 	return {current_position.z - size / 2.f, current_position.z + size / 2.f};

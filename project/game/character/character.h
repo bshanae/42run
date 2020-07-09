@@ -38,20 +38,7 @@ private :
 	line					current_line = line::middle;
 	enum state				current_state = state::running;
 
-	void					update_state()
-	{
-		const float			time = model->current_animation_timestamp();
-
-		auto				is_time_in_range = [time](float min, float max)
-		{
-			return (time >= min and time <= max);
-		};
-
-		if (is_time_in_range(28, 44))
-			current_state = state::jumping;
-		else
-			current_state = state::running;
-	}
+	void					update_state();
 
 	const vec3				middle_position = vec3(0.f);
 	const vec3				left_position = middle_position - vec3(constants::distance_between_lines, 0, 0);
