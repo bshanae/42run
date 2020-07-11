@@ -93,6 +93,7 @@ namespace							game
 
 	struct							settings
 	{
+		bool						faster_scene = false;
 		float						fog_density;
 		float						fog_gradient;
 		int							number_of_faded_rows;

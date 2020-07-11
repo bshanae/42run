@@ -42,6 +42,7 @@ int					main()
 	game::sources().circle = "project/resources/UI/icons/circle.png";
 	game::sources().font = "project/resources/UI/fonts/HelveticaNeue.ttc";
 
+	game::settings().faster_scene = true;
 	game::settings().fog_density = 0.004;
 	game::settings().fog_gradient = 8.f;
 	game::settings().number_of_faded_rows = 2;
