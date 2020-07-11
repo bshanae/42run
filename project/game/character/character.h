@@ -56,7 +56,7 @@ private :
 
 	interface::timer					timer;
 	int									health = 3;
-	float								color_mix_factor;
+	float								color_mix_value;
 };
 
 

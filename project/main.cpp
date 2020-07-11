@@ -60,7 +60,7 @@ int					main()
 	game::settings().hit_effect_duration = 1.5f;
 	game::settings().hit_effect_color = engine::vec3(1.f, 0.f, 0.f);
 	game::settings().hit_effect_factor = 0.6f;
-	game::settings().hit_effect_factor_fade = 0.02f;
+	game::settings().hit_effect_fade_out_step = 0.04f;
 
 	engine::core::initialize();
 	UI::font::manager::initialize();

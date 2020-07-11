@@ -16,7 +16,6 @@ using namespace		game;
 
 	instance->scale(0.085f);
 	instance->rotate(engine::vec3(0, 180, 0));
-	instance->color_mix_state(true);
 	instance->color_mix_factor(0.0f);
 	instance->color_mix_color(settings().hit_effect_color);
 
@@ -53,13 +52,13 @@ void				character::update()
 //					Update values
 	if (speed_factor > settings().maximum_character_speed_factor)
 		speed_factor *= (1.f + settings().increase_of_character_speed);
-	if (color_mix_factor > 0.f)
+	if (color_mix_value < M_PI_2)
 	{
-		instance->color_mix_factor(color_mix_factor);
-		color_mix_factor -= settings().hit_effect_factor_fade;
+		instance->color_mix_factor(cos(color_mix_value) * settings().hit_effect_factor);
+		color_mix_value += settings().hit_effect_fade_out_step * (float)M_PI_2;
 	}
 	else
-		color_mix_factor = 0.f;
+		instance->color_mix_state(false);
 
 //					Update hollow state
 	if (timer.has_finished())
@@ -162,6 +161,7 @@ bool				character::try_go_right(enum line &line)
 void				character::get_hit()
 {
 	health--;
-	color_mix_factor = settings().hit_effect_factor;
+	instance->color_mix_state(true);
+	color_mix_value = 0.f;
 	timer.execute();
 }

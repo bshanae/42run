@@ -111,7 +111,7 @@ namespace							game
 		float						hit_effect_duration;
 		vec3						hit_effect_color;
 		float						hit_effect_factor;
-		float						hit_effect_factor_fade;
+		float						hit_effect_fade_out_step;
 	};
 
 	struct settings					&settings();
