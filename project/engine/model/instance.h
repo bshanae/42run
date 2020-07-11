@@ -12,17 +12,17 @@ class						engine::model::instance
 public :
 
 	explicit 				instance(const shared<model> &model);
-							~instance() = default;
+	virtual					~instance() = default;
 
-	shared<instance>		copy() const
-	{
-		auto				result = make_shared<instance>(model);
-
-		result->data = data;
-		result->transformations = transformations;
-
-		return (result);
-	}
+//	shared<instance>		copy() const
+//	{
+//		auto				result = make_shared<instance>(model);
+//
+//		result->data = data;
+//		result->transformations = transformations;
+//
+//		return (result);
+//	}
 
 	vec3					scaling() const
 	{
@@ -54,12 +54,7 @@ public :
 	void 					randomize_translation(const vec3_range &range);
 	void 					randomize_rotation(const vec3_range &range);
 
-	void					hollow(bool state)
-	{
-		is_hollow = state;
-	}
-
-private :
+protected :
 
 	shared<model>			model;
 
@@ -76,8 +71,6 @@ private :
 		mat4				translation;
 		mat4				rotation;
 	}						transformations;
-
-	bool					is_hollow = false;
 
 public :
 

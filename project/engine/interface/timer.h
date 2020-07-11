@@ -22,8 +22,13 @@ public :
 
 	void 			execute()
 	{
-		left = total;
-		last = glfwGetTime();
+		if (total)
+		{
+			left = *total;
+			last = glfwGetTime();
+		}
+		else
+			warning::raise(warning::id::cant_execute_timer);
 	}
 
 	void 			update()
@@ -42,12 +47,12 @@ public :
 
 	bool			has_finished() const
 	{
-		return (left <= 0.f);
+		return (total and left <= 0.f);
 	}
 
 private :
 
-	float			total = std::numeric_limits<float>::infinity();
+	optional<float>	total;
 
 	float			last = 0.f;
 	float			left = 0.f;

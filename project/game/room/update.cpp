@@ -1,5 +1,8 @@
 #include "room.h"
 
+#include "game/model_with_mods/instance.h"
+#include "game/model_with_mods/group.h"
+
 using namespace			game;
 
 void					room::update()
@@ -14,11 +17,11 @@ void					room::update()
 	auto				nearest_group = nearest_row->read_group();
 	auto				furthest_group = furthest_row->read_group();
 
-//										Rows and obstacles movement
+//						Rows and obstacles movement
 	for (auto &row : rows)
 		row->move(movement);
 
-//										Replacing first row with last
+//						Replacing first row with last
 	if (nearest_group->translation().z > size.z)
 	{
 		rows_was_swapped = true;

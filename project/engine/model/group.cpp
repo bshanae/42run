@@ -14,18 +14,18 @@ void					model::group::include(const shared<engine::model::instance> &instance)
 	instances.push_back(instance);
 }
 
-shared<model::group>	model::group::copy() const
-{
-	auto				result = make_shared<group>();
-
-	for (auto &instance : instances)
-		result->instances.push_back(instance->copy());
-
-	result->data = data;
-	result->transformations = transformations;
-
-	return (result);
-}
+//shared<model::group>	model::group::copy() const
+//{
+//	auto				result = make_shared<group>();
+//
+//	for (auto &instance : instances)
+//		result->instances.push_back(instance->copy());
+//
+//	result->data = data;
+//	result->transformations = transformations;
+//
+//	return (result);
+//}
 
 void					model::group::scale(float value)
 {

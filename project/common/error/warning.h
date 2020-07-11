@@ -14,6 +14,7 @@ namespace									common::warning
 	enum class								id
 	{
 //		Engine
+		cant_execute_timer,
 		model_bone_not_found,
 		model_animation_not_found,
 		model_bone_without_animation,
@@ -32,6 +33,7 @@ namespace									common::warning
 	messages_type							messages =
 	{
 //		Engine
+		{id::cant_execute_timer,			"Engine : Can't execute timer, value is not set"},
 		{id::model_bone_not_found,			"Engine : Bone not found"},
 		{id::model_animation_not_found,		"Engine : Animation not found"},
 		{id::model_bone_without_animation,	"Engine : Bone does't have animation"},

@@ -1,5 +1,7 @@
 #include "room.h"
 
+#include "game/model_with_mods/group.h"
+
 using namespace					game;
 
 void							room::build_models()
@@ -13,18 +15,18 @@ void							room::build_models()
 	models.keyboard = make_shared<model::model>(sources().keyboard, center_flag);
 }
 
-void							room::build_main_instances()
+void							room::build_instances()
 {
 	auto						&main_instances = instances[0];
 
 //								Construction
 
-	main_instances.room = make_shared<model::instance>(models.room);
+	main_instances.room = make_shared<model_with_mods::instance>(models.room);
 	for (int i = 0; i < number_of_accessories; i++)
 	{
-		main_instances.chair[i] = make_shared<model::instance>(models.chair);
-		main_instances.mac[i] = make_shared<model::instance>(models.mac);
-		main_instances.keyboard[i] = make_shared<model::instance>(models.keyboard);
+		main_instances.chair[i] = make_shared<model_with_mods::instance>(models.chair);
+		main_instances.mac[i] = make_shared<model_with_mods::instance>(models.mac);
+		main_instances.keyboard[i] = make_shared<model_with_mods::instance>(models.keyboard);
 	}
 
 //								Transformation
@@ -59,7 +61,7 @@ void							room::build_main_instances()
 	}
 }
 
-void							room::build_unique_groups()
+void							room::build_groups()
 {
 //								Copy instances
 	for (int group_i = 1; group_i < number_of_rows; group_i++)
@@ -96,7 +98,7 @@ void							room::build_unique_groups()
 //								Build groups
 	for (int row_i = 0; row_i < number_of_rows; row_i++)
 	{
-		auto					group = make_shared<model::group>();
+		auto					group = make_shared<model_with_mods::group>();
 
 		group->include(instances[row_i].room);
 		for (int accessory_i = 0; accessory_i < number_of_accessories; accessory_i++)

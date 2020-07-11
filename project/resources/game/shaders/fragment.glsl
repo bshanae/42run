@@ -61,6 +61,13 @@ uniform struct
 
 uniform struct
 {
+	int					use;
+	float				factor;
+	vec4				color;
+}						uniform_color_mix;
+
+uniform struct
+{
 	float				density;
 	float				gradient;
 	int					use;
@@ -205,6 +212,9 @@ void					main()
 		final_color.rgb += process_light(normal, i);
 
 	final_color.rgb += uniform_material.unite.emission;
+
+	if (uniform_color_mix.use == 1)
+		final_color = mix(final_color, uniform_color_mix.color, uniform_color_mix.factor);
 
 	if (uniform_fog.use == 1)
 	{

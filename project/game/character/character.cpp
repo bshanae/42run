@@ -12,10 +12,13 @@ using namespace		game;
 	model = make_shared<model::model>(sources().character, flags);
 	common::warning::is_muted = false;
 
-	instance = make_shared<model::instance>(model);
+	instance = make_shared<model_with_mods::instance>(model);
 
 	instance->scale(0.085f);
 	instance->rotate(engine::vec3(0, 180, 0));
+	instance->color_mix_state(true);
+	instance->color_mix_factor(0.0f);
+	instance->color_mix_color(settings().hit_effect_color);
 
 	animations.run = model::animation(1, 19, 1.);
 	animations.jump = model::animation(20, 63, 0.7);
@@ -26,8 +29,10 @@ using namespace		game;
 	game_object::animation_target(model);
 
 	callback = interface::callback(interface::event::type::key_press, &character::callback_functor, this);
+	timer = interface::timer(game::settings().hit_effect_duration);
 
 	engine::core::use(callback);
+	engine::core::use(timer);
 }
 
 void				character::update()
@@ -48,18 +53,24 @@ void				character::update()
 //					Update values
 	if (speed_factor > settings().maximum_character_speed_factor)
 		speed_factor *= (1.f + settings().increase_of_character_speed);
+	if (color_mix_factor > 0.f)
+	{
+		instance->color_mix_factor(color_mix_factor);
+		color_mix_factor -= settings().hit_effect_factor_fade;
+	}
+	else
+		color_mix_factor = 0.f;
+
+//					Update hollow state
+	if (timer.has_finished())
+		instance->hollow(false);
 }
 
 void				character::update_state()
 {
 	const float		time = model->current_animation_timestamp();
 
-	auto			is_time_in_range = [time](float min, float max)
-	{
-		return (time >= min and time <= max);
-	};
-
-	if (is_time_in_range(28, 38))
+	if (time >= 28 and time <= 38)
 		current_state = state::jumping;
 	else
 		current_state = state::running;
@@ -146,4 +157,11 @@ bool				character::try_go_right(enum line &line)
 		case line::right :
 			return (false);
 	}
+}
+
+void				character::get_hit()
+{
+	health--;
+	color_mix_factor = settings().hit_effect_factor;
+	timer.execute();
 }

@@ -1,5 +1,7 @@
 #include "room.h"
 
+#include "game/model_with_mods/group.h"
+
 using namespace					game;
 
 void							room::prepare_offset()

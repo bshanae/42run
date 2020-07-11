@@ -5,8 +5,8 @@ using namespace		game;
 					room::room() : game_object(tag<game::renderer>())
 {
 	build_models();
-	build_main_instances();
-	build_unique_groups();
+	build_instances();
+	build_groups();
 	prepare_offset();
 	offset_groups();
 }

@@ -35,7 +35,7 @@ shader::shader(type type, const path &source)
 
 	glGetShaderiv(object, GL_COMPILE_STATUS, &success);
 
-#if DEBUG_STATE
+#if DEBUG
 	GLchar					log[1024];
 
 	if (not success)

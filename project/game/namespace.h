@@ -108,6 +108,10 @@ namespace							game
 		float						maximum_room_speed_factor;
 		float						maximum_character_speed_factor;
 		float						maximum_row_value_factor;
+		float						hit_effect_duration;
+		vec3						hit_effect_color;
+		float						hit_effect_factor;
+		float						hit_effect_factor_fade;
 	};
 
 	struct settings					&settings();
@@ -133,6 +137,13 @@ namespace							game
 	using							state_wrapper = engine::abstract::bitflag_wrapper<state>;
 
 	class							renderer;
+
+	namespace						model_with_mods
+	{
+		class						instance;
+		class						group;
+		class						reader;
+	}
 
 	class 							room;
 	class 							character;

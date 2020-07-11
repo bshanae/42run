@@ -4,37 +4,37 @@
 
 #include "game/renderer/renderer.h"
 
-class						game::obstacle::obstacle : public engine::game_object::game_object
+class									game::obstacle::obstacle : public engine::game_object::game_object
 {
-	friend class			game::manager;
-	friend class			game::room;
-	friend class			game::character;
+	friend class						game::manager;
+	friend class						game::room;
+	friend class						game::character;
 
 public :
-							obstacle
-							(
-								const line_wrapper &blocked_lines,
-								const state_wrapper &blocked_states,
-								const shared<model::model> &source
-							) :
-								game_object(tag<game::renderer>()),
-								blocked_lines(blocked_lines),
-								blocked_states(blocked_states)
+										obstacle
+										(
+											const line_wrapper &blocked_lines,
+											const state_wrapper &blocked_states,
+											const shared<model::model> &source
+										) :
+											game_object(tag<game::renderer>()),
+											blocked_lines(blocked_lines),
+											blocked_states(blocked_states)
 	{
-		instance = make_shared<model::instance>(source);
+		instance = make_shared<model_with_mods::instance>(source);
 		game_object::render_target(instance);
 	}
 
-							~obstacle() override = default;
+										~obstacle() override = default;
 
 protected :
 
-	shared<model::instance>	instance;
+	shared<model_with_mods::instance>	instance;
 
 private :
 
-	bool					does_trigger_collision = false;
+	bool								does_trigger_collision = false;
 
-	const line_wrapper		blocked_lines;
-	const state_wrapper		blocked_states;
+	const line_wrapper					blocked_lines;
+	const state_wrapper					blocked_states;
 };

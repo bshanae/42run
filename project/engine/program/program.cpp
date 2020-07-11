@@ -19,7 +19,7 @@ using namespace		engine::program;
 
 	glGetProgramiv(object, GL_LINK_STATUS, &success);
 
-#if DEBUG_STATE
+#if DEBUG
 	GLchar			log[1024];
 
 	glGetProgramiv(object, GL_LINK_STATUS, &success);

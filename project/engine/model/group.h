@@ -15,7 +15,7 @@ public :
 
 	void					include(const shared<engine::model::instance> &instance);
 
-	shared<group>			copy() const;
+//	shared<group>			copy() const;
 
 	vec3					scaling() const
 	{
@@ -40,13 +40,7 @@ public :
 	void 					reset_translation();
 	void 					reset_rotation();
 
-	void					hollow(bool state)
-	{
-		for (auto &instance : instances)
-			instance->hollow(state);
-	}
-
-private :
+protected :
 
 	list<shared<instance>>	instances;
 

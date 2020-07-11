@@ -2,7 +2,11 @@
 
 #include "game/namespace.h"
 
-class								game::renderer : public engine::renderer
+#include "game/model_with_mods/reader.h"
+
+class								game::renderer :
+										public engine::renderer,
+										public game::model_with_mods::reader
 {
 	friend class					game::manager;
 
@@ -100,6 +104,13 @@ private :
 			uniform<mat4>			translation;
 			uniform<mat4>			rotation;
 		}							group;
+
+		struct
+		{
+			uniform<int>			use;
+			uniform<float>			factor;
+			uniform<vec4>			color;
+		}							color_mix;
 
 		struct
 		{

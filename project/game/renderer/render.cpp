@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+#include "game/model_with_mods/instance.h"
+
 using namespace		game;
 
 void				renderer::render(const shared<game_object::game_object> &object) const
@@ -61,7 +63,18 @@ void				renderer::render(const shared<model::instance> &instance) const
 	uniforms.instance.translation.upload(model::reader::translation(instance));
 	uniforms.instance.rotation.upload(model::reader::rotation(instance));
 
-	engine::core::fill_polygon(not model::reader::is_hollow(instance));
+	if (auto instance_with_mods = dynamic_pointer_cast<model_with_mods::instance>(instance))
+	{
+		engine::core::fill_polygon(not hollow(instance_with_mods));
+
+		uniforms.color_mix.use.upload(color_mix_state(instance_with_mods));
+		uniforms.color_mix.factor.upload(color_mix_factor(instance_with_mods));
+		uniforms.color_mix.color.upload(color_mix_color(instance_with_mods));
+	}
+	else
+	{
+		uniforms.color_mix.use.upload(0);
+	}
 
 	for (auto &mesh : model::reader::meshes(model))
 	{

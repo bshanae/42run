@@ -110,7 +110,6 @@ shared<scene::scene>	game::global_scene;
 
 void					manager::update()
 {
-	static int			collision_i;
 	const auto			character_range = character->calculate_range();
 
 	static
@@ -145,8 +144,13 @@ void					manager::update()
 
 	last_intersected_row = dangerous_row;
 
+#if DEBUG
+	static int			collision_i;
+
 	cerr << "Collision" << collision_i++ << endl;
-	character->health--;
+#endif
+
+	character->get_hit();
 	show_health();
 }
 

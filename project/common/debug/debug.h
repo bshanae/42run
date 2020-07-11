@@ -1,3 +1,3 @@
 #pragma once
 
-#define DEBUG_STATE	1
+#define DEBUG	1

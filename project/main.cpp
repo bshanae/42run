@@ -2,7 +2,7 @@
 
 int					main()
 {
-#if DEBUG_STATE
+#if DEBUG
 	common::warning::is_critical = false;
 #endif
 
@@ -57,6 +57,10 @@ int					main()
 	game::settings().maximum_room_speed_factor = 2.f;
 	game::settings().maximum_character_speed_factor = 2.f;
 	game::settings().maximum_row_value_factor = 4.f;
+	game::settings().hit_effect_duration = 1.5f;
+	game::settings().hit_effect_color = engine::vec3(1.f, 0.f, 0.f);
+	game::settings().hit_effect_factor = 0.6f;
+	game::settings().hit_effect_factor_fade = 0.02f;
 
 	engine::core::initialize();
 	UI::font::manager::initialize();

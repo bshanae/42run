@@ -55,6 +55,11 @@ void				renderer::initialize_uniforms()
 	uniforms.group.translation = program->make_uniform<mat4>("uniform_group.translation");
 	uniforms.group.rotation = program->make_uniform<mat4>("uniform_group.rotation");
 
+//					Color mix
+	uniforms.color_mix.use = program->make_uniform<int>("uniform_color_mix.use");
+	uniforms.color_mix.factor = program->make_uniform<float>("uniform_color_mix.factor");
+	uniforms.color_mix.color = program->make_uniform<vec4>("uniform_color_mix.color");
+
 //					For
 	uniforms.fog.density = program->make_uniform<float>("uniform_fog.density");
 	uniforms.fog.gradient = program->make_uniform<float>("uniform_fog.gradient");
