@@ -3,7 +3,7 @@
 int					main()
 {
 #if DEBUG
-	common::warning::is_critical = false;
+	common::warning::is_critical = true;
 #endif
 
 	common::seed = 42;

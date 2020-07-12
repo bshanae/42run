@@ -1,3 +1,7 @@
 .DS_Store
 cmake-build-debug
 .idea
+
+build/.depend
+build/.object
+build/42run

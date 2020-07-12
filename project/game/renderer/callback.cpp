@@ -4,6 +4,7 @@ using namespace		game;
 
 void				renderer::callback()
 {
+#if DEBUG
 	auto			key = engine::core::receive_event().read_key();
 	auto			camera = scene::reader::camera(global_scene);
 
@@ -54,4 +55,5 @@ void				renderer::callback()
 	}
 
 	upload_camera_uniforms();
+#endif
 }
