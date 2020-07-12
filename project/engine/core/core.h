@@ -65,6 +65,11 @@ public :
 
 	static void						default_settings();
 
+	static void						window_title(const string &value)
+	{
+		glfwSetWindowTitle(instance()->window, value.c_str());
+	}
+
 private :
 
 	struct							default_settings_values

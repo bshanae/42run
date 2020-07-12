@@ -164,6 +164,8 @@ void					manager::update()
 void					manager::load_scene()
 {
 	engine::core::use(global_scene);
+	engine::core::window_title("42run");
+	
 	is_loaded = true;
 
 // -------------------- Models
