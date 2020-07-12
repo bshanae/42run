@@ -36,7 +36,6 @@ set(SOURCE_ENGINE
 	project/engine/core/fill_polygon.cpp
 	project/engine/core/default_settings.cpp
 
-
 	project/engine/converter/converter.cpp
 
 	project/engine/program/shader.cpp
