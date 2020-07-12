@@ -94,6 +94,8 @@ namespace							game
 	struct							settings
 	{
 		bool						faster_scene = false;
+		vec3						title_scene_background;
+		vec3						game_scene_background;
 		float						fog_density;
 		float						fog_gradient;
 		int							number_of_faded_rows;

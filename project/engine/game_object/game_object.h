@@ -17,7 +17,7 @@ public :
 
 	template					<typename final_type = null_renderer>
 	explicit					game_object(tag<final_type> = tag<null_renderer>()) :
-								renderer_code(typeid(final_type).hash_code())
+									renderer_code(typeid(final_type).hash_code())
 								{}
 	virtual						~game_object() = default;
 

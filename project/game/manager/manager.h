@@ -22,21 +22,50 @@ private :
 		pointer->start();
 	}
 
+	void						update() override;
+
+	bool						is_loaded = false;
+
+	void						load_scene();
+	void						unload_scene();
+	void						display_health();
+
 	shared<room>				room;
 	shared<character>			character;
 
-	void						update() override;
+	struct
+	{
+		shared<frame::frame>	score;
+		shared<frame::frame>	health;
+	}							frames;
 
-	shared<frame::frame>		frame_for_score;
-	shared<frame::frame>		frame_for_health;
+	struct
+	{
+		shared<font::font>		intro;
+		shared<font::font>		victory;
+		shared<font::font>		defeat;
+		shared<font::font>		score;
+	}							fonts;
 
-	shared<font::font>			font;
+	struct
+	{
+		shared<label::label>	intro;
+		shared<label::label>	victory;
+		shared<label::label>	defeat;
+		shared<label::label>	score;
+	}							labels;
 
-	shared<label::label>		score;
-	shared<icon::icon>			circles[3];
+	struct
+	{
+		shared<icon::icon>		circles[3];
+	}							icons;
 
-	void						show_health();
-	void						show_game_over();
+	struct
+	{
+		shared<scene::scene>	intro;
+		shared<scene::scene>	victory;
+		shared<scene::scene>	defeat;
+	}							scenes;
 
 	float						row_value = settings().initial_row_value;
 	float						row_value_factor = 1.f;

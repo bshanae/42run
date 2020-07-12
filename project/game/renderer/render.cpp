@@ -9,6 +9,8 @@ void				renderer::render(const shared<game_object::game_object> &object) const
 	if (game_object::reader::state(object) != game_object::state::working)
 		return ;
 
+	assert(scene());
+
 	engine::core::default_settings();
 
 	program->use(true);
@@ -18,7 +20,7 @@ void				renderer::render(const shared<game_object::game_object> &object) const
 	uniforms.group.rotation.upload(mat4(1.f));
 
 	uniforms.fog.use.upload(1);
-	uniforms.fog.background.upload(engine::settings().background);
+	uniforms.fog.background.upload(scene::reader::background(scene()));
 
 	auto			render_targets = game_object::reader::render_targets(object);
 

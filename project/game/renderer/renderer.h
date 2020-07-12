@@ -22,8 +22,8 @@ private :
 
 	void							render(const shared<game_object::game_object> &object) const override;
 
-	void							render(const shared<model::instance> &instance) const;
 	void							render(const shared<model::group> &group) const;
+	void							render(const shared<model::instance> &instance) const;
 
 	void							callback();
 

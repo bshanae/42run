@@ -34,7 +34,7 @@ void				label::label::change_text(const string &text)
 	}
 
 	text_position = position;
-	text_position.y += size.y;
+	text_position.y += size.y / 2;
 	switch (alignment)
 	{
 		case alignment::center :

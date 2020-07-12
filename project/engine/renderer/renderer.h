@@ -7,21 +7,31 @@
 #include "engine/game_object/reader.h"
 #include "engine/scene/reader.h"
 
-class				engine::renderer :
-						public engine::model::reader,
-						public engine::game_object::reader,
-						public engine::scene::reader
+class						engine::renderer :
+								public engine::model::reader,
+								public engine::game_object::reader,
+								public engine::scene::reader
 {
-	friend class	engine::core;
-	friend class	engine::game_object::game_object;
+	friend class			engine::core;
+	friend class			engine::game_object::game_object;
 
 protected :
-					renderer() = default;
+							renderer() = default;
 public :
 
-	virtual			~renderer() = default;
+	virtual					~renderer() = default;
 
 protected :
 
-	virtual void	render(const shared<engine::game_object::game_object> &object) const = 0;
+	virtual void			render(const shared<engine::game_object::game_object> &object) const = 0;
+
+	[[nodiscard]]
+	auto					scene() const
+	{
+		return (current_scene);
+	}
+
+private :
+
+	shared<scene::scene>	current_scene;
 };

@@ -43,6 +43,12 @@ protected :
 		scene->objects_have_changed = false;
 	}
 
+	[[nodiscard]]
+	inline auto			background(const shared<engine::scene::scene> &scene) const
+	{
+		return (scene->background_value);
+	}
+
 //						Camera
 	inline auto			&camera(const shared<engine::scene::scene> &scene) const
 	{

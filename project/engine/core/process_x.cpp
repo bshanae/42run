@@ -53,7 +53,7 @@ void				core::process_rendering()
 	if (not scene)
 		return ;
 
-	auto			background = settings().background;
+	auto			background = scene->background_value;
 
 	glClearColor(background.x, background.y, background.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -61,7 +61,10 @@ void				core::process_rendering()
 
 	for (auto &object : scene->objects)
 		if (object->state == game_object::state::working)
+		{
+			object->renderer->current_scene = scene;
 			object->render();
+		}
 
 	glfwSwapBuffers(window);
 }

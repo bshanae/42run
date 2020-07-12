@@ -18,7 +18,14 @@ public :
 	void					include(const shared<light> &light);
 	void					include(const shared<game_object::game_object> &light);
 
+	void					background(const vec3 &value)
+	{
+		background_value = value;
+	}
+
 private :
+
+	vec3					background_value = vec3(0);
 
 	void					prepare();
 

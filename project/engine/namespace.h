@@ -99,7 +99,6 @@ namespace							engine
 	{
 		ivec2						window_size;
 		string						window_name;
-		vec3						background = vec3(0.f, 0.f, 0.f);
 		int							number_of_samples = 0;
 
 		float						rendering_frequency = 1.f;

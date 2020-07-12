@@ -9,8 +9,7 @@ int					main()
 	common::seed = 42;
 
 	engine::settings().window_size = engine::ivec2(1280, 720);
-	engine::settings().window_name = "42run";
-	engine::settings().background = engine::vec3(1.f);
+	engine::settings().window_name = "";
 	engine::settings().number_of_samples = 1;
 
 	engine::settings().rendering_frequency = 1 / 60.f;
@@ -43,10 +42,12 @@ int					main()
 	game::sources().font = "project/resources/UI/fonts/HelveticaNeue.ttc";
 
 	game::settings().faster_scene = true;
+	game::settings().title_scene_background = engine::vec3(0.1f);
+	game::settings().game_scene_background = engine::vec3(0.95f);
 	game::settings().fog_density = 0.004;
 	game::settings().fog_gradient = 8.f;
 	game::settings().number_of_faded_rows = 2;
-	game::settings().obstacle_generation_wait = 5;
+	game::settings().obstacle_generation_wait = 20;
 	game::settings().hollow_row_spawning_frequency = common::int_range(8, 15);
 	game::settings().chair_spawning_frequency = common::int_range(4, 8);
 	game::settings().initial_room_speed = 1.5f;
