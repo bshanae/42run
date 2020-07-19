@@ -8,11 +8,11 @@
 #include "engine/scene/scene.h"
 #include "engine/renderer/renderer.h"
 
-class								engine::core : public global<engine::core>
+class								engine::core final : public global<engine::core>
 {
 public :
 									core();
-									~core();
+									~core() override;
 private :
 
 	GLFWwindow						*window = nullptr;

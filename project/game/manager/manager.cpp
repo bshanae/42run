@@ -46,10 +46,12 @@ shared<scene::scene>	game::global_scene;
 
 // --------------------	UI : Font
 
-	fonts.intro =  make_shared<font::font>(sources().font, 350, engine::vec3(1.f));
-	fonts.victory =  make_shared<font::font>(sources().font, 270, engine::vec3(1.f));
-	fonts.defeat =  make_shared<font::font>(sources().font, 270, engine::vec3(1.f));
-	fonts.score = make_shared<font::font>(sources().font, 70, engine::vec3(1.f));
+	const int			multiplier = engine::settings().window_scaling.x;
+
+	fonts.intro =  make_shared<font::font>(sources().font, 350 * multiplier, engine::vec3(1.f));
+	fonts.victory =  make_shared<font::font>(sources().font, 270 * multiplier, engine::vec3(1.f));
+	fonts.defeat =  make_shared<font::font>(sources().font, 270 * multiplier, engine::vec3(1.f));
+	fonts.score = make_shared<font::font>(sources().font, 70 * multiplier, engine::vec3(1.f));
 
 	fonts.intro->build_map();
 	fonts.victory->build_map();

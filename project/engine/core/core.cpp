@@ -27,8 +27,13 @@ using namespace		engine;
 	if (glewInit() != GLEW_OK)
 		error::raise(error::id::GLEW_error);
 
-	glfwGetFramebufferSize(window, &settings().window_size.x, &settings().window_size.y);
-	glViewport(0, 0, settings().window_size.x, settings().window_size.y);
+	ivec2			new_size;
+
+	glfwGetFramebufferSize(window, &new_size.x, &new_size.y);
+	glViewport(0, 0, new_size.x, new_size.y);
+
+	settings().window_scaling = new_size / settings().window_size;
+	settings().window_size = new_size;
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

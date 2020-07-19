@@ -97,8 +97,10 @@ namespace							engine
 
 	struct							settings
 	{
-		ivec2						window_size;
 		string						window_name;
+		ivec2						window_size;
+		ivec2						window_scaling;
+
 		int							number_of_samples = 0;
 
 		float						rendering_frequency = 1.f;

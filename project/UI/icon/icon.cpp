@@ -9,6 +9,7 @@ using namespace		UI;
 
 	build(texture);
 	instance->scale(vec3(size.x * 0.5, size.y * 0.5, 1.f));
+	instance->scale(engine::settings().window_scaling.x);
 	change_position(position);
 }
 
