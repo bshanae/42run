@@ -189,12 +189,12 @@ vec3					process_light(vec3 normal, int i)
 	}
 
 	diffuse = calculate_diffuse(normal, direction_to_light);
-	specular = calculate_specular(normal, direction_to_light);
+//	specular = calculate_specular(normal, direction_to_light);
 
 	diffuse *= attenuation * uniform_scene.lights[i].color * uniform_scene.lights[i].power;
-	specular *= attenuation * uniform_scene.lights[i].color * uniform_scene.lights[i].power;
+//	specular *= attenuation * uniform_scene.lights[i].color * uniform_scene.lights[i].power;
 
-	return (diffuse + specular);
+	return (diffuse);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
