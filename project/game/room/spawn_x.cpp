@@ -2,27 +2,26 @@
 
 using namespace		game;
 
-void				room::spawn_chair()
+static line			random_line()
 {
 	auto			random_int = random(int_range(0, 2));
-	enum line		random_line;
 
 	switch (random_int)
 	{
 		case 0 :
-			random_line = line::left;
-			break ;
+			return (line::left);
 
 		case 1 :
-			random_line = line::middle;
-			break ;
+			return (line::middle);
 
 		default :
-			random_line = line::right;
-			break ;
+			return (line::right);
 	}
+}
 
-	auto			chair = make_shared<obstacle::chair>(random_line);
+void				room::spawn_chair()
+{
+	auto			chair = make_shared<obstacle::chair>(random_line());
 	auto			chair_as_object = static_pointer_cast<game_object>(chair);
 	auto			chair_as_obstacle = static_pointer_cast<obstacle::obstacle>(chair);
 
@@ -33,4 +32,26 @@ void				room::spawn_chair()
 void				room::spawn_hollow_row()
 {
 	rows.back()->make_hollow(true);
+}
+
+void				room::spawn_heal()
+{
+	shared<row>		row = rows.back();
+	auto			line = random_line();
+
+	if (not row->is_line_free(line))
+	{
+		for (int i = 0; i < 5; i++)
+			if (line = random_line(); row->is_line_free(line))
+				break ;
+		if (not row->is_line_free(line))
+			return ;
+	}
+
+	auto			heal = make_shared<bonus::heal>(line);
+	auto			heal_as_object = static_pointer_cast<game_object>(heal);
+	auto			heal_as_bonus = static_pointer_cast<bonus::bonus>(heal);
+
+	global_scene->include(heal_as_object);
+	rows.back()->link_bonus(heal_as_bonus);
 }

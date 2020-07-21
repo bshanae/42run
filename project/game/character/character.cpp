@@ -165,3 +165,8 @@ void				character::get_hit()
 	color_mix_value = 0.f;
 	timer.execute();
 }
+
+void				character::use_bonus(const shared<bonus::bonus> &bonus)
+{
+
+}

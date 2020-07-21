@@ -32,7 +32,7 @@ void					room::update()
 		nearest_group->translate(row_offset);
 
 		nearest_row->make_hollow(false);
-		nearest_row->unlink_obstacle();
+		nearest_row->link_obstacle(nullptr);
 
 		rows.push_back(nearest_row);
 		rows.pop_front();
@@ -45,7 +45,7 @@ void					room::update()
 	}
 
 //						Obstacles spawning
-	auto				should_spawn_obstacle = [](int &counter, const int_range &range_for_generation)
+	auto				should_spawn = [](int &counter, const int_range &range_for_generation)
 	{
 		bool			result = false;
 
@@ -62,20 +62,26 @@ void					room::update()
 
 	static int			hollow_row_spawn_countdown = settings().obstacle_generation_wait;
 	static int			chair_spawn_countdown = settings().obstacle_generation_wait;
+	static int			heal_spawn_countdown = settings().obstacle_generation_wait;
 
 	if (not rows_was_swapped)
 		return ;
 
 	bool				should_spawn_hollow_row;
 	bool				should_spawn_chair;
+	bool				should_spawn_heal;
 
-	should_spawn_hollow_row = should_spawn_obstacle(hollow_row_spawn_countdown, settings().hollow_row_spawning_frequency);
-	should_spawn_chair = should_spawn_obstacle(chair_spawn_countdown, settings().chair_spawning_frequency);
+	should_spawn_hollow_row = should_spawn(hollow_row_spawn_countdown, settings().hollow_row_spawning_frequency);
+	should_spawn_chair = should_spawn(chair_spawn_countdown, settings().chair_spawning_frequency);
+	should_spawn_heal =  should_spawn(heal_spawn_countdown, settings().heal_spawning_frequency);
 
 	if (should_spawn_hollow_row)
 		spawn_hollow_row();
 	else if (should_spawn_chair)
 		spawn_chair();
+
+	if (should_spawn_heal)
+		spawn_heal();
 
 //						Update values
 	if (speed_factor < settings().maximum_room_speed_factor)

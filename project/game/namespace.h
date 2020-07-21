@@ -12,6 +12,7 @@ namespace							game
 	using							std::vector;
 	using							std::list;
 	using							std::deque;
+	using							std::pair;
 	using							std::reference_wrapper;
 	using							std::cerr;
 	using							std::cout;
@@ -100,8 +101,10 @@ namespace							game
 		float						fog_gradient;
 		int							number_of_faded_rows;
 		int							obstacle_generation_wait;
+		int							bonus_generation_wait;
 		int_range					hollow_row_spawning_frequency;
 		int_range					chair_spawning_frequency;
+		int_range					heal_spawning_frequency;
 		float						initial_room_speed;
 		float						initial_character_speed;
 		float						initial_row_value;
@@ -155,6 +158,13 @@ namespace							game
 	{
 		class						obstacle;
 		class						chair;
+	}
+
+	namespace						bonus
+	{
+		class						bonus;
+		class						heal;
+		class						protection;
 	}
 
 	class 							manager;

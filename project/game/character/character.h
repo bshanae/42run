@@ -52,11 +52,12 @@ private :
 	vec3 								current_position = middle_position;
 	vec3								target_position = middle_position;
 
-	void								get_hit();
-
 	interface::timer					timer;
 	int									health = 3;
 	float								color_mix_value;
+
+	void								get_hit();
+	void								use_bonus(const shared<bonus::bonus> &bonus);
 };
 
 

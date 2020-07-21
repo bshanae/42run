@@ -2,8 +2,9 @@
 
 #include "game/namespace.h"
 
-#include "game/obstacle/chair.h"
 #include "game/character/character.h"
+#include "game/obstacle/chair.h"
+#include "game/bonus/heal.h"
 
 class										game::room : public engine::game_object::game_object
 {
@@ -45,7 +46,7 @@ private :
 
 	struct									row
 	{
-											row(const shared<model_with_mods::group> &group) :
+		explicit							row(const shared<model_with_mods::group> &group) :
 												group(group)
 											{}
 
@@ -55,27 +56,33 @@ private :
 		void 								make_hollow_temporarily(bool state);
 
 		void								link_obstacle(const shared<obstacle::obstacle> &obstacle);
-		void								unlink_obstacle();
-
-		[[nodiscard]]
-		bool								does_intersect(const float_range &character_range) const;
+		void								link_bonus(const shared<bonus::bonus> &bonus);
 
 		[[nodiscard]]
 		shared<model_with_mods::group>		read_group() const;
 
 		[[nodiscard]]
-		line_wrapper						blocked_lines() const;
+		bool								does_collide(const float_range &character_range) const;
 		[[nodiscard]]
-		state_wrapper						blocked_states() const;
+		bool								does_collide_with_obstacle(line character_line, const state_wrapper &character_state) const;
+		[[nodiscard]]
+		pair<bool, shared<bonus::bonus>>	does_collide_with_bonus(line character_line, const state_wrapper &character_state) const;
+
+		bool								is_line_free(line_wrapper line);
 
 	private :
 
-		shared<model_with_mods::group>		group;
-		shared<obstacle::obstacle>			obstacle;
+		static inline const line_wrapper	lines_blocked_by_hollow_row = {line::left, line::middle, line::right};
+		static inline const state_wrapper 	states_blocked_by_hollow_row = state::running;
 
-		void								make_hollow_internal(bool state);
+		shared<model_with_mods::group>		group;
+
+		shared<obstacle::obstacle>			obstacle;
+		shared<bonus::bonus>				bonus;
 
 		bool								is_hollow = false;
+
+		void								make_hollow_internal(bool state);
 	};
 
 	deque<shared<row>>						rows;
@@ -123,6 +130,9 @@ private :
 //											Obstacles
 	void									spawn_chair();
 	void									spawn_hollow_row();
+
+//											Bonuses
+	void									spawn_heal();
 };
 
 

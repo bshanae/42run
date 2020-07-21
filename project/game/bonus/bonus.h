@@ -4,28 +4,28 @@
 
 #include "game/renderer/renderer.h"
 
-class									game::obstacle::obstacle : public engine::game_object::game_object
+class									game::bonus::bonus : public engine::game_object::game_object
 {
 	friend class						game::manager;
 	friend class						game::room;
 	friend class						game::character;
 
 public :
-										obstacle
+										bonus
 										(
 											const line_wrapper &blocked_lines,
 											const state_wrapper &blocked_states,
 											const shared<model::model> &source
 										) :
 											game_object(tag<game::renderer>()),
-											blocked_lines(blocked_lines),
-											blocked_states(blocked_states)
+											used_lines(blocked_lines),
+											used_states(blocked_states)
 	{
 		instance = make_shared<model_with_mods::instance>(source);
 		game_object::render_target(instance);
 	}
 
-										~obstacle() override = default;
+										~bonus() override = default;
 
 protected :
 
@@ -33,6 +33,6 @@ protected :
 
 private :
 
-	const line_wrapper					blocked_lines;
-	const state_wrapper					blocked_states;
+	const line_wrapper					used_lines;
+	const state_wrapper					used_states;
 };

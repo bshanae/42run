@@ -2,15 +2,15 @@
 
 #include "game/namespace.h"
 
-#include "game/obstacle/obstacle.h"
+#include "game/bonus/bonus.h"
 
-class							game::obstacle::chair : public game::obstacle::obstacle
+class							game::bonus::heal : public game::bonus::bonus
 {
 	friend class				game::manager;
 
 public :
 
-	explicit					chair(line line) : obstacle(line, state::running, global_model())
+	explicit					heal(line line) : bonus(line, state::running, global_model())
 	{
 		vec3					position = vec3(0.f);
 		vec3					rotation = vec3(0.f);
@@ -20,13 +20,14 @@ public :
 		else if (line == line::right)
 			position.x = +constants::distance_between_lines;
 
-		position.y = global_model()->size().y / 2.f;
+//		position.y = global_model()->size().y / 2.f;
 		rotation.y = random(int_range(0, 360));
 
+		instance->scale(2.f);
 		instance->translate(position);
 		instance->rotate(rotation);
 	}
-								~chair() override = default;
+								~heal() override = default;
 
 private :
 

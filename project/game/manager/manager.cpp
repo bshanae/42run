@@ -120,7 +120,7 @@ void					manager::update()
 
 	static
 	shared<room::row>	last_intersected_row;
-	shared<room::row>	dangerous_row;
+	shared<room::row>	interesting_row;
 
 	total_row_value += (float)room->rows_swap_counter * row_value * row_value_factor;
 	total_row_value = min(total_row_value, 21000.f);
@@ -131,27 +131,25 @@ void					manager::update()
 		row_value_factor *= (1.f + settings().increase_of_row_value);
 
 	for (auto iterator = room->rows.rbegin(); iterator != room->rows.rend(); ++iterator)
-		if ((*iterator)->does_intersect(character_range))
+		if ((*iterator)->does_collide(character_range))
 		{
-			dangerous_row = *iterator;
+			interesting_row = *iterator;
 			break ;
 		}
 
-// --------------------	Intersection
+// --------------------	Test
 
-	if (not dangerous_row)
+	if (not interesting_row)
 		return ;
-	if (last_intersected_row == dangerous_row)
+	if (last_intersected_row == interesting_row)
 		return ;
+	if (not interesting_row->does_collide(character_range))
+		return;
 
-	if (not (dangerous_row->blocked_lines() & character->current_line))
-		return ;
-	if (not (dangerous_row->blocked_states() & character->current_state))
-		return ;
+	last_intersected_row = interesting_row;
 
-// --------------------	Hit
+// --------------------	Obstacle and bonus
 
-	last_intersected_row = dangerous_row;
 
 #if DEBUG
 	static int			collision_i;
@@ -159,8 +157,17 @@ void					manager::update()
 	cerr << "Collision" << collision_i++ << endl;
 #endif
 
-	character->get_hit();
-	display_health();
+	if (interesting_row->does_collide_with_obstacle(character->current_line, character->current_state))
+	{
+		character->get_hit();
+		display_health();
+	}
+	else if
+	(
+		auto result = interesting_row->does_collide_with_bonus(character->current_line, character->current_state);
+		result.first
+	)
+		character->use_bonus(result.second);
 }
 
 void					manager::load_scene()

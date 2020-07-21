@@ -3,86 +3,122 @@
 #include "game/model_with_mods/instance.h"
 #include "game/model_with_mods/group.h"
 
-using namespace					game;
+using namespace						game;
 
-void							room::row::move(const vec3 &value)
+void								room::row::move(const vec3 &value)
 {
 	group->translate(value);
 
 	if (obstacle)
 	{
 		obstacle->instance->edit_translation(2, group->translation().z);
-		obstacle->does_trigger_collision = true;
 		obstacle->pause(false);
+	}
+	if (bonus)
+	{
+		bonus->instance->edit_translation(2, group->translation().z);
+		bonus->pause(false);
 	}
 }
 
-void							room::row::make_hollow(bool state)
+void								room::row::make_hollow(bool state)
 {
 	make_hollow_internal(state);
 	is_hollow = state;
 }
 
-void 							room::row::make_hollow_temporarily(bool state)
+void 								room::row::make_hollow_temporarily(bool state)
 {
 	make_hollow_internal(is_hollow or state);
 }
 
-void							room::row::make_hollow_internal(bool state)
+void								room::row::make_hollow_internal(bool state)
 {
 	group->hollow(state);
 	if (obstacle)
 		obstacle->instance->hollow(state);
 }
 
-void							room::row::link_obstacle(const shared<obstacle::obstacle> &obstacle)
-{
-	this->obstacle = obstacle;
-	this->obstacle->start();
-	obstacle->pause(true);
-}
-
-void							room::row::unlink_obstacle()
+void								room::row::link_obstacle(const shared<obstacle::obstacle> &obstacle)
 {
 	if (obstacle)
 	{
-		obstacle->stop();
-		obstacle = nullptr;
+		this->obstacle = obstacle;
+		this->obstacle->start();
+		obstacle->pause(true);
+	}
+	else if (this->obstacle)
+	{
+		this->obstacle->stop();
+		this->obstacle = nullptr;
 	}
 }
 
-bool							room::row::does_intersect(const float_range &character_range) const
+void								room::row::link_bonus(const shared<bonus::bonus> &bonus)
 {
-	float_range					my_range = room::row_range + group->translation().z;
-
-	return (my_range or character_range);
+	if (bonus)
+	{
+		this->bonus = bonus;
+		this->bonus->start();
+		bonus->pause(true);
+	}
+	else if (this->bonus)
+	{
+		this->bonus->stop();
+		this->bonus = nullptr;
+	}
 }
 
-shared<model_with_mods::group>	room::row::read_group() const
+shared<model_with_mods::group>		room::row::read_group() const
 {
 	return (group);
 }
 
-line_wrapper					room::row::blocked_lines() const
+bool								room::row::does_collide(const float_range &character_range) const
 {
-	static auto 				lines_blocked_when_hollow = line_wrapper(line::left) | line_wrapper(line::middle) | line_wrapper(line::right);
+	float_range						my_range = room::row_range + group->translation().z;
 
-	if (is_hollow)
-		return (lines_blocked_when_hollow);
-	else if (obstacle)
-		return (obstacle->blocked_lines);
-	else
-		return {};
+	return (my_range or character_range);
 }
 
-state_wrapper			room::row::blocked_states() const
+bool								room::row::does_collide_with_obstacle(line character_line, const state_wrapper &character_state) const
 {
-	static auto 		states_blocked_when_hollow = state_wrapper(state::running);
+	if
+	(
+		is_hollow and
+		lines_blocked_by_hollow_row.does_intersect(character_line) and
+		states_blocked_by_hollow_row.does_intersect(character_state)
+	)
+		return (true);
+	if
+	(
+		obstacle and
+		obstacle->blocked_lines.does_intersect(character_line) and
+		obstacle->blocked_states.does_intersect(character_state)
+	)
+		return (true);
+	return (false);
+}
 
+pair<bool, shared<bonus::bonus>>	room::row::does_collide_with_bonus(line character_line, const state_wrapper &character_state) const
+{
+	if
+	(
+		bonus and
+		bonus->used_lines.does_intersect(character_line) and
+		bonus->used_states.does_intersect(character_state)
+	)
+		return {true, bonus};
+	return {false, nullptr};
+}
+
+bool								room::row::is_line_free(line_wrapper line)
+{
 	if (is_hollow)
-		return (states_blocked_when_hollow);
-	else if (obstacle)
-		return (obstacle->blocked_states);
-	else
-		return {};
+		return (false);
+	if (obstacle and (obstacle->blocked_lines.does_intersect(line)))
+		return (false);
+	if (bonus and (bonus->used_lines.does_intersect(line)))
+		return (false);
+	return (true);
 }

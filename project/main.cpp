@@ -47,9 +47,11 @@ int					main()
 	game::settings().fog_density = 0.004;
 	game::settings().fog_gradient = 8.f;
 	game::settings().number_of_faded_rows = 2;
-	game::settings().obstacle_generation_wait = 20;
+	game::settings().obstacle_generation_wait = 10;
+	game::settings().bonus_generation_wait = 20;
 	game::settings().hollow_row_spawning_frequency = common::int_range(8, 15);
 	game::settings().chair_spawning_frequency = common::int_range(4, 8);
+	game::settings().heal_spawning_frequency = common::int_range(1, 1);
 	game::settings().initial_room_speed = 1.5f;
 	game::settings().initial_character_speed = 0.5f;
 	game::settings().initial_row_value = 20.f;
