@@ -20,12 +20,12 @@ public :
 		else if (line == line::right)
 			position.x = +constants::distance_between_lines;
 
-//		position.y = global_model()->size().y / 2.f;
+		position.y = 10 + random(float_range(-0.4f, 0.4f));
 		rotation.y = random(int_range(0, 360));
 
-		instance->scale(2.f);
 		instance->translate(position);
 		instance->rotate(rotation);
+		instance->hollow(true);
 	}
 								~heal() override = default;
 
@@ -38,7 +38,7 @@ private :
 		shared<model::model>	model;
 
 		if (not model)
-			model = make_shared<model::model>(sources().chair, model::flag::center);
+			model = make_shared<model::model>(sources().bonus_heal, model::flag::center);
 		return (model);
 	}
 };

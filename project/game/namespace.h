@@ -88,6 +88,9 @@ namespace							game
 		path						character;
 		path						circle;
 		path						font;
+		path						bonus_coin;
+		path						bonus_heal;
+		path						bonus_protection;
 	};
 
 	struct sources					&sources();
@@ -104,7 +107,9 @@ namespace							game
 		int							bonus_generation_wait;
 		int_range					hollow_row_spawning_frequency;
 		int_range					chair_spawning_frequency;
+		int_range					coin_spawning_frequency;
 		int_range					heal_spawning_frequency;
+		int_range					protection_spawning_frequency;
 		float						initial_room_speed;
 		float						initial_character_speed;
 		float						initial_row_value;
@@ -163,6 +168,7 @@ namespace							game
 	namespace						bonus
 	{
 		class						bonus;
+		class						coin;
 		class						heal;
 		class						protection;
 	}

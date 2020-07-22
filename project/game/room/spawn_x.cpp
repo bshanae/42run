@@ -1,5 +1,10 @@
 #include "room.h"
 
+#include "game/obstacle/chair.h"
+#include "game/bonus/coin.h"
+#include "game/bonus/heal.h"
+#include "game/bonus/protection.h"
+
 using namespace		game;
 
 static line			random_line()
@@ -34,6 +39,28 @@ void				room::spawn_hollow_row()
 	rows.back()->make_hollow(true);
 }
 
+void				room::spawn_coin()
+{
+	shared<row>		row = rows.back();
+	auto			line = random_line();
+
+	if (not row->is_line_free(line))
+	{
+		for (int i = 0; i < 5; i++)
+			if (line = random_line(); row->is_line_free(line))
+				break ;
+		if (not row->is_line_free(line))
+			return ;
+	}
+
+	auto			coin = make_shared<bonus::coin>(line);
+	auto			coin_as_object = static_pointer_cast<game_object>(coin);
+	auto			coin_as_bonus = static_pointer_cast<bonus::bonus>(coin);
+
+	global_scene->include(coin_as_object);
+	rows.back()->link_bonus(coin_as_bonus);
+}
+
 void				room::spawn_heal()
 {
 	shared<row>		row = rows.back();
@@ -54,4 +81,27 @@ void				room::spawn_heal()
 
 	global_scene->include(heal_as_object);
 	rows.back()->link_bonus(heal_as_bonus);
+}
+
+
+void				room::spawn_protection()
+{
+	shared<row>		row = rows.back();
+	auto			line = random_line();
+
+	if (not row->is_line_free(line))
+	{
+		for (int i = 0; i < 5; i++)
+			if (line = random_line(); row->is_line_free(line))
+				break ;
+		if (not row->is_line_free(line))
+			return ;
+	}
+
+	auto			protection = make_shared<bonus::protection>(line);
+	auto			protection_as_object = static_pointer_cast<game_object>(protection);
+	auto			protection_as_bonus = static_pointer_cast<bonus::bonus>(protection);
+
+	global_scene->include(protection_as_object);
+	rows.back()->link_bonus(protection_as_bonus);
 }

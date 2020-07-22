@@ -62,26 +62,36 @@ void					room::update()
 
 	static int			hollow_row_spawn_countdown = settings().obstacle_generation_wait;
 	static int			chair_spawn_countdown = settings().obstacle_generation_wait;
-	static int			heal_spawn_countdown = settings().obstacle_generation_wait;
+	static int			coin_spawn_countdown = settings().bonus_generation_wait;
+	static int			heal_spawn_countdown = settings().bonus_generation_wait;
+	static int			protection_spawn_countdown = settings().bonus_generation_wait;
 
 	if (not rows_was_swapped)
 		return ;
 
 	bool				should_spawn_hollow_row;
 	bool				should_spawn_chair;
+	bool				should_spawn_coin;
 	bool				should_spawn_heal;
+	bool				should_spawn_protection;
 
 	should_spawn_hollow_row = should_spawn(hollow_row_spawn_countdown, settings().hollow_row_spawning_frequency);
 	should_spawn_chair = should_spawn(chair_spawn_countdown, settings().chair_spawning_frequency);
+	should_spawn_coin =  should_spawn(coin_spawn_countdown, settings().coin_spawning_frequency);
 	should_spawn_heal =  should_spawn(heal_spawn_countdown, settings().heal_spawning_frequency);
+	should_spawn_protection =  should_spawn(protection_spawn_countdown, settings().protection_spawning_frequency);
 
 	if (should_spawn_hollow_row)
 		spawn_hollow_row();
 	else if (should_spawn_chair)
 		spawn_chair();
 
-	if (should_spawn_heal)
+	if (should_spawn_coin)
+		spawn_coin();
+	else if (should_spawn_heal)
 		spawn_heal();
+	else if (should_spawn_protection)
+		spawn_protection();
 
 //						Update values
 	if (speed_factor < settings().maximum_room_speed_factor)

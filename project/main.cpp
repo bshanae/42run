@@ -40,6 +40,9 @@ int					main()
 	game::sources().character = "project/resources/game/models/Character.fbx";
 	game::sources().circle = "project/resources/UI/icons/circle.png";
 	game::sources().font = "project/resources/UI/fonts/HelveticaNeue.ttc";
+	game::sources().bonus_coin = "project/resources/game/models/Coin.obj";
+	game::sources().bonus_heal = "project/resources/game/models/Heal.obj";
+	game::sources().bonus_protection = "project/resources/game/models/Protection.obj";
 
 	game::settings().faster_scene = true;
 	game::settings().title_scene_background = engine::vec3(0.1f);
@@ -51,7 +54,9 @@ int					main()
 	game::settings().bonus_generation_wait = 20;
 	game::settings().hollow_row_spawning_frequency = common::int_range(8, 15);
 	game::settings().chair_spawning_frequency = common::int_range(4, 8);
-	game::settings().heal_spawning_frequency = common::int_range(1, 1);
+	game::settings().coin_spawning_frequency = common::int_range(2,8);
+	game::settings().heal_spawning_frequency = common::int_range(2,8);
+	game::settings().protection_spawning_frequency = common::int_range(2,8);
 	game::settings().initial_room_speed = 1.5f;
 	game::settings().initial_character_speed = 0.5f;
 	game::settings().initial_row_value = 20.f;

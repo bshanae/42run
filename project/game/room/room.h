@@ -3,8 +3,8 @@
 #include "game/namespace.h"
 
 #include "game/character/character.h"
-#include "game/obstacle/chair.h"
-#include "game/bonus/heal.h"
+#include "game/obstacle/obstacle.h"
+#include "game/bonus/bonus.h"
 
 class										game::room : public engine::game_object::game_object
 {
@@ -132,7 +132,9 @@ private :
 	void									spawn_hollow_row();
 
 //											Bonuses
+	void									spawn_coin();
 	void									spawn_heal();
+	void									spawn_protection();
 };
 
 
