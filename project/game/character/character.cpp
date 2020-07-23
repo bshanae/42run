@@ -27,11 +27,24 @@ using namespace		game;
 	game_object::animation_target(model);
 
 	callback = interface::callback(interface::event::type::key_press, &character::callback_functor, this);
-	timer_for_obstacle = engine_extensions::timer(settings().hit_range, settings().hit_duration);
-	timer_for_protection = engine_extensions::timer(settings().protection_range, settings().protection_duration);
+	timer_for_obstacle = engine_extensions::timer
+	(
+		settings().hit_start,
+		settings().hit_end,
+		settings().hit_duration,
+		interpolation_method::cosine
+	);
+	timer_for_protection = engine_extensions::timer
+	(
+		settings().protection_start,
+		settings().protection_end,
+		settings().protection_duration,
+		interpolation_method::cosine
+	);
 
 	engine::core::use(callback);
 	engine::core::use(timer_for_obstacle);
+	engine::core::use(timer_for_protection);
 }
 
 void				character::update()
@@ -49,21 +62,23 @@ void				character::update()
 		instance->translate(current_position);
 	}
 
-//					Update values
+// ---------------- Update values
 	if (speed_factor > settings().maximum_character_speed_factor)
 		speed_factor *= (1.f + settings().increase_of_character_speed);
 
-//					Update effects
-	if (timer_for_obstacle.has_finished())
+// ---------------- Update effects
+	if (not is_protected and timer_for_obstacle.get_state() == interface::timer::state::finished)
+		instance->color_mix_state(false);
+	else if (not is_protected and timer_for_obstacle.get_state() == interface::timer::state::running)
+		instance->color_mix_factor(timer_for_obstacle.value());
+
+	if (timer_for_protection.get_state() == interface::timer::state::finished)
 	{
 		instance->color_mix_state(false);
-		instance->hollow(false);
-	}
-	else if (timer_for_obstacle.is_running())
-		instance->color_mix_factor(timer_for_obstacle.get_value());
-
-	if (timer_for_protection.has_finished())
 		is_protected = false;
+	}
+	else if (timer_for_protection.get_state() == interface::timer::state::running)
+		instance->color_mix_factor(timer_for_protection.value());
 }
 
 void				character::update_state()
@@ -159,7 +174,7 @@ bool				character::try_go_right(enum line &line)
 	}
 }
 
-void				character::collide_with_obstacle()
+void				character::interact_with_obstacle()
 {
 	if (is_protected)
 		return ;
@@ -170,12 +185,12 @@ void				character::collide_with_obstacle()
 	timer_for_obstacle.execute();
 }
 
-void				character::collide_with_heal()
+void				character::interact_with_heal()
 {
 	health = min(3, health + 1);
 }
 
-void				character::collide_with_protection()
+void				character::interact_with_protection()
 {
 	instance->color_mix_state(true);
 	instance->color_mix_color(settings().protection_color);

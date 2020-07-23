@@ -2,52 +2,46 @@
 
 #include "game/namespace.h"
 
-class				game::engine_extensions::timer : public engine::interface::timer
+class						game::engine_extensions::timer : public engine::interface::timer
 {
 public :
+							timer() = default;
+							~timer() override = default;
 
-	enum class 		interpolation_method
-	{
-		linear
-	};
+							timer
+							(
+								float start,
+								float end,
+								float duration,
+								interpolation_method method = interpolation_method::linear
+							) :
+								engine::interface::timer(duration),
+								interpolation_method(method),
+								start(start),
+								end(end)
+							{}
 
-					timer() = default;
-					~timer() override = default;
-
-					timer(float start, float end, float duration) :
-						engine::interface::timer(duration),
-						start(start),
-						end(end)
-					{}
-
-					timer(const float_range &range, float duration) :
-						engine::interface::timer(duration),
-						start(range.lower),
-						end(range.higher)
-					{}
-
-	void 			execute() override
-	{
-		value = start;
-		engine::interface::timer::execute();
-	}
-
-	void 			update() override
+	void 					update() override
 	{
 		engine::interface::timer::update();
-		value = start + time_passed() * (end - start);
 	}
 
-	[[nodiscard]]
-	float			get_value() const
+	[[nodiscard]] float		value() const
 	{
-		return (value);
+		switch (interpolation_method)
+		{
+			case interpolation_method::linear :
+				return (start + (end - start) * time_passed());
+
+			case interpolation_method::cosine :
+				return (start + (end - start) * (-cos((float)M_PI * time_passed()) / 2.f + 0.5f));
+		}
 	}
 
 private :
 
-	float			start = 0;
-	float			end = 0;
+	interpolation_method	interpolation_method = interpolation_method::linear;
 
-	float			value = 0;
+	float					start = 0.f;
+	float					end = 0.f;
 };

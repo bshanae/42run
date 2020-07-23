@@ -33,7 +33,7 @@ private :
 	}										models;
 
 //											Number of rows (groups)
-	static constexpr int					number_of_rows = 10;
+	static constexpr int					number_of_rows = 14;
 	static constexpr int					number_of_accessories = 8;
 
 	struct

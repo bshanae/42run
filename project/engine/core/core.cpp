@@ -43,13 +43,6 @@ using namespace		engine;
 
 	glfwSetWindowUserPointer(window, this);
 	glfwSetKeyCallback(window, callback);
-
-	timer_for_rendering = interface::timer(settings().rendering_frequency);
-	timer_for_updating = interface::timer(settings().updating_frequency);
-
-//					Manually connect timers
-	timers.push_back(timer_for_rendering);
-	timers.push_back(timer_for_updating);
 }
 
 					core::~core()

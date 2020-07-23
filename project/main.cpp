@@ -12,9 +12,6 @@ int					main()
 	engine::settings().window_name = "";
 	engine::settings().number_of_samples = 1;
 
-	engine::settings().rendering_frequency = 1 / 60.f;
-	engine::settings().updating_frequency = 1 / 40.f;
-
 	engine::settings().shader_version = "330 core";
 	engine::settings().path_to_shared_header = "project/resources/engine";
 
@@ -51,27 +48,26 @@ int					main()
 	game::settings().number_of_faded_rows = 2;
 	game::settings().obstacle_generation_wait = 10;
 	game::settings().bonus_generation_wait = 20;
-	game::settings().hollow_row_spawning_frequency = common::int_range(8, 15);
-	game::settings().chair_spawning_frequency = common::int_range(4, 8);
-	game::settings().coin_spawning_frequency = common::int_range(1000,1000);//common::int_range(2,8);
-	game::settings().heal_spawning_frequency = common::int_range(1000,1000);//common::int_range(8,16);
-	game::settings().protection_spawning_frequency = common::int_range(1,1);//common::int_range(16,40);
-	game::settings().initial_room_speed = 1.5f;
-	game::settings().initial_character_speed = 0.5f;
-	game::settings().initial_row_value = 10.f;
-	game::settings().increase_of_room_speed = 0.0001f;
-	game::settings().increase_of_character_speed = 0.0001f;
-	game::settings().increase_of_row_value = 0.02f;
-	game::settings().maximum_room_speed_factor = 2.f;
-	game::settings().maximum_character_speed_factor = 2.f;
-	game::settings().maximum_row_value_factor = 4.f;
-	game::settings().hit_range = common::float_range(0.6f, 0.f);
+	game::settings().hollow_row_spawning_frequency = common::int_range(6, 16);
+	game::settings().chair_spawning_frequency = common::int_range(2, 4);
+	game::settings().coin_spawning_frequency = common::int_range(4, 10);
+	game::settings().heal_spawning_frequency = common::int_range(20,40);
+	game::settings().protection_spawning_frequency = common::int_range(80, 100);
+	game::settings().initial_room_speed = 1.875f;
+	game::settings().initial_character_speed = 0.625f;
+	game::settings().increase_of_room_speed = 0.001f;
+	game::settings().increase_of_character_speed = 0.001f;
+	game::settings().maximum_room_speed_factor = 1.3f;
+	game::settings().maximum_character_speed_factor = 1.3f;
+	game::settings().hit_start = 0.6f;
+	game::settings().hit_end = 0.f;
 	game::settings().hit_color = engine::vec3(1.f, 0.f, 0.f);
 	game::settings().hit_duration = 1.5f;
 	game::settings().coin_value = 500.f;
-	game::settings().protection_range = common::float_range(0.6f, 0.f);
+	game::settings().protection_start = 0.6f;
+	game::settings().protection_end = 0.f;
 	game::settings().protection_color = engine::vec3(0.11f, 0.65f, 0.58f);
-	game::settings().protection_duration = 10.f;
+	game::settings().protection_duration = 20.f;
 
 	engine::core::initialize();
 	UI::font::manager::initialize();

@@ -10,7 +10,7 @@ void					room::update()
 	static const vec3	size = models.room->size();
 
 	bool				rows_was_swapped = false;
-	auto				movement = vec3(0, 0, speed * engine::core::time_delta(true));
+	auto				movement = vec3(0, 0, speed * speed_factor * engine::core::time_delta(true));
 
 	auto				nearest_row = rows.front();
 	auto				furthest_row = rows.back();

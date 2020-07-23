@@ -30,6 +30,7 @@ using namespace		game;
 	check_scene_timer = interface::timer(scene_check_frequency, scene_checker);
 
 	engine::core::use(check_scene_timer);
+	check_scene_timer.execute();
 
 	press_callback = interface::callback(interface::event::type::key_press, &renderer::callback, this);
 	hold_callback = interface::callback(interface::event::type::key_hold, &renderer::callback, this);

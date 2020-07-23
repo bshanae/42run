@@ -34,9 +34,6 @@ private :
 
 	static void 					callback(GLFWwindow *window, int key, int code, int action, int mode);
 
-	interface::timer				timer_for_rendering;
-	interface::timer				timer_for_updating;
-
 public :
 
 	static void						execute();

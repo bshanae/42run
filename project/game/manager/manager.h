@@ -69,8 +69,6 @@ private :
 		shared<scene::scene>	defeat;
 	}							scenes;
 
-	float						row_value = settings().initial_row_value;
-	float						row_value_factor = 1.f;
-
+	static constexpr float		row_value = 10.f;
 	float						total_row_value = 0.f;
 };

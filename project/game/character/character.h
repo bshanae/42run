@@ -59,7 +59,7 @@ private :
 	int									health = 3;
 	bool								is_protected = false;
 
-	void								collide_with_obstacle();
-	void								collide_with_heal();
-	void								collide_with_protection();
+	void								interact_with_obstacle();
+	void								interact_with_heal();
+	void								interact_with_protection();
 };

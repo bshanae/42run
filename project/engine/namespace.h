@@ -103,9 +103,6 @@ namespace							engine
 
 		int							number_of_samples = 0;
 
-		float						rendering_frequency = 1.f;
-		float						updating_frequency = 1.f;
-
 		string						shader_version;
 		path						path_to_shared_header;
 

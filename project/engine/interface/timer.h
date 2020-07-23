@@ -6,7 +6,17 @@
 
 class				engine::interface::timer
 {
+	friend class	engine::core;
+
 public :
+
+	enum class 		state
+	{
+		waiting,
+		running,
+		finished
+	};
+
 					timer() = default;
 	virtual			~timer() = default;
 
@@ -16,8 +26,8 @@ public :
 
 	template		<typename ...args_type>
 	explicit		timer(float value, args_type ...args) :
-					total(value),
-					function(args...)
+						total(value),
+						function(args...)
 					{}
 
 	virtual void	execute()
@@ -26,6 +36,7 @@ public :
 		{
 			left = *total;
 			last = glfwGetTime();
+			state = state::running;
 		}
 		else
 			warning::raise(warning::id::cant_execute_timer);
@@ -33,33 +44,30 @@ public :
 
 	virtual void 	update()
 	{
-		if (left >= 0.f)
+		if (state == state::running)
 		{
 			auto	current = glfwGetTime();
 
 			left -= current - last;
 			last = current;
 
-			if (function and has_finished())
-				function();
+			if (left <= 0.f)
+			{
+				state = state::finished;
+				left = 0.f;
+				if (function)
+					function();
+			}
 		}
-
-		cerr << "timer : left = " << left << endl;
 	}
 
 	[[nodiscard]]
-	bool			is_running() const
+	state			get_state() const
 	{
-		return (left > 0.f);
+		return (state);
 	}
 
-	[[nodiscard]]
-	bool			has_finished() const
-	{
-		return (total and left <= 0.f);
-	}
-
-	float			time_passed()
+	float			time_passed() const
 	{
 		if (not total)
 			return (0.f);
@@ -69,6 +77,8 @@ public :
 	}
 
 private :
+
+	state			state = state::waiting;
 
 	optional<float>	total;
 

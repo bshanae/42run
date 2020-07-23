@@ -111,18 +111,17 @@ namespace							game
 		int_range					protection_spawning_frequency;
 		float						initial_room_speed;
 		float						initial_character_speed;
-		float						initial_row_value;
 		float						increase_of_room_speed;
 		float						increase_of_character_speed;
-		float						increase_of_row_value;
 		float						maximum_room_speed_factor;
 		float						maximum_character_speed_factor;
-		float						maximum_row_value_factor;
-		float_range 				hit_range;
+		float						hit_start;
+		float						hit_end;
 		vec3						hit_color;
 		float						hit_duration;
 		float						coin_value;
-		float_range 				protection_range;
+		float						protection_start;
+		float						protection_end;
 		vec3						protection_color;
 		float						protection_duration;
 	};
@@ -150,6 +149,12 @@ namespace							game
 	using							state_wrapper = engine::abstract::bitflag_wrapper<state>;
 
 	class							renderer;
+
+	enum class						interpolation_method
+	{
+		linear,
+		cosine
+	};
 
 	namespace						engine_extensions
 	{

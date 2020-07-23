@@ -127,13 +127,10 @@ void					manager::update()
 	shared<room::row>	last_intersected_row;
 	shared<room::row>	interesting_row;
 
-	total_row_value += (float)room->rows_swap_counter * row_value * row_value_factor;
+	total_row_value += (float)room->rows_swap_counter * row_value;
 	total_row_value = min(total_row_value, 21000.f);
 	room->rows_swap_counter = 0;
 	labels.score->change_text(to_string((int)total_row_value));
-
-	if (row_value_factor < settings().maximum_row_value_factor)
-		row_value_factor *= (1.f + settings().increase_of_row_value);
 
 	for (auto iterator = room->rows.rbegin(); iterator != room->rows.rend(); ++iterator)
 		if ((*iterator)->does_collide(character_range))
@@ -164,7 +161,7 @@ void					manager::update()
 
 	if (interesting_row->does_collide_with_obstacle(character->current_line, character->current_state))
 	{
-		character->collide_with_obstacle();
+		character->interact_with_obstacle();
 		display_health();
 	}
 	else if
@@ -195,7 +192,15 @@ void					manager::load_scene()
 
 // -------------------- Lights
 
-	global_scene->include(make_shared<scene::light>(scene::light::type::ambient, vec3(1.f), 0.7f));
+	global_scene->include
+	(
+		make_shared<scene::light>
+		(
+			scene::light::type::ambient,
+			vec3(1.f),
+			0.7f
+		)
+	);
 
 	global_scene->include
 	(
@@ -256,11 +261,11 @@ void					manager::use_bonus(const shared<bonus::bonus> &bonus)
 		total_row_value += settings().coin_value;
 	else if (dynamic_pointer_cast<bonus::heal>(bonus))
 	{
-		character->collide_with_heal();
+		character->interact_with_heal();
 		display_health();
 	}
 	else if (dynamic_pointer_cast<bonus::protection>(bonus))
-		character->collide_with_protection();
+		character->interact_with_protection();
 	else
 		return ;
 	bonus->use();

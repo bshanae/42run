@@ -19,8 +19,12 @@ void				core::process_callbacks()
 
 void				core::process_timers()
 {
-	for (auto &timer : instance()->timers)
+	for (auto &timer : timers)
+	{
+		if (timer.get().state == interface::timer::state::finished)
+			timer.get().state = interface::timer::state::waiting;
 		timer.get().update();
+	}
 }
 
 void				core::process_preparing()
