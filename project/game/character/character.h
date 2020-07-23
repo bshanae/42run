@@ -2,6 +2,7 @@
 
 #include "game/namespace.h"
 
+#include "game/engine_extensions/timer.h"
 #include "game/obstacle/obstacle.h"
 
 class									game::character : public engine::game_object::game_object
@@ -21,7 +22,7 @@ private :
 	interface::callback					callback;
 
 	shared<model::model>				model;
-	shared<model_with_mods::instance>	instance;
+	shared<engine_extensions::instance>	instance;
 
 	static constexpr float				size = 5.f;
 
@@ -52,12 +53,13 @@ private :
 	vec3 								current_position = middle_position;
 	vec3								target_position = middle_position;
 
-	interface::timer					timer;
+	engine_extensions::timer			timer_for_obstacle;
+	engine_extensions::timer			timer_for_protection;
+
 	int									health = 3;
-	float								color_mix_value;
+	bool								is_protected = false;
 
-	void								get_hit();
-	void								use_bonus(const shared<bonus::bonus> &bonus);
+	void								collide_with_obstacle();
+	void								collide_with_heal();
+	void								collide_with_protection();
 };
-
-

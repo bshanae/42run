@@ -1,6 +1,6 @@
 #include "room.h"
 
-#include "game/model_with_mods/group.h"
+#include "game/engine_extensions/group.h"
 
 using namespace					game;
 
@@ -21,12 +21,12 @@ void							room::build_instances()
 
 //								Construction
 
-	main_instances.room = make_shared<model_with_mods::instance>(models.room);
+	main_instances.room = make_shared<engine_extensions::instance>(models.room);
 	for (int i = 0; i < number_of_accessories; i++)
 	{
-		main_instances.chair[i] = make_shared<model_with_mods::instance>(models.chair);
-		main_instances.mac[i] = make_shared<model_with_mods::instance>(models.mac);
-		main_instances.keyboard[i] = make_shared<model_with_mods::instance>(models.keyboard);
+		main_instances.chair[i] = make_shared<engine_extensions::instance>(models.chair);
+		main_instances.mac[i] = make_shared<engine_extensions::instance>(models.mac);
+		main_instances.keyboard[i] = make_shared<engine_extensions::instance>(models.keyboard);
 	}
 
 //								Transformation
@@ -98,19 +98,17 @@ void							room::build_groups()
 //								Build groups
 	for (int row_i = 0; row_i < number_of_rows; row_i++)
 	{
-		auto					group = make_shared<model_with_mods::group>();
+		auto					group = make_shared<engine_extensions::group>();
 
 		group->include(instances[row_i].room);
+#if DEBUG_FAST
 		for (int accessory_i = 0; accessory_i < number_of_accessories; accessory_i++)
 		{
 			group->include(instances[row_i].mac[accessory_i]);
-
-			if (not settings().faster_scene)
-			{
-				group->include(instances[row_i].chair[accessory_i]);
-				group->include(instances[row_i].keyboard[accessory_i]);
-			}
+			group->include(instances[row_i].chair[accessory_i]);
+			group->include(instances[row_i].keyboard[accessory_i]);
 		}
+#endif
 
 		game_object::render_target(group);
 		rows.push_back(make_shared<row>(group));

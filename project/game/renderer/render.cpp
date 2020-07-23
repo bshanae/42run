@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-#include "game/model_with_mods/instance.h"
+#include "game/engine_extensions/instance.h"
 
 using namespace		game;
 
@@ -65,7 +65,7 @@ void				renderer::render(const shared<model::instance> &instance) const
 	uniforms.instance.translation.upload(model::reader::translation(instance));
 	uniforms.instance.rotation.upload(model::reader::rotation(instance));
 
-	if (auto instance_with_mods = dynamic_pointer_cast<model_with_mods::instance>(instance))
+	if (auto instance_with_mods = dynamic_pointer_cast<engine_extensions::instance>(instance))
 	{
 		engine::core::fill_polygon(not hollow(instance_with_mods));
 

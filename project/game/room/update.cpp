@@ -1,7 +1,7 @@
 #include "room.h"
 
-#include "game/model_with_mods/instance.h"
-#include "game/model_with_mods/group.h"
+#include "game/engine_extensions/instance.h"
+#include "game/engine_extensions/group.h"
 
 using namespace			game;
 
@@ -33,6 +33,7 @@ void					room::update()
 
 		nearest_row->make_hollow(false);
 		nearest_row->link_obstacle(nullptr);
+		nearest_row->link_bonus(nullptr);
 
 		rows.push_back(nearest_row);
 		rows.pop_front();

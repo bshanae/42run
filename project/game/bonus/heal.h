@@ -21,7 +21,6 @@ public :
 			position.x = +constants::distance_between_lines;
 
 		position.y = 10 + random(float_range(-0.4f, 0.4f));
-		rotation.y = random(int_range(0, 360));
 
 		instance->translate(position);
 		instance->rotate(rotation);

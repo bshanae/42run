@@ -21,9 +21,9 @@ public :
 								{}
 	virtual						~game_object() = default;
 
-	void						start();
-	void						pause(bool state);
-	void						stop();
+	virtual void				start();
+	virtual void				pause(bool state);
+	virtual void				stop();
 
 	void						render();
 

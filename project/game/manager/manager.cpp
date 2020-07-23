@@ -1,5 +1,10 @@
 #include "manager.h"
 
+#include "game/bonus/bonus.h"
+#include "game/bonus/coin.h"
+#include "game/bonus/heal.h"
+#include "game/bonus/protection.h"
+
 using namespace			game;
 
 shared<scene::scene>	game::global_scene;
@@ -151,7 +156,7 @@ void					manager::update()
 // --------------------	Obstacle and bonus
 
 
-#if DEBUG
+#if DEBUG_VERBOSE
 	static int			collision_i;
 
 	cerr << "Collision" << collision_i++ << endl;
@@ -159,7 +164,7 @@ void					manager::update()
 
 	if (interesting_row->does_collide_with_obstacle(character->current_line, character->current_state))
 	{
-		character->get_hit();
+		character->collide_with_obstacle();
 		display_health();
 	}
 	else if
@@ -167,7 +172,7 @@ void					manager::update()
 		auto result = interesting_row->does_collide_with_bonus(character->current_line, character->current_state);
 		result.first
 	)
-		character->use_bonus(result.second);
+		use_bonus(result.second);
 }
 
 void					manager::load_scene()
@@ -205,6 +210,13 @@ void					manager::load_scene()
 	);
 }
 
+void					manager::unload_scene()
+{
+	character->stop();
+	room->stop();
+	shared_from_this()->stop();
+}
+
 void					manager::display_health()
 {
 	switch (character->health)
@@ -238,9 +250,18 @@ void					manager::display_health()
 	}
 }
 
-void					manager::unload_scene()
+void					manager::use_bonus(const shared<bonus::bonus> &bonus)
 {
-	character->stop();
-	room->stop();
-	shared_from_this()->stop();
+	if (dynamic_pointer_cast<bonus::coin>(bonus))
+		total_row_value += settings().coin_value;
+	else if (dynamic_pointer_cast<bonus::heal>(bonus))
+	{
+		character->collide_with_heal();
+		display_health();
+	}
+	else if (dynamic_pointer_cast<bonus::protection>(bonus))
+		character->collide_with_protection();
+	else
+		return ;
+	bonus->use();
 }

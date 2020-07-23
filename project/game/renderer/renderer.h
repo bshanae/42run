@@ -2,11 +2,11 @@
 
 #include "game/namespace.h"
 
-#include "game/model_with_mods/reader.h"
+#include "game/engine_extensions/reader.h"
 
 class								game::renderer :
 										public engine::renderer,
-										public game::model_with_mods::reader
+										public game::engine_extensions::reader
 {
 	friend class					game::manager;
 

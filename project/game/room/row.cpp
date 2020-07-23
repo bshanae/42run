@@ -1,7 +1,7 @@
 #include "room.h"
 
-#include "game/model_with_mods/instance.h"
-#include "game/model_with_mods/group.h"
+#include "game/engine_extensions/instance.h"
+#include "game/engine_extensions/group.h"
 
 using namespace						game;
 
@@ -69,7 +69,7 @@ void								room::row::link_bonus(const shared<bonus::bonus> &bonus)
 	}
 }
 
-shared<model_with_mods::group>		room::row::read_group() const
+shared<engine_extensions::group>	room::row::read_group() const
 {
 	return (group);
 }

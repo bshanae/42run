@@ -38,15 +38,15 @@ private :
 
 	struct
 	{
-		shared<model_with_mods::instance>	room;
-		shared<model_with_mods::instance>	chair[number_of_accessories];
-		shared<model_with_mods::instance>	mac[number_of_accessories];
-		shared<model_with_mods::instance>	keyboard[number_of_accessories];
+		shared<engine_extensions::instance>	room;
+		shared<engine_extensions::instance>	chair[number_of_accessories];
+		shared<engine_extensions::instance>	mac[number_of_accessories];
+		shared<engine_extensions::instance>	keyboard[number_of_accessories];
 	}										instances[number_of_rows];
 
 	struct									row
 	{
-		explicit							row(const shared<model_with_mods::group> &group) :
+		explicit							row(const shared<engine_extensions::group> &group) :
 												group(group)
 											{}
 
@@ -59,7 +59,7 @@ private :
 		void								link_bonus(const shared<bonus::bonus> &bonus);
 
 		[[nodiscard]]
-		shared<model_with_mods::group>		read_group() const;
+		shared<engine_extensions::group>	read_group() const;
 
 		[[nodiscard]]
 		bool								does_collide(const float_range &character_range) const;
@@ -75,7 +75,7 @@ private :
 		static inline const line_wrapper	lines_blocked_by_hollow_row = {line::left, line::middle, line::right};
 		static inline const state_wrapper 	states_blocked_by_hollow_row = state::running;
 
-		shared<model_with_mods::group>		group;
+		shared<engine_extensions::group>	group;
 
 		shared<obstacle::obstacle>			obstacle;
 		shared<bonus::bonus>				bonus;

@@ -28,7 +28,9 @@ private :
 
 	void						load_scene();
 	void						unload_scene();
+
 	void						display_health();
+	void						use_bonus(const shared<bonus::bonus> &bonus);
 
 	shared<room>				room;
 	shared<character>			character;

@@ -1,6 +1,6 @@
 #include "room.h"
 
-#include "game/model_with_mods/group.h"
+#include "game/engine_extensions/group.h"
 
 using namespace					game;
 

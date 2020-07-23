@@ -17,7 +17,7 @@ void							model::loader::load(model &model, const path &source, flag_wrapper fl
 
 	scene = importer.GetOrphanedScene();
 
-#if DEBUG
+#if DEBUG_VERBOSE
 	if (not scene or scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE or not scene->mRootNode)
 	{
 		cout << "DEBUG // ASSIMP OUTPUT" << endl;
@@ -258,7 +258,7 @@ pair<shared<model::bone>, int>	model::loader::find_bone(const string &name)
 
 	warning::raise(warning::id::model_bone_not_found);
 
-#if DEBUG
+#if DEBUG_VERBOSE
 	if (not warning::is_muted)
 		cout << "Name = " << name << endl;
 #endif

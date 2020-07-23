@@ -2,7 +2,7 @@
 
 int					main()
 {
-#if DEBUG
+#if DEBUG_VERBOSE
 	common::warning::is_critical = true;
 #endif
 
@@ -44,7 +44,6 @@ int					main()
 	game::sources().bonus_heal = "project/resources/game/models/Heal.obj";
 	game::sources().bonus_protection = "project/resources/game/models/Protection.obj";
 
-	game::settings().faster_scene = true;
 	game::settings().title_scene_background = engine::vec3(0.1f);
 	game::settings().game_scene_background = engine::vec3(0.95f);
 	game::settings().fog_density = 0.004;
@@ -54,22 +53,25 @@ int					main()
 	game::settings().bonus_generation_wait = 20;
 	game::settings().hollow_row_spawning_frequency = common::int_range(8, 15);
 	game::settings().chair_spawning_frequency = common::int_range(4, 8);
-	game::settings().coin_spawning_frequency = common::int_range(2,8);
-	game::settings().heal_spawning_frequency = common::int_range(2,8);
-	game::settings().protection_spawning_frequency = common::int_range(2,8);
+	game::settings().coin_spawning_frequency = common::int_range(1000,1000);//common::int_range(2,8);
+	game::settings().heal_spawning_frequency = common::int_range(1000,1000);//common::int_range(8,16);
+	game::settings().protection_spawning_frequency = common::int_range(1,1);//common::int_range(16,40);
 	game::settings().initial_room_speed = 1.5f;
 	game::settings().initial_character_speed = 0.5f;
-	game::settings().initial_row_value = 20.f;
+	game::settings().initial_row_value = 10.f;
 	game::settings().increase_of_room_speed = 0.0001f;
 	game::settings().increase_of_character_speed = 0.0001f;
-	game::settings().increase_of_row_value = 0.05f;
+	game::settings().increase_of_row_value = 0.02f;
 	game::settings().maximum_room_speed_factor = 2.f;
 	game::settings().maximum_character_speed_factor = 2.f;
 	game::settings().maximum_row_value_factor = 4.f;
-	game::settings().hit_effect_duration = 1.5f;
-	game::settings().hit_effect_color = engine::vec3(1.f, 0.f, 0.f);
-	game::settings().hit_effect_factor = 0.6f;
-	game::settings().hit_effect_fade_out_step = 0.04f;
+	game::settings().hit_range = common::float_range(0.6f, 0.f);
+	game::settings().hit_color = engine::vec3(1.f, 0.f, 0.f);
+	game::settings().hit_duration = 1.5f;
+	game::settings().coin_value = 500.f;
+	game::settings().protection_range = common::float_range(0.6f, 0.f);
+	game::settings().protection_color = engine::vec3(0.11f, 0.65f, 0.58f);
+	game::settings().protection_duration = 10.f;
 
 	engine::core::initialize();
 	UI::font::manager::initialize();

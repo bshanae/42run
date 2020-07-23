@@ -12,12 +12,11 @@ using namespace		game;
 	model = make_shared<model::model>(sources().character, flags);
 	common::warning::is_muted = false;
 
-	instance = make_shared<model_with_mods::instance>(model);
+	instance = make_shared<engine_extensions::instance>(model);
 
 	instance->scale(0.085f);
 	instance->rotate(engine::vec3(0, 180, 0));
 	instance->color_mix_factor(0.0f);
-	instance->color_mix_color(settings().hit_effect_color);
 
 	animations.run = model::animation(1, 19, 1.);
 	animations.jump = model::animation(20, 63, 0.7);
@@ -28,10 +27,11 @@ using namespace		game;
 	game_object::animation_target(model);
 
 	callback = interface::callback(interface::event::type::key_press, &character::callback_functor, this);
-	timer = interface::timer(game::settings().hit_effect_duration);
+	timer_for_obstacle = engine_extensions::timer(settings().hit_range, settings().hit_duration);
+	timer_for_protection = engine_extensions::timer(settings().protection_range, settings().protection_duration);
 
 	engine::core::use(callback);
-	engine::core::use(timer);
+	engine::core::use(timer_for_obstacle);
 }
 
 void				character::update()
@@ -52,17 +52,18 @@ void				character::update()
 //					Update values
 	if (speed_factor > settings().maximum_character_speed_factor)
 		speed_factor *= (1.f + settings().increase_of_character_speed);
-	if (color_mix_value < M_PI_2)
-	{
-		instance->color_mix_factor(cos(color_mix_value) * settings().hit_effect_factor);
-		color_mix_value += settings().hit_effect_fade_out_step * (float)M_PI_2;
-	}
-	else
-		instance->color_mix_state(false);
 
-//					Update hollow state
-	if (timer.has_finished())
+//					Update effects
+	if (timer_for_obstacle.has_finished())
+	{
+		instance->color_mix_state(false);
 		instance->hollow(false);
+	}
+	else if (timer_for_obstacle.is_running())
+		instance->color_mix_factor(timer_for_obstacle.get_value());
+
+	if (timer_for_protection.has_finished())
+		is_protected = false;
 }
 
 void				character::update_state()
@@ -158,15 +159,26 @@ bool				character::try_go_right(enum line &line)
 	}
 }
 
-void				character::get_hit()
+void				character::collide_with_obstacle()
 {
+	if (is_protected)
+		return ;
+
 	health--;
 	instance->color_mix_state(true);
-	color_mix_value = 0.f;
-	timer.execute();
+	instance->color_mix_color(settings().hit_color);
+	timer_for_obstacle.execute();
 }
 
-void				character::use_bonus(const shared<bonus::bonus> &bonus)
+void				character::collide_with_heal()
 {
+	health = min(3, health + 1);
+}
 
+void				character::collide_with_protection()
+{
+	instance->color_mix_state(true);
+	instance->color_mix_color(settings().protection_color);
+	timer_for_protection.execute();
+	is_protected = true;
 }

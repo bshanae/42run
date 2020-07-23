@@ -97,7 +97,6 @@ namespace							game
 
 	struct							settings
 	{
-		bool						faster_scene = false;
 		vec3						title_scene_background;
 		vec3						game_scene_background;
 		float						fog_density;
@@ -119,10 +118,13 @@ namespace							game
 		float						maximum_room_speed_factor;
 		float						maximum_character_speed_factor;
 		float						maximum_row_value_factor;
-		float						hit_effect_duration;
-		vec3						hit_effect_color;
-		float						hit_effect_factor;
-		float						hit_effect_fade_out_step;
+		float_range 				hit_range;
+		vec3						hit_color;
+		float						hit_duration;
+		float						coin_value;
+		float_range 				protection_range;
+		vec3						protection_color;
+		float						protection_duration;
 	};
 
 	struct settings					&settings();
@@ -149,11 +151,12 @@ namespace							game
 
 	class							renderer;
 
-	namespace						model_with_mods
+	namespace						engine_extensions
 	{
 		class						instance;
 		class						group;
 		class						reader;
+		class						timer;
 	}
 
 	class 							room;

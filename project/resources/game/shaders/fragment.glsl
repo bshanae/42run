@@ -214,7 +214,7 @@ void					main()
 	final_color.rgb += uniform_material.unite.emission;
 
 	if (uniform_color_mix.use == 1)
-		final_color = mix(final_color, uniform_color_mix.color, uniform_color_mix.factor);
+		final_color = mix(uniform_color_mix.color, final_color, uniform_color_mix.factor);
 
 	if (uniform_fog.use == 1)
 	{

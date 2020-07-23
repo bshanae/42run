@@ -84,7 +84,7 @@ void				scene::camera::update()
 {
 	vec3			local_front;
 
-#if DEBUG
+#if DEBUG_VERBOSE
 	cerr <<
 		"Camera : position = " <<
 		glm::to_string(position) <<
