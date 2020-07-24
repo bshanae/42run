@@ -1,29 +1,36 @@
 #include "random.h"
 
-int					common::random(const int_range &range)
+static void 				initialize_engine(std::default_random_engine &engine)
 {
-	static bool 	first_call = true;
-	static auto		engine = std::default_random_engine();
+	std::random_device		random_device;
+
+	engine.seed(random_device());
+}
+
+int							common::random(const int_range &range)
+{
+	static bool 			first_call = true;
+	static auto				engine = std::default_random_engine();
 
 	if (first_call)
 	{
-		engine.seed(seed);
+		initialize_engine(engine);
 		first_call = false;
 	}
 
-	auto			distribution = std::uniform_int_distribution(range.lower, range.higher);
+	auto					distribution = std::uniform_int_distribution(range.lower, range.higher);
 
 	return (distribution(engine));
 }
 
-float				common::random(const float_range &range)
+float						common::random(const float_range &range)
 {
-	static bool 	first_call = true;
-	static auto		engine = std::default_random_engine();
+	static bool 			first_call = true;
+	static auto				engine = std::default_random_engine();
 
 	if (first_call)
 	{
-		engine.seed(seed);
+		initialize_engine(engine);
 		first_call = false;
 	}
 
