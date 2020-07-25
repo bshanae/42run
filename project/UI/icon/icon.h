@@ -8,11 +8,8 @@ class					UI::icon::icon :
 							public UI::rectangle::rectangle
 {
 public :
-
-	explicit			icon(const vec2 &position, const path &source);
+						icon(const vec2 &position, const vec2 &size, const path &source);
 						~icon() override = default;
 
 	void				change_position(const vec2 &position);
 };
-
-

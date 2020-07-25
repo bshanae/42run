@@ -5,6 +5,7 @@ using namespace		engine;
 					core::core()
 {
 	glfwInit();
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -34,10 +35,12 @@ using namespace		engine;
 
 	settings().window_scaling = new_size / settings().window_size;
 	settings().window_size = new_size;
+	settings().window_ratio = (float)settings().window_size.x / (float)settings().window_size.y;
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_MULTISAMPLE);
+	if (settings().number_of_samples > 1)
+		glEnable(GL_MULTISAMPLE);
 
 	default_settings();
 

@@ -1,7 +1,6 @@
 #include "renderer.h"
 
 #include "UI/rectangle/rectangle.h"
-#include "UI/icon/icon.h"
 
 using namespace		UI;
 

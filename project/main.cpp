@@ -8,7 +8,7 @@ int					main()
 
 	engine::settings().window_size = engine::ivec2(1280, 720);
 	engine::settings().window_name = "";
-	engine::settings().number_of_samples = 1;
+	engine::settings().number_of_samples = 4;
 
 	engine::settings().shader_version = "330 core";
 	engine::settings().path_to_shared_header = "project/resources/engine";
@@ -33,7 +33,8 @@ int					main()
 	game::sources().mac = "project/resources/game/models/iMac.obj";
 	game::sources().keyboard = "project/resources/game/models/Keyboard.obj";
 	game::sources().character = "project/resources/game/models/Character.fbx";
-	game::sources().circle = "project/resources/UI/icons/circle.png";
+	game::sources().blue_circle = "project/resources/game/icons/blue_circle.png";
+	game::sources().green_circle = "project/resources/game/icons/green_circle.png";
 	game::sources().font = "project/resources/UI/fonts/HelveticaNeue.ttc";
 	game::sources().bonus_coin = "project/resources/game/models/Coin.obj";
 	game::sources().bonus_heal = "project/resources/game/models/Heal.obj";

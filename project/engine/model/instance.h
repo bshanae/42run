@@ -14,16 +14,6 @@ public :
 	explicit 				instance(const shared<model> &model);
 	virtual					~instance() = default;
 
-//	shared<instance>		copy() const
-//	{
-//		auto				result = make_shared<instance>(model);
-//
-//		result->data = data;
-//		result->transformations = transformations;
-//
-//		return (result);
-//	}
-
 	vec3					scaling() const
 	{
 		return (data.scaling);

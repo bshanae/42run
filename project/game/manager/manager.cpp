@@ -75,12 +75,13 @@ shared<scene::scene>	game::global_scene;
 
 // --------------------	UI : Icons
 
-	auto				build_circle = [](const vec2 &position)
+	auto				build_circle = [](const vec2 &position, path &source)
 	{
 		auto			result = make_shared<icon::icon>
 		(
 			position,
-			sources().circle
+			vec2(0.018f / engine::settings().window_ratio, 0.018f),
+			source
 		);
 
 		global_scene->include(result);
@@ -89,9 +90,13 @@ shared<scene::scene>	game::global_scene;
 		return (result);
 	};
 
-	icons.circles[0] = build_circle(vec2(0.88, 0.33));
-	icons.circles[1] = build_circle(vec2(0.92, 0.33));
-	icons.circles[2] = build_circle(vec2(0.96, 0.33));
+	icons.blue_circles[0] = build_circle(vec2(0.88, 0.33), sources().blue_circle);
+	icons.blue_circles[1] = build_circle(vec2(0.92, 0.33), sources().blue_circle);
+	icons.blue_circles[2] = build_circle(vec2(0.96, 0.33), sources().blue_circle);
+
+	icons.green_circles[0] = build_circle(vec2(0.88, 0.33), sources().green_circle);
+	icons.green_circles[1] = build_circle(vec2(0.92, 0.33), sources().green_circle);
+	icons.green_circles[2] = build_circle(vec2(0.96, 0.33), sources().green_circle);
 
 // --------------------	UI : Label
 
@@ -128,6 +133,8 @@ void					manager::update()
 		engine::core::use(scenes.defeat);
 		unload_scene();
 	}
+
+	display_health();
 
 // --------------------	Updating values
 
@@ -237,30 +244,37 @@ void					manager::unload_scene()
 
 void					manager::display_health()
 {
+	auto				&current = character->is_protected ? icons.green_circles : icons.blue_circles;
+	auto				&other = character->is_protected ? icons.blue_circles : icons.green_circles;
+
+	other[0]->pause(true);
+	other[1]->pause(true);
+	other[2]->pause(true);
+
 	switch (character->health)
 	{
 		case 0 :
-			icons.circles[0]->pause(true);
-			icons.circles[1]->pause(true);
-			icons.circles[2]->pause(true);
+			current[0]->pause(true);
+			current[1]->pause(true);
+			current[2]->pause(true);
 			break ;
 
 		case 1 :
-			icons.circles[0]->pause(true);
-			icons.circles[1]->pause(true);
-			icons.circles[2]->pause(false);
+			current[0]->pause(true);
+			current[1]->pause(true);
+			current[2]->pause(false);
 			break ;
 
 		case 2 :
-			icons.circles[0]->pause(true);
-			icons.circles[1]->pause(false);
-			icons.circles[2]->pause(false);
+			current[0]->pause(true);
+			current[1]->pause(false);
+			current[2]->pause(false);
 			break ;
 
 		case 3 :
-			icons.circles[0]->pause(false);
-			icons.circles[1]->pause(false);
-			icons.circles[2]->pause(false);
+			current[0]->pause(false);
+			current[1]->pause(false);
+			current[2]->pause(false);
 			break ;
 
 		default :
@@ -276,10 +290,7 @@ void					manager::use_bonus(const shared<bonus::bonus> &bonus)
 		timer_for_font.execute();
 	}
 	else if (dynamic_pointer_cast<bonus::heal>(bonus))
-	{
 		character->interact_with_heal();
-		display_health();
-	}
 	else if (dynamic_pointer_cast<bonus::protection>(bonus))
 		character->interact_with_protection();
 	else

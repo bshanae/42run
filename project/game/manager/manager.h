@@ -33,7 +33,7 @@ private :
 	float						total_row_value = 0.f;
 
 	static inline const vec3	main_font_color = vec3(1.f);
-	static inline const vec3	bonus_font_color = vec3(0.07f, 0.45f, 0.91f);
+	static inline const vec3	bonus_font_color = vec3(0.07f, 0.45f, 1.f);
 
 	engine_extensions::timer	timer_for_font;
 
@@ -67,7 +67,8 @@ private :
 
 	struct
 	{
-		shared<icon::icon>		circles[3];
+		shared<icon::icon>		blue_circles[3];
+		shared<icon::icon>		green_circles[3];
 	}							icons;
 
 	struct

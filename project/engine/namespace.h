@@ -100,6 +100,7 @@ namespace							engine
 		string						window_name;
 		ivec2						window_size;
 		ivec2						window_scaling;
+		float						window_ratio;
 
 		int							number_of_samples = 0;
 

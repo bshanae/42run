@@ -28,5 +28,5 @@ namespace			engine::converter
 	ivec2			to_absolute(const vec2 &source);
 //					[0, width], [0, height] -> [0, 1], [0, 1]
 	[[nodiscard]]
-	ivec2			to_relative(const vec2 &source);
+	vec2			to_relative(const vec2 &source);
 }

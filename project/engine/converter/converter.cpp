@@ -77,7 +77,7 @@ ivec2				converter::to_absolute(const vec2 &source)
 	return {window_size.x * source.x, window_size.y * source.y};
 }
 
-ivec2				converter::to_relative(const vec2 &source)
+vec2				converter::to_relative(const vec2 &source)
 {
 	auto			window_size = engine::settings().window_size;
 

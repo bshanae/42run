@@ -2,14 +2,13 @@
 
 using namespace		UI;
 
-					icon::icon::icon(const vec2 &position, const path &source)
+					icon::icon::icon(const vec2 &position, const vec2 &size, const path &source)
 {
 	auto			texture = make_unique<model::texture>(source);
-	auto			size = texture->read_size();
+	auto			absolute_size = converter::to_absolute(size);
 
 	build(texture);
-	instance->scale(vec3(size.x * 0.5, size.y * 0.5, 1.f));
-	instance->scale(engine::settings().window_scaling.x);
+	instance->scale(vec3(absolute_size.x, absolute_size.y, 1.f));
 	change_position(position);
 }
 

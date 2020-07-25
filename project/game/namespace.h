@@ -86,7 +86,8 @@ namespace							game
 		path						mac;
 		path						keyboard;
 		path						character;
-		path						circle;
+		path						blue_circle;
+		path						green_circle;
 		path						font;
 		path						bonus_coin;
 		path						bonus_heal;
