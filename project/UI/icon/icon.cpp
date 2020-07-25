@@ -2,7 +2,7 @@
 
 using namespace		UI;
 
-					icon::icon::icon(const vec2 &position, const vec2 &size, const path &source)
+					icon::icon::icon(const vec2 &position, const vec2 &size, const string &source)
 {
 	auto			texture = make_unique<model::texture>(source);
 	auto			absolute_size = converter::to_absolute(size);

@@ -6,7 +6,7 @@
 
 using namespace					engine;
 
-void							model::loader::load(model &model, const path &source, flag_wrapper flags)
+void							model::loader::load(model &model, const string &source, flag_wrapper flags)
 {
 	uint 						assimp_flags = 0;
 
@@ -34,8 +34,6 @@ void							model::loader::load(model &model, const path &source, flag_wrapper fl
 
 	meshes.clear();
 	bones.clear();
-
-	directory = source.parent_path();
 
 	load_nodes();
 	load_animations();
@@ -225,7 +223,7 @@ unique<model::material>			model::loader::process_material(aiMaterial *source)
 			return ;
 
 		source->GetTexture(type, 0, &file);
-		target = make_unique<engine::model::texture>(directory / converter::to_path(file));
+		target = make_unique<engine::model::texture>(converter::to_string(file));
 	};
 
 	construct_texture(target->textures.ambient, aiTextureType_AMBIENT);

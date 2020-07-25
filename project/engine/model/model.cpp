@@ -6,7 +6,7 @@
 
 using namespace		engine;
 
-					model::model::model(const path &source, flag_wrapper flags)
+					model::model::model(const string &source, flag_wrapper flags)
 {
 	if (not loader)
 		loader = make_shared<engine::model::loader>();

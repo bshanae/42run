@@ -75,7 +75,7 @@ shared<scene::scene>	game::global_scene;
 
 // --------------------	UI : Icons
 
-	auto				build_circle = [](const vec2 &position, path &source)
+	auto				build_circle = [](const vec2 &position, string &source)
 	{
 		auto			result = make_shared<icon::icon>
 		(

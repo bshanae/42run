@@ -44,9 +44,6 @@ namespace							engine
 	using							std::cout;
 	using							std::endl;
 
-	using							std::filesystem::path;
-	using							std::filesystem::exists;
-
 	using							std::reference_wrapper;
 	using							std::unique_ptr;
 	using							std::shared_ptr;
@@ -105,7 +102,7 @@ namespace							engine
 		int							number_of_samples = 0;
 
 		string						shader_version;
-		path						path_to_shared_header;
+		string						path_to_shared_header;
 
 		float						camera_movement_speed = 0.f;
 		float						camera_rotation_speed = 0.f;

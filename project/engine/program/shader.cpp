@@ -2,9 +2,9 @@
 
 using namespace				engine::program;
 
-shader::shader(type type, const path &source)
+							shader::shader(type type, const string &source)
 {
-	auto					write_file_to_stream = [](stringstream &stream, const path &path)
+	auto					write_file_to_stream = [](stringstream &stream, const string &path)
 	{
 		ifstream			file;
 
@@ -20,8 +20,7 @@ shader::shader(type type, const path &source)
 	std::stringstream		stream;
 
 	stream << "#version " << settings().shader_version;
-	if (auto path = settings().path_to_shared_header / "shared.h"; exists(path))
-		write_file_to_stream(stream, path);
+	write_file_to_stream(stream, settings().path_to_shared_header + "/shared.h");
 	write_file_to_stream(stream, source);
 
 	const string			string = stream.str();

@@ -16,7 +16,7 @@ class							engine::model::model
 
 public :
 								model() = default;
-								model(const path &source, flag_wrapper flags);
+								model(const string &source, flag_wrapper flags);
 
 								~model() = default;
 

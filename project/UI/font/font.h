@@ -11,7 +11,7 @@ class						UI::font::font :
 	friend class			UI::font::reader;
 
 public :
-							font(const path &source, const int &width, const vec3 &color = vec3(1.f));
+							font(const string &source, const int &width, const vec3 &color = vec3(1.f));
 							~font() = default;
 
 	void					build_map();

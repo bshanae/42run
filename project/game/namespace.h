@@ -19,6 +19,7 @@ namespace							game
 	using							std::endl;
 	using							std::min;
 	using							std::max;
+	using							std::string;
 	using							std::to_string;
 	using							std::shared_ptr;
 	using							std::unique_ptr;
@@ -26,8 +27,6 @@ namespace							game
 	using							std::make_unique;
 	using							std::static_pointer_cast;
 	using							std::dynamic_pointer_cast;
-
-	using							engine::path;
 
 	using							std::find_if;
 	using							std::remove_if;
@@ -79,19 +78,19 @@ namespace							game
 
 	struct							sources
 	{
-		path						vertex_shader;
-		path						fragment_shader;
-		path						room;
-		path						chair;
-		path						mac;
-		path						keyboard;
-		path						character;
-		path						blue_circle;
-		path						green_circle;
-		path						font;
-		path						bonus_coin;
-		path						bonus_heal;
-		path						bonus_protection;
+		string						vertex_shader;
+		string						fragment_shader;
+		string						room;
+		string						chair;
+		string						mac;
+		string						keyboard;
+		string						character;
+		string						blue_circle;
+		string						green_circle;
+		string						font;
+		string						bonus_coin;
+		string						bonus_heal;
+		string						bonus_protection;
 	};
 
 	struct sources					&sources();

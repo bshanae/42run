@@ -4,7 +4,7 @@
 
 using namespace				UI;
 
-							font::font::font(const path &source, const int &width, const vec3 &color) :
+							font::font::font(const string &source, const int &width, const vec3 &color) :
 								color(color)
 {
 	auto					&library = manager::instance()->library;

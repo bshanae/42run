@@ -13,6 +13,6 @@ class				engine::program::shader : public engine::abstract::OpenGL_wrapper
 		vertex = GL_VERTEX_SHADER,
 		fragment = GL_FRAGMENT_SHADER
 	};
-					shader(type type, const path &source);
+					shader(type type, const string &source);
 					~shader() override;
 };

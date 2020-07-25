@@ -6,8 +6,6 @@ namespace			engine::converter
 {
 	[[nodiscard]]
 	string			to_string(const aiString &source);
-	[[nodiscard]]
-	path			to_path(const aiString &source);
 
 	[[nodiscard]]
 	vec3			to_glm(const aiColor3D &source);

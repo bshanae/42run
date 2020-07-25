@@ -10,7 +10,7 @@ class				engine::model::texture : public engine::abstract::OpenGL_wrapper
 
 public :
 					texture();
-	explicit		texture(const path &source);
+	explicit		texture(const string &source);
 
 					~texture() override;
 

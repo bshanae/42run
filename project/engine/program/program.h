@@ -7,7 +7,7 @@
 class					engine::program::program : public engine::abstract::OpenGL_wrapper
 {
 public :
-						program(const path &vertex_source, const path &fragment_source);
+						program(const string &vertex_source, const string &fragment_source);
 						~program() override;
 
 	void				use(bool state) override

@@ -26,9 +26,7 @@ private :
 	vector<unique<mesh>>		meshes;
 	vector<shared<bone>>		bones;
 
-	path						directory;
-
-	void						load(model &model, const path &source, flag_wrapper wrap);
+	void						load(model &model, const string &source, flag_wrapper wrap);
 
 	void						load_nodes();
 	void						load_meshes();

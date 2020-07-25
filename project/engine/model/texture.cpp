@@ -10,7 +10,7 @@ using namespace		engine;
 	glGenTextures(1, &object);
 }
 
-					model::texture::texture(const path &source) :
+					model::texture::texture(const string &source) :
 						texture()
 {
 	int				number_of_components;

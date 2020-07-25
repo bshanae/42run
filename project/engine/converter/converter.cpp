@@ -7,11 +7,6 @@ string				converter::to_string(const aiString &source)
 	return (string(source.data));
 }
 
-path				converter::to_path(const aiString &source)
-{
-	return (path(source.data));
-}
-
 vec3				converter::to_glm(const aiColor3D &source)
 {
 	return (vec3(source.r, source.g, source.b));

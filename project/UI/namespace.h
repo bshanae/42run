@@ -16,7 +16,6 @@ namespace							UI
 	using							std::map;
 	using							std::vector;
 	using							std::string;
-	using							std::filesystem::path;
 	using							std::max;
 
 	using							std::make_unique;
@@ -52,10 +51,10 @@ namespace							UI
 
 	struct							sources
 	{
-		path						rectangle_vertex_shader;
-		path						rectangle_fragment_shader;
-		path						symbol_vertex_shader;
-		path						symbol_fragment_shader;
+		string						rectangle_vertex_shader;
+		string						rectangle_fragment_shader;
+		string						symbol_vertex_shader;
+		string						symbol_fragment_shader;
 	};
 
 	struct sources					&sources();
