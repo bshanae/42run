@@ -101,11 +101,10 @@ void							room::build_groups()
 		auto					group = make_shared<engine_extensions::group>();
 
 		group->include(instances[row_i].room);
-#if DEBUG_FAST
+#if !DEBUG_FAST
 		for (int accessory_i = 0; accessory_i < number_of_accessories; accessory_i++)
 		{
 			group->include(instances[row_i].mac[accessory_i]);
-			group->include(instances[row_i].chair[accessory_i]);
 			group->include(instances[row_i].keyboard[accessory_i]);
 		}
 #endif
