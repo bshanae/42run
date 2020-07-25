@@ -120,6 +120,9 @@ namespace							game
 		vec3						hit_color;
 		float						hit_duration;
 		float						coin_value;
+		float						coin_start;
+		float						coin_end;
+		float						coin_duration;
 		float						protection_start;
 		float						protection_end;
 		vec3						protection_color;

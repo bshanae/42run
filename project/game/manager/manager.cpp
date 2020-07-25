@@ -23,6 +23,16 @@ shared<scene::scene>	game::global_scene;
 
 	engine::core::use(scenes.intro);
 
+	timer_for_font = engine_extensions::timer
+	(
+		settings().coin_start,
+		settings().coin_end,
+		settings().coin_duration,
+		interpolation_method::cosine
+	);
+
+	engine::core::use(timer_for_font);
+
 // --------------------	UI : Frames
 
 	frames.score = make_shared<frame::frame>
@@ -138,6 +148,9 @@ void					manager::update()
 			interesting_row = *iterator;
 			break ;
 		}
+
+	if (timer_for_font.get_state() == engine::interface::timer::state::running)
+		fonts.score->change_color(glm::mix(main_font_color, bonus_font_color, timer_for_font.value()));
 
 // --------------------	Test
 
@@ -258,7 +271,10 @@ void					manager::display_health()
 void					manager::use_bonus(const shared<bonus::bonus> &bonus)
 {
 	if (dynamic_pointer_cast<bonus::coin>(bonus))
+	{
 		total_row_value += settings().coin_value;
+		timer_for_font.execute();
+	}
 	else if (dynamic_pointer_cast<bonus::heal>(bonus))
 	{
 		character->interact_with_heal();

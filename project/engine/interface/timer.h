@@ -76,7 +76,7 @@ public :
 		return ((*total - left) / *total);
 	}
 
-private :
+protected :
 
 	state			state = state::waiting;
 

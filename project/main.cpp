@@ -6,8 +6,6 @@ int					main()
 	common::warning::is_critical = true;
 #endif
 
-	common::seed = 42;
-
 	engine::settings().window_size = engine::ivec2(1280, 720);
 	engine::settings().window_name = "";
 	engine::settings().number_of_samples = 1;
@@ -64,6 +62,9 @@ int					main()
 	game::settings().hit_color = engine::vec3(1.f, 0.f, 0.f);
 	game::settings().hit_duration = 1.5f;
 	game::settings().coin_value = 500.f;
+	game::settings().coin_start = 0.6f;
+	game::settings().coin_end = 0.f;
+	game::settings().coin_duration = 1.2f;
 	game::settings().protection_start = 0.6f;
 	game::settings().protection_end = 0.f;
 	game::settings().protection_color = engine::vec3(0.11f, 0.65f, 0.58f);

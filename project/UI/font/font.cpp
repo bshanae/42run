@@ -21,6 +21,11 @@ void						font::font::build_map()
 		map.emplace(i, build_symbol(static_cast<char>(i)));
 }
 
+void						font::font::change_color(const vec3 &color)
+{
+	this->color = color;
+}
+
 shared<font::symbol>		font::font::find_symbol(char task) const
 {
 	auto					result = map.find(task);

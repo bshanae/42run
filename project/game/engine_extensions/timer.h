@@ -28,6 +28,9 @@ public :
 
 	[[nodiscard]] float		value() const
 	{
+		if (state != state::running)
+			return (0.f);
+
 		switch (interpolation_method)
 		{
 			case interpolation_method::linear :
