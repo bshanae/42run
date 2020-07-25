@@ -85,7 +85,7 @@ void				character::update_state()
 {
 	const float		time = model->current_animation_timestamp();
 
-	if (time >= 28 and time <= 38)
+	if (time >= 28 and time <= 35)
 		current_state = state::jumping;
 	else
 		current_state = state::running;
