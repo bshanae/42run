@@ -1,5 +1,7 @@
 # 42run
 
+![](project/resources/Screenshot.png)
+
 Temple run clone made with OpenGL and C++
 
 ## Build

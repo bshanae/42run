@@ -1,4 +1,4 @@
 #pragma once
 
-#define DEBUG_VERBOSE	1
-#define DEBUG_FAST		1
+#define DEBUG_VERBOSE	0
+#define DEBUG_FAST		0
