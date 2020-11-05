@@ -36,7 +36,6 @@ Just run executable from root :
 * Animated character
 * Obsatcles
 * Bonuses
-* Crazy code style :)
 
 ## Resources
 
